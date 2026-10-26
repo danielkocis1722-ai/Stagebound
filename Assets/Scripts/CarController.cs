@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class CarController : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class CarController : MonoBehaviour
 
     [Header("Engine")]
 
-    public float maxEngineTorque = 280f;
+    public float maxEngineTorque = 360f;
 
     public float idleRPM = 900f;
     public float redlineRPM = 7500f;
@@ -149,12 +150,21 @@ public class CarController : MonoBehaviour
 
     [Header("Controller")]
 
-    public float steeringDeadzone = 0.08f;
+    [Range(0f, 0.3f)]
+    public float steeringDeadzone = 0.06f;
 
     // Jemnejší stred analog sticku.
     // 1 = linear
     // 1.7 = jemné korekcie, plný stick stále = plný lock
-    public float steeringExponent = 1.7f;
+    [FormerlySerializedAs("steeringExponent")]
+    [Range(1f, 3f)]
+    public float lowSpeedSteeringExponent = 1.4f;
+
+    [Range(1f, 3f)]
+    public float highSpeedSteeringExponent = 2.1f;
+
+    [Min(1f)]
+    public float fullSteeringCurveSpeed = 130f;
 
 
     // =========================================================
@@ -164,7 +174,7 @@ public class CarController : MonoBehaviour
     [Header("Car Physics")]
 
     public Vector3 centerOfMass =
-        new Vector3(0f, -0.55f, 0f);
+        new Vector3(0f, -0.35f, 0f);
 
 
     // =========================================================
@@ -365,12 +375,16 @@ public class CarController : MonoBehaviour
         // KEYBOARD
         // =====================================================
 
-        float rawSteering =
-            Input.GetAxisRaw("Horizontal");
+        Keyboard keyboard = Keyboard.current;
+
+        // Preserve the Horizontal axis bindings: A/D and left/right arrows.
+        float rawSteering = keyboard == null ? 0f :
+            ((keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) ? 1f : 0f) -
+            ((keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) ? 1f : 0f);
 
 
         float rawThrottle =
-            Input.GetKey(KeyCode.W)
+            keyboard != null && keyboard.wKey.isPressed
             ? 1f
             : 0f;
 
@@ -423,14 +437,14 @@ public class CarController : MonoBehaviour
 
         // S = normal brake
         BrakeInput =
-            Input.GetKey(KeyCode.S)
+            keyboard != null && keyboard.sKey.isPressed
             ? 1f
             : 0f;
 
 
         // SPACE = handbrake
         HandbrakeInput =
-            Input.GetKey(KeyCode.Space)
+            keyboard != null && keyboard.spaceKey.isPressed
             ? 1f
             : 0f;
 
@@ -456,15 +470,21 @@ public class CarController : MonoBehaviour
         }
 
 
-        float normalizedInput =
+        float normalizedInput = Mathf.Clamp01(
             (absoluteInput - steeringDeadzone) /
-            (1f - steeringDeadzone);
+            (1f - steeringDeadzone));
+
+        // Shape precision near center progressively; never scale maximum lock.
+        float speedBlend = Mathf.SmoothStep(0f, 1f,
+            Mathf.Clamp01(SpeedKmh / Mathf.Max(1f, fullSteeringCurveSpeed)));
+        float exponent = Mathf.Lerp(lowSpeedSteeringExponent,
+            highSpeedSteeringExponent, speedBlend);
 
 
         float curvedInput =
             Mathf.Pow(
                 normalizedInput,
-                steeringExponent
+                exponent
             );
 
 
@@ -515,13 +535,17 @@ public class CarController : MonoBehaviour
         // KEYBOARD
         // =====================================================
 
-        if (Input.GetKeyDown(KeyCode.E))
+        Keyboard keyboard = Keyboard.current;
+        if (keyboard == null)
+            return;
+
+        if (keyboard.eKey.wasPressedThisFrame)
         {
             ShiftUp();
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (keyboard.qKey.wasPressedThisFrame)
         {
             ShiftDown();
         }
