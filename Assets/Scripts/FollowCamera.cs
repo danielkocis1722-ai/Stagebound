@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[DefaultExecutionOrder(200)]
 public class FollowCamera : MonoBehaviour
 {
     [Header("References")]
@@ -52,8 +53,23 @@ public class FollowCamera : MonoBehaviour
     public float fovSharpness = 4f;
 
     [Header("Acceleration Effects")]
-    public float accelerationPullback = 0.35f;
+    public bool accelerationFeedbackEnabled = true;
+    [Min(0f)] public float accelerationPullback = 0.5f;
+    [Min(0f)] public float accelerationLowering = 0.05f;
+    [Min(0f)] public float accelerationFOVBonus = 3f;
+    [Min(0.31f)] public float fullFeedbackAcceleration = 6f;
+    [Min(0.1f)] public float accelerationResponse = 10f;
+    [Min(0.1f)] public float accelerationRecovery = 5f;
     public float brakingPush = 0.25f;
+
+    [Header("Drivetrain Camera Hit")]
+    [Min(0f)] public float torqueKickPullback = 0.06f;
+    [Min(0f)] public float torqueKickFOVBonus = 1.25f;
+    [Min(1f)] public float torqueKickThreshold = 150f;
+    [Min(0.01f)] public float torqueKickDuration = 0.18f;
+    [Min(0f)] public float torqueKickCooldown = 0.4f;
+    public float AccelerationFeedbackAmount => feedback.AccelerationAmount;
+    public float DrivetrainKickAmount => feedback.KickAmount;
 
     public float CurrentSlipAngle { get; private set; }
 
@@ -62,7 +78,9 @@ public class FollowCamera : MonoBehaviour
     private Vector3 smoothedForward;
     private Vector3 smoothedPosition;
 
-    private float previousSpeed;
+    private float speedFOV;
+    private CarController car;
+    private readonly AccelerationCameraFeedback feedback = new AccelerationCameraFeedback();
 
 
     void Start()
@@ -71,6 +89,9 @@ public class FollowCamera : MonoBehaviour
 
         if (target == null || carRigidbody == null)
             return;
+        car = carRigidbody.GetComponent<CarController>();
+        feedback.Reset(car != null ? car.DeliveredAxleTorque : 0f,
+            car != null ? car.ThrottleInput : 0f, car != null ? car.ClutchEngagement : 1f);
 
         Vector3 carForward =
             Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized;
@@ -108,16 +129,24 @@ public class FollowCamera : MonoBehaviour
                 Vector3.up
             );
 
-        previousSpeed =
-            carRigidbody.linearVelocity.magnitude;
+        speedFOV = cam.fieldOfView = slowFOV;
+    }
 
-        cam.fieldOfView = slowFOV;
+    void FixedUpdate()
+    {
+        if (car == null) return;
+        if (!car.isActiveAndEnabled || !accelerationFeedbackEnabled)
+        { feedback.Reset(car.DeliveredAxleTorque, car.ThrottleInput, car.ClutchEngagement); return; }
+        feedback.Step(car.LongitudinalAcceleration, car.DeliveredAxleTorque, car.ThrottleInput, car.ClutchEngagement,
+            car.DynamicsSampleValid, car.currentGear > 0 && car.BrakeInput <= .02f && car.HandbrakeInput <= .05f,
+            Time.fixedDeltaTime, fullFeedbackAcceleration, accelerationResponse, accelerationRecovery,
+            torqueKickThreshold, torqueKickDuration, torqueKickCooldown);
     }
 
 
     void LateUpdate()
     {
-        if (target == null || carRigidbody == null)
+        if (target == null || carRigidbody == null || Time.deltaTime <= 0f)
             return;
 
 
@@ -258,20 +287,9 @@ public class FollowCamera : MonoBehaviour
         // ACCELERATION / BRAKING
         // ====================================================
 
-        float acceleration =
-            (speed - previousSpeed) /
-            Mathf.Max(Time.deltaTime, 0.001f);
-
-        previousSpeed = speed;
-
-        float accelerationOffset =
-            Mathf.Clamp(
-                acceleration * 0.025f,
-                -brakingPush,
-                accelerationPullback
-            );
-
-        distance += accelerationOffset;
+        float brakingOffset = car != null ? Mathf.Clamp(car.LongitudinalAcceleration * .025f, -brakingPush, 0f) : 0f;
+        distance += brakingOffset + accelerationPullback * feedback.AccelerationAmount + torqueKickPullback * feedback.KickAmount;
+        height -= accelerationLowering * feedback.AccelerationAmount;
 
 
         // ====================================================
@@ -368,11 +386,12 @@ public class FollowCamera : MonoBehaviour
                 -fovSharpness * Time.deltaTime
             );
 
-        cam.fieldOfView =
+        speedFOV =
             Mathf.Lerp(
-                cam.fieldOfView,
+                speedFOV,
                 desiredFOV,
                 fovLerp
             );
+        cam.fieldOfView = speedFOV + accelerationFOVBonus * feedback.AccelerationAmount + torqueKickFOVBonus * feedback.KickAmount;
     }
 }

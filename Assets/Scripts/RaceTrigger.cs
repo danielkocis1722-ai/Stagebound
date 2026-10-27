@@ -28,12 +28,7 @@ public class RaceTrigger : MonoBehaviour
         if (raceTimer == null) return;
         if (triggerType == TriggerType.StartFinish)
         {
-            if (!raceTimer.raceRunning)
-            {
-                raceTimer.StartRace();
-                if (raceTimer.raceRunning && respawn != null) respawn.BeginStage(raceTimer);
-            }
-            else raceTimer.FinishRace();
+            if (raceTimer.CrossStartFinish() && respawn != null) respawn.BeginStage(raceTimer);
         }
         else
         {

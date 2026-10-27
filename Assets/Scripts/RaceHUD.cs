@@ -11,6 +11,7 @@ public class RaceHUD : MonoBehaviour
     public CarController car;
     [Range(0f, 1f)] public float timingBackgroundOpacity = .4f;
     [Range(0f, 1f)] public float vehicleBackgroundOpacity = .4f;
+    [Min(0f)] public float resultDisplayDuration = 5f;
     [SerializeField] RaceTimer race;
     TMP_Text speed, rpm, gear, checkpoints, clock, delta, best, status, result;
     Image revFill;
@@ -121,9 +122,16 @@ public class RaceHUD : MonoBehaviour
             race.LatestSplit.HasValue ? RaceTimer.FormatTime(race.LatestSplit.Value) : "--");
         delta.color = !race.Delta.HasValue ? Muted : race.Delta.Value <= 0 ? Mint : Red;
         status.text = !race.TrackReady ? "SETUP REQUIRED: START + CHECKPOINTS" : race.raceFinished ? "FINISHED" : race.raceRunning ? "STAGE IN PROGRESS" : "CROSS START TO BEGIN";
-        results.SetActive(race.raceFinished);
-        if (race.raceFinished)
-            result.text = $"<size=20>YOUR TIME</size>\n<size=52>{race.GetFormattedTime()}</size>\n<size=23>BEST   {RaceTimer.FormatTime(race.BestTime)}\nGAP TO PREVIOUS BEST   {DeltaText(race.Delta)}</size>\n<size=20><color=#5BFFBF>{(race.NewBest ? "NEW PERSONAL BEST" : "CROSS START FOR ANOTHER RUN")}</color></size>";
+        UpdateResults(Time.unscaledTime);
+    }
+
+    void UpdateResults(float now)
+    {
+        var completed = race.LastResult;
+        bool visible = completed != null && now - completed.CompletedAt < Mathf.Max(0f, resultDisplayDuration);
+        results.SetActive(visible);
+        if (visible)
+            result.text = $"<size=20>YOUR TIME</size>\n<size=52>{RaceTimer.FormatTime(completed.Time)}</size>\n<size=23>BEST   {RaceTimer.FormatTime(completed.Best)}\nGAP TO PREVIOUS BEST   {DeltaText(completed.Gap)}</size>\n<size=20><color=#5BFFBF>{(completed.IsNewBest ? "NEW PERSONAL BEST" : "NEXT RUN IN PROGRESS")}</color></size>";
     }
 
     void UpdateHUDEditor()

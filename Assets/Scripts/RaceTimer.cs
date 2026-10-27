@@ -14,6 +14,15 @@ public class RaceTimer : MonoBehaviour
     public float? Delta { get; private set; }
     public bool NewBest { get; private set; }
     public bool TrackReady { get; private set; }
+    public sealed class RunResult
+    {
+        public readonly float Time, Best, CompletedAt;
+        public readonly float? Gap;
+        public readonly bool IsNewBest;
+        public RunResult(float time, float best, float? gap, bool isNewBest, float completedAt)
+        { Time = time; Best = best; Gap = gap; IsNewBest = isNewBest; CompletedAt = completedAt; }
+    }
+    public RunResult LastResult { get; private set; }
     public float? LatestSplit => splits.Count > 0 ? splits[splits.Count - 1] : (float?)null;
     public string BestTimeKey => BuildBestTimeKey(gameObject.scene.path, CountCheckpoints());
     readonly List<float> splits = new List<float>();
@@ -71,7 +80,7 @@ public class RaceTimer : MonoBehaviour
     }
     public void FinishRace()
     {
-        if (!raceRunning || PassedCheckpoints != TotalCheckpoints) return;
+        if (!raceRunning || PassedCheckpoints != TotalCheckpoints || elapsedTime <= 0f) return;
         raceRunning = false;
         raceFinished = true;
         Delta = BestTime > 0 ? elapsedTime - BestTime : (float?)null;
@@ -83,8 +92,25 @@ public class RaceTimer : MonoBehaviour
             PlayerPrefs.SetString(key, JsonUtility.ToJson(new Record { time = BestTime, splits = bestSplits }));
             PlayerPrefs.Save();
         }
+        LastResult = new RunResult(elapsedTime, BestTime, Delta, NewBest, Time.unscaledTime);
+        // The same line crossing begins the next timed run; result data is independent.
+        ResetRunState();
+        raceRunning = true;
+    }
+    public bool CrossStartFinish()
+    {
+        if (!TrackReady) return false;
+        if (!raceRunning) { StartRace(); return raceRunning; }
+        if (PassedCheckpoints != TotalCheckpoints || elapsedTime <= 0f) return false;
+        FinishRace();
+        return true;
     }
     public void ResetTimer()
+    {
+        ResetRunState();
+        LastResult = null;
+    }
+    void ResetRunState()
     {
         elapsedTime = 0; PassedCheckpoints = 0;
         raceRunning = raceFinished = checkpoint1Passed = NewBest = false;

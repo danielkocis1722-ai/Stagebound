@@ -24,7 +24,9 @@ public class VehicleAudio : MonoBehaviour
     [Range(0f, 1f)] public float idleVolume = .22f;
     [Range(0f, 1f)] public float loadedVolume = .8f;
     [Min(.1f)] public float pitchResponse = 5f;
-    [Min(.1f)] public float volumeResponse = 7f;
+    [Min(.1f)] public float volumeResponse = 18f;
+    [Min(.1f)] public float volumeRecoveryResponse = 7f;
+    [Range(0f, .3f)] public float rpmVolumeWeight = .15f;
     [Header("Tire screech")]
     public AudioClip screechClip;
     public AudioSource screechSource;
@@ -79,15 +81,16 @@ public class VehicleAudio : MonoBehaviour
         if (paused != audioPaused) SetPaused(paused);
         if (paused) return;
         float pitchBlend = 1f - Mathf.Exp(-pitchResponse * Time.deltaTime);
-        float volumeBlend = 1f - Mathf.Exp(-volumeResponse * Time.deltaTime);
         float rpm = Mathf.InverseLerp(car.idleRPM, Mathf.Max(car.idleRPM + 1, car.redlineRPM), car.EngineRPM);
         float pitch = Mathf.Lerp(minPitch, maxPitch, rpm);
-        float volume = Mathf.Lerp(idleVolume, loadedVolume, Mathf.Clamp01(car.ThrottleInput));
+        float volume = EngineVolume(rpm, car.ThrottleInput);
         foreach (var layer in engineLayers)
         {
             if (layer == null || layer.source == null) continue;
             // A missing clip is intentionally silent; assigning a clip in Play Mode also works.
             if (layer.clip != null && layer.source.clip != layer.clip) layer.source.clip = layer.clip;
+            float volumeBlend = 1f - Mathf.Exp(-(volume * layer.gain > layer.source.volume
+                ? volumeResponse : volumeRecoveryResponse) * Time.deltaTime);
             UpdateLoop(layer.source, volume * layer.gain, pitch * layer.pitchMultiplier, volumeBlend, pitchBlend);
         }
 
@@ -100,6 +103,13 @@ public class VehicleAudio : MonoBehaviour
         float targetPitch = Mathf.Lerp(screechPitchRange.x, screechPitchRange.y, (intensity + speed) * .5f);
         float fade = 1f - Mathf.Exp(-screechFadeResponse * Time.deltaTime);
         UpdateLoop(screechSource, targetVolume, targetPitch, fade, pitchBlend, false);
+    }
+
+    float EngineVolume(float rpm, float throttle)
+    {
+        throttle = Mathf.Clamp01(throttle);
+        float load = throttle + rpmVolumeWeight * Mathf.Clamp01(rpm) * (1f - throttle);
+        return Mathf.Lerp(idleVolume, loadedVolume, load);
     }
 
     static void UpdateLoop(AudioSource source, float volume, float pitch, float volumeBlend, float pitchBlend, bool playWhenSilent = true)

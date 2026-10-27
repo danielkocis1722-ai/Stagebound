@@ -525,8 +525,19 @@ MonoBehaviour:
   slowFOV: 62
   fastFOV: 73
   fovSharpness: 4
-  accelerationPullback: 0.35
+  accelerationFeedbackEnabled: 1
+  accelerationPullback: 0.5
+  accelerationLowering: 0.05
+  accelerationFOVBonus: 3
+  fullFeedbackAcceleration: 6
+  accelerationResponse: 10
+  accelerationRecovery: 5
   brakingPush: 0.3
+  torqueKickPullback: 0.06
+  torqueKickFOVBonus: 1.25
+  torqueKickThreshold: 150
+  torqueKickDuration: 0.18
+  torqueKickCooldown: 0.4
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,16 +716,16 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.25
+    m_ExtremumValue: 1
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 0.88
+    m_Stiffness: 0.9
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.28
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.72
-    m_Stiffness: 0.92
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.35
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.95
-    m_AsymptoteValue: 0.9
+    m_AsymptoteValue: 0.88
     m_Stiffness: 1.2
   m_IncludeLayers:
     serializedVersion: 2
@@ -785,8 +796,8 @@ WheelCollider:
     m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.9
-    m_Stiffness: 1.2
+    m_AsymptoteValue: 0.95
+    m_Stiffness: 1.26
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1110,16 +1121,16 @@ WheelCollider:
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
+    m_ExtremumSlip: 0.25
+    m_ExtremumValue: 1
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 0.88
+    m_Stiffness: 0.9
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.28
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.72
-    m_Stiffness: 0.92
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.35
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.95
-    m_AsymptoteValue: 0.9
+    m_AsymptoteValue: 0.88
     m_Stiffness: 1.2
   m_IncludeLayers:
     serializedVersion: 2
@@ -1253,6 +1264,7 @@ GameObject:
   - component: {fileID: 1369976805}
   - component: {fileID: 1369976807}
   - component: {fileID: 1369976806}
+  - component: {fileID: 1369976820}
   - component: {fileID: 1369976808}
   - component: {fileID: 1369976809}
   - component: {fileID: 1369976810}
@@ -1315,12 +1327,13 @@ MonoBehaviour:
   redlineRPM: 7500
   engineRevUpSpeed: 9000
   engineRevDownSpeed: 5000
+  engineThrottleResponse: 24
   torqueCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 900
-      value: 0.55
+      value: 0.6
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1328,8 +1341,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2500
-      value: 0.75
+      time: 2000
+      value: 0.84
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1337,7 +1350,25 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 4500
+      time: 3000
+      value: 0.95
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 4000
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 5000
       value: 1
       inSlope: 0
       outSlope: 0
@@ -1376,17 +1407,41 @@ MonoBehaviour:
   finalDrive: 5.3
   drivetrainEfficiency: 0.9
   shiftDuration: 0.2
+  differentialMode: 1
+  lsdStrength: 0.6
+  differentialResponse: 5
   currentGear: 1
   launchClutchMin: 0.55
   launchClutchSpeed: 15
   clutchEngageSpeed: 4
   clutchDisengageSpeed: 12
+  manualClutchEngageSpeed: 8
+  manualClutchReleaseSpeed: 20
+  maxClutchTorque: 500
+  clutchKickStrength: 0.65
+  clutchKickMaxRPMDifference: 3000
+  clutchKickDuration: 0.22
+  clutchKickResponse: 18
+  clutchKickEngineInertia: 0.35
+  clutchKickMismatchExponent: 0.65
+  clutchKickMidrangeFadeStartRPM: 4500
+  clutchKickMidrangeFadeEndRPM: 6000
   brakeTorque: 8000
   handbrakeTorque: 15000
-  handbrakeRearGrip: 0.55
-  handbrakeGripDropSpeed: 12
-  handbrakeGripRecoverySpeed: 3.5
-  maxSteerAngle: 34
+  handbrakeRearGrip: 0.67
+  handbrakeGripDropSpeed: 1.1
+  handbrakeGripRecoverySpeed: 0.65
+  powerSlipGripReduction: 0.08
+  powerSlipGripResponse: 4
+  enableCombinedSlip: 1
+  combinedSlipStart: 0.1
+  combinedSlipFull: 0.22
+  minimumCombinedSlipMultiplier: 0.85
+  combinedSlipResponse: 8
+  breakawayHandoffStartAngle: 8
+  breakawayHandoffFullAngle: 18
+  maxSteerAngle: 30
+  useAckermannSteering: 1
   steeringSpeed: 95
   steeringReturnSpeed: 75
   steeringInputSpeed: 2
@@ -1400,7 +1455,8 @@ MonoBehaviour:
   centerOfMass: {x: 0, y: -0.35, z: 0}
   SpeedKmh: 0
   EngineRPM: 0
-  ClutchEngagement: 0
+  finalClutchEngagement: 0
+  ClutchInput: 0
   HandbrakeInput: 0
   RearWheelRPM: 0
   RearForwardSlip: 0
@@ -1589,7 +1645,9 @@ MonoBehaviour:
   idleVolume: 0.22
   loadedVolume: 1
   pitchResponse: 5
-  volumeResponse: 7
+  volumeResponse: 18
+  volumeRecoveryResponse: 7
+  rpmVolumeWeight: 0.15
   screechClip: {fileID: 8300000, guid: 809492e591a83f544988556fa0d9cb8f, type: 3}
   screechSource: {fileID: 0}
   screechSlipStart: 0.25
@@ -1723,11 +1781,69 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!23 &1404890053 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -3114532629931349975, guid: 75ba245c92e45a94d847d45b62501290, type: 3}
-  m_PrefabInstance: {fileID: 274446783}
+--- !u!114 &1369976820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df6b1c260c20450298e9009765ea5eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DrivetrainDebug
+  captureTelemetry: 0
+  logToConsole: 0
+  logInterval: 0.5
+  frontReferenceStiffness: 1.2
+  speedKmh: 0
+  throttle: 0
+  engineRPM: 0
+  gear: 0
+  blMotorTorque: 0
+  brMotorTorque: 0
+  deliveredAxleTorque: 0
+  leftTorqueShare: 0
+  blGrounded: 0
+  brGrounded: 0
+  blForwardSlip: 0
+  brForwardSlip: 0
+  blSidewaysSlip: 0
+  brSidewaysSlip: 0
+  blContactLoad: 0
+  brContactLoad: 0
+  flSidewaysSlip: 0
+  frSidewaysSlip: 0
+  flContactLoad: 0
+  frContactLoad: 0
+  flGrounded: 0
+  frGrounded: 0
+  flNormalUpDot: 0
+  frNormalUpDot: 0
+  frontLateralStiffnessMultiplier: 0
+  blCombinedSlipMultiplier: 0
+  brCombinedSlipMultiplier: 0
+  combinedSlipEntryWeight: 0
+  steeringInput: 0
+  yawRate: 0
+  vehicleSlipAngle: 0
+  travelTurnRate: 0
+  turnRadiusMeters: 0
+  blRearFrictionMultiplier: 0
+  brRearFrictionMultiplier: 0
+  handbrakeInput: 0
+  handbrakeGripMultiplier: 0
+  clutchEngagement: 0
+  limiterFactor: 0
+  clutchInput: 0
+  automaticClutchEngagement: 0
+  manualClutchEngagement: 0
+  drivetrainRPM: 0
+  clutchRPMDifference: 0
+  clutchKickTorque: 0
+  clutchKickActive: 0
+  shifting: 0
 --- !u!1 &1482896443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,6 +1919,76 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1508368738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1508368741}
+  - component: {fileID: 1508368740}
+  - component: {fileID: 1508368739}
+  m_Layer: 0
+  m_Name: Race Checkpoint 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1508368739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508368738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 751ed16f5e22a034c84622013588c6b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaceTrigger
+  triggerType: 1
+  checkpointIndex: 1
+  raceTimer: {fileID: 1757183761}
+  respawnPoint: {fileID: 0}
+--- !u!65 &1508368740
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508368738}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 16, y: 8, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1508368741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508368738}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 90.47, y: 3.84, z: 10.8}
+  m_LocalScale: {x: 1.52, y: 1.21, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2040,7 +2226,7 @@ RectTransform:
   m_GameObject: {fileID: 1757183754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1669989339}
@@ -2101,6 +2287,23 @@ MonoBehaviour:
   raceRunning: 0
   raceFinished: 0
   checkpoint1Passed: 0
+--- !u!114 &1757183762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757183754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617b90fcbdcb4d15b13451f8712c165e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaceHUD
+  car: {fileID: 1369976806}
+  timingBackgroundOpacity: 0.4
+  vehicleBackgroundOpacity: 0.4
+  resultDisplayDuration: 5
+  race: {fileID: 1757183761}
 --- !u!1001 &1901859222
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2111,7 +2314,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3910990755373119420, guid: d520540a292a9f641bf166565a2318ad, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.9
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: d520540a292a9f641bf166565a2318ad, type: 3}
       propertyPath: m_LocalScale.y
@@ -2163,7 +2366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: d520540a292a9f641bf166565a2318ad, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3284197032516303373, guid: d520540a292a9f641bf166565a2318ad, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2336,8 +2539,8 @@ WheelCollider:
     m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.9
-    m_Stiffness: 1.2
+    m_AsymptoteValue: 0.95
+    m_Stiffness: 1.26
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2347,92 +2550,6 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
---- !u!1 &1508368738
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1508368741}
-  - component: {fileID: 1508368740}
-  - component: {fileID: 1508368739}
-  m_Layer: 0
-  m_Name: Race Checkpoint 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1508368739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508368738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 751ed16f5e22a034c84622013588c6b0, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::RaceTrigger
-  triggerType: 1
-  checkpointIndex: 1
-  raceTimer: {fileID: 1757183761}
-  respawnPoint: {fileID: 0}
---- !u!65 &1508368740
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508368738}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 16, y: 8, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &1508368741
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1508368738}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 90.47, y: 3.84, z: 10.8}
-  m_LocalScale: {x: 1.52, y: 1.21, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1757183762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1757183754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 617b90fcbdcb4d15b13451f8712c165e, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::RaceHUD
-  car: {fileID: 1369976806}
-  timingBackgroundOpacity: 0.4
-  vehicleBackgroundOpacity: 0.4
-  race: {fileID: 1757183761}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

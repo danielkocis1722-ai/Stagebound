@@ -15,8 +15,9 @@ public class PauseMenu : MonoBehaviour
     CarController car;
     RespawnManager respawn;
     RaceHUD hud;
-    GameObject canvasRoot, menu, settings;
-    Button resumeButton, backButton;
+    GameObject canvasRoot, menu;
+    AudioSettingsPanel settings;
+    Button resumeButton;
     TMP_Text notice;
     bool paused, carWasEnabled, hudWasEnabled, hudWasEditing;
     bool cursorWasVisible;
@@ -24,7 +25,8 @@ public class PauseMenu : MonoBehaviour
     float previousTimeScale;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { IsPaused = false; }
+    static void ResetStatics() { ResetPauseState(); }
+    public static void ResetPauseState() { IsPaused = false; Time.timeScale = 1f; }
 
     void Awake()
     {
@@ -89,13 +91,12 @@ public class PauseMenu : MonoBehaviour
 
     public void ShowSettings()
     {
-        menu.SetActive(false); settings.SetActive(true);
-        Select(backButton);
+        menu.SetActive(false); settings.Show();
     }
 
     void ShowMainPanel()
     {
-        settings.SetActive(false); menu.SetActive(true);
+        settings.gameObject.SetActive(false); menu.SetActive(true);
         notice.text = "";
         Select(resumeButton);
     }
@@ -104,11 +105,14 @@ public class PauseMenu : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(mainMenuScene) || !Application.CanStreamedLevelBeLoaded(mainMenuScene))
         {
-            // TODO: Add MainMenu to the build scenes, then this button loads it.
-            notice.text = "TODO: MainMenu scene is not available in Build Settings.";
+            notice.text = "Main Menu scene is unavailable in the build configuration.";
             return;
         }
         Resume();
+        ResetPauseState();
+        StageboundAudioSettings.Save();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         SceneManager.LoadScene(mainMenuScene);
     }
 
@@ -137,13 +141,9 @@ public class PauseMenu : MonoBehaviour
         resumeButton = MenuButton(menu.transform, "Resume", 90, Resume);
         MenuButton(menu.transform, "Restart Stage", 25, RestartStage);
         MenuButton(menu.transform, "Settings", -40, ShowSettings);
-        MenuButton(menu.transform, "Quit to Main Menu", -105, QuitToMainMenu);
+        MenuButton(menu.transform, "Main Menu", -105, QuitToMainMenu);
         notice = Label(menu.transform, "", 16, -178);
-        settings = Panel(shade, "Settings", new Vector2(480, 300)).gameObject;
-        Label(settings.transform, "SETTINGS", 28, 95);
-        Label(settings.transform, "Settings will be available in a future update.", 18, 25);
-        backButton = MenuButton(settings.transform, "Back", -75, ShowMainPanel);
-        settings.SetActive(false);
+        settings = AudioSettingsPanel.Create(shade, ShowMainPanel);
         canvasRoot.SetActive(false);
     }
 
