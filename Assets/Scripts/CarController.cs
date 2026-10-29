@@ -99,20 +99,19 @@ public class CarController : MonoBehaviour
 
     [Header("Manual Clutch")]
     [Tooltip("Engagement units/sec when releasing the pedal/button.")]
-    [Min(0.01f)] public float manualClutchEngageSpeed = 8f;
+    [InspectorName("Manual Clutch Release Speed")]
+    [Min(0.01f)] public float manualClutchEngageSpeed = 20f;
     [Tooltip("Disengagement units/sec when pressing the pedal/button.")]
+    [InspectorName("Manual Clutch Press Speed")]
     [Min(0.01f)] public float manualClutchReleaseSpeed = 20f;
     [Tooltip("Total transmitted torque cap at the engine side, before gear/final-drive multiplication.")]
-    [Min(0f)] public float maxClutchTorque = 500f;
-    [Range(0f, 1f)] public float clutchKickStrength = 0.65f;
-    [Min(1f)] public float clutchKickMaxRPMDifference = 3000f;
-    [Min(0.01f)] public float clutchKickDuration = 0.22f;
-    [Min(0.01f)] public float clutchKickResponse = 18f;
-    [Tooltip("Effective engine inertia (kg m²) used to debit RPM as kick energy is transferred.")]
-    [Min(0.05f)] public float clutchKickEngineInertia = 0.35f;
-    [Range(0.5f, 1f)] public float clutchKickMismatchExponent = 0.65f;
-    [Min(0f)] public float clutchKickMidrangeFadeStartRPM = 4500f;
-    [Min(1f)] public float clutchKickMidrangeFadeEndRPM = 6000f;
+    [Min(0f)] public float maxClutchTorque = 1400f;
+    [Tooltip("Nm per RPM of mismatch, before timestep-stable clutch relaxation.")]
+    [Min(0f)] public float clutchCouplingStrength = 1.2f;
+    [Range(0f, 1f)] public float clutchKickStrength = 1f;
+    [FormerlySerializedAs("clutchKickEngineInertia")]
+    [Tooltip("Effective flywheel inertia (kg m²). All clutch torque loads this engine state.")]
+    [Min(0.05f)] public float engineInertia = 0.35f;
 
     public float EngineThrottle { get; private set; }
     public float NormalizedEngineRPM => Mathf.InverseLerp(idleRPM, redlineRPM, EngineRPM);
@@ -144,10 +143,10 @@ public class CarController : MonoBehaviour
     // Koľko rear gripu zostane počas handbrake.
     // Fraction of normal sideways stiffness retained at full handbrake.
     [Range(0.1f, 1f)]
-    public float handbrakeRearGrip = 0.67f;
+    public float handbrakeRearGrip = 0.8f;
 
     // Ako rýchlo zadok stratí grip po stlačení X.
-    public float handbrakeGripDropSpeed = 1.1f;
+    public float handbrakeGripDropSpeed = .65f;
 
     // Ako rýchlo sa grip vráti po pustení.
     // Nižšia hodnota = menej snapu späť.
@@ -157,6 +156,19 @@ public class CarController : MonoBehaviour
     [Tooltip("Maximum lateral stiffness reduction under measured driven-wheel slip and load. Set to zero to disable.")]
     [Range(0f, 0.12f)] public float powerSlipGripReduction = 0.08f;
     [Min(0.01f)] public float powerSlipGripResponse = 4f;
+
+    [Header("Powered drift grip recovery")]
+    [Tooltip("Return of the final non-handbrake rear grip multiplier, per second. Grip loss keeps the existing power/combined-slip response.")]
+    [Min(.1f)] public float rearGripRecoveryResponse = .8f;
+    [Min(.1f)] public float countersteerGripRecoveryResponse = 1.6f;
+    [Min(.1f)] public float controlledDriftGripRecoveryResponse = .6f;
+    [Min(0f)] public float driftGripEnterAngle = 10f;
+    [Min(0f)] public float driftGripExitAngle = 7f;
+    [SerializeField] bool driftGripHeld;
+    [SerializeField] float currentRearGripRecovery;
+    public bool DriftGripHeld => driftGripHeld;
+    public float CurrentRearGripRecovery => currentRearGripRecovery;
+    public bool DriftReleaseRecoveryActive => driftReleaseRecovery;
 
     [Header("Transient Powered Breakaway")]
     public bool enableCombinedSlip = true;
@@ -179,6 +191,7 @@ public class CarController : MonoBehaviour
     public float HandbrakeGripMultiplier => currentHandbrakeGripMultiplier;
     public float RearLeftTorqueShare => rearLeftTorqueShare;
     public float DeliveredAxleTorque => backLeft.motorTorque + backRight.motorTorque;
+    public float EngineBrakeAxleTorque { get; private set; }
     public float LimiterFactor { get; private set; } = 1f;
     public bool IsShifting => shiftTimer > 0f;
 
@@ -196,7 +209,8 @@ public class CarController : MonoBehaviour
     public float SteeringFrontTrack { get; private set; }
 
     public float steeringSpeed = 95f;
-    public float steeringReturnSpeed = 75f;
+    [Tooltip("Wheel angle return/cross-center speed, including opposite player input. Degrees/sec.")]
+    public float steeringReturnSpeed = 150f;
 
 
     // =========================================================
@@ -261,9 +275,16 @@ public class CarController : MonoBehaviour
     public float AutomaticClutchEngagement => automaticClutchEngagement;
     public float ManualClutchEngagement => manualClutchEngagement;
     public float DrivetrainRPM { get; private set; }
-    public float ClutchRPMDifference => EngineRPM - Mathf.Max(idleRPM, DrivetrainRPM);
-    public bool ClutchKickActive => clutchKick.Active || ClutchKickTorque > 0.001f;
+    // Signed in engine/selected-gear coordinates, separate from RPM magnitude.
+    public float SignedDrivetrainRPM { get; private set; }
+    public float SignedRearWheelRPM => (backLeft.rpm + backRight.rpm) * .5f;
+    public int GearDirection => currentGear == 0 ? 0 : currentGear > 0 ? 1 : -1;
+    public float SignedLongitudinalSpeedKmh => rb != null ? Vector3.Dot(rb.linearVelocity, transform.forward) * 3.6f : 0f;
+    public float ClutchRPMDifference => EngineRPM - SignedDrivetrainRPM;
+    public bool ClutchKickActive => clutchKick.Active && ClutchKickTorque > 0.001f;
     public float ClutchKickTorque { get; private set; }
+    public float ClutchCouplingTorque { get; private set; }
+    public float ClutchEngagementRate { get; private set; }
 
     [Range(0f, 1f)]
     public float HandbrakeInput;
@@ -311,6 +332,7 @@ public class CarController : MonoBehaviour
     private Rigidbody rb;
 
     private float currentSteerAngle;
+    private FrontAxleRecovery frontAxleRecovery;
 
     private float currentKeyboardSteering;
     private float currentKeyboardThrottle;
@@ -323,10 +345,15 @@ public class CarController : MonoBehaviour
     private float currentHandbrakeGripMultiplier = 1f;
     private float rearLeftTorqueShare = 0.5f;
     private float leftPowerGrip = 1f, rightPowerGrip = 1f;
+    float leftRecoveredGrip = 1f, rightRecoveredGrip = 1f;
+    bool driftReleaseRecovery;
     private float automaticClutchEngagement = 1f, manualClutchEngagement = 1f;
     private bool clutchKickArmed;
     private float previousClutchInput;
     private int clutchKickGear;
+    private float reflectedDrivetrainInertia;
+    private float previousDriveRPM, previousDriveTorque, previousDriveRatio;
+    private bool hasDriveSample;
     private readonly ClutchKickCoupling clutchKick = new ClutchKickCoupling();
     private Vector3 previousBodyVelocity, previousBodyPosition;
 
@@ -338,12 +365,16 @@ public class CarController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        frontAxleRecovery = GetComponent<FrontAxleRecovery>();
 
         rb.centerOfMass = centerOfMass;
 
         EngineRPM = idleRPM;
         automaticClutchEngagement = manualClutchEngagement = finalClutchEngagement = 1f;
         clutchKick.Cancel();
+        ClutchCouplingTorque = ClutchKickTorque = ClutchEngagementRate = 0f;
+        reflectedDrivetrainInertia = 0f;
+        hasDriveSample = false;
         EngineThrottle = 0f;
         previousBodyVelocity = rb.linearVelocity;
         previousBodyPosition = rb.position;
@@ -798,7 +829,10 @@ public class CarController : MonoBehaviour
             ? manualClutchEngageSpeed : manualClutchReleaseSpeed;
         manualClutchEngagement = Mathf.MoveTowards(manualClutchEngagement,
             manualTarget, Mathf.Max(0f, manualRate) * Time.fixedDeltaTime);
+        float previousEngagement = finalClutchEngagement;
         finalClutchEngagement = automaticClutchEngagement * manualClutchEngagement;
+        ClutchEngagementRate = (finalClutchEngagement - previousEngagement) / Time.fixedDeltaTime;
+        if (ClutchInput > previousClutchInput + .01f) clutchKick.Cancel();
 
         // Require an actual disconnection, then a release. Holding or repeatedly
         // tapping a partly engaged clutch cannot continuously retrigger torque.
@@ -808,7 +842,7 @@ public class CarController : MonoBehaviour
         {
             if (clutchKickArmed && CanClutchKick() && ClutchRPMDifference > 0f)
             {
-                clutchKick.Begin(clutchKickDuration, ClutchRPMDifference);
+                clutchKick.Begin(ClutchEngagementRate);
                 clutchKickGear = currentGear;
             }
             clutchKickArmed = false;
@@ -847,48 +881,14 @@ public class CarController : MonoBehaviour
             );
 
 
-        DrivetrainRPM = currentGear == 0 ? 0f :
-            RearWheelRPM * Mathf.Abs(GetCurrentGearRatio()) * finalDrive;
+        SignedDrivetrainRPM = SignedRearWheelRPM * GearDirection * Mathf.Abs(GetCurrentGearRatio()) * finalDrive;
+        DrivetrainRPM = Mathf.Abs(SignedDrivetrainRPM);
 
-        if (currentGear == 0)
-        {
-            MoveEngineRPMTowards(
-                freeRevTarget
-            );
-
-            return;
-        }
-
-
-        float wheelLinkedRPM = DrivetrainRPM;
-
-
-        wheelLinkedRPM =
-            Mathf.Max(
-                wheelLinkedRPM,
-                idleRPM
-            );
-
-
-        float targetRPM =
-            Mathf.Lerp(
-                freeRevTarget,
-                wheelLinkedRPM,
-                ClutchEngagement
-            );
-
-
-        targetRPM =
-            Mathf.Clamp(
-                targetRPM,
-                idleRPM,
-                redlineRPM
-            );
-
-
-        MoveEngineRPMTowards(
-            targetRPM
-        );
+        // Only a disconnected engine uses the existing free-rev target. Once
+        // connected, engine torque and clutch reaction in HandleMotor change RPM;
+        // there is no wheel-linked RPM target or synchronization bypass.
+        if (currentGear == 0 || shiftTimer > 0f || HandbrakeInput > .05f || ClutchEngagement <= .001f)
+            MoveEngineRPMTowards(freeRevTarget);
     }
 
 
@@ -927,8 +927,10 @@ public class CarController : MonoBehaviour
         UpdateDifferential();
         LimiterFactor = 1f;
         ClutchKickTorque = 0f;
+        ClutchCouplingTorque = 0f;
         TorqueCurveMultiplier = Mathf.Max(0f, torqueCurve.Evaluate(EngineRPM));
         CalculatedEngineTorque = TransmittedEngineTorque = 0f;
+        EngineBrakeAxleTorque = 0f;
         // Neutral / shifting
         if (
             currentGear == 0 ||
@@ -936,6 +938,7 @@ public class CarController : MonoBehaviour
         )
         {
             clutchKick.Cancel();
+            hasDriveSample = false;
             SetRearMotorTorque(0f);
             return;
         }
@@ -951,6 +954,7 @@ public class CarController : MonoBehaviour
         if (HandbrakeInput > 0.05f)
         {
             clutchKick.Cancel();
+            hasDriveSample = false;
             SetRearMotorTorque(0f);
             return;
         }
@@ -998,40 +1002,40 @@ public class CarController : MonoBehaviour
         LimiterFactor = limiterFactor;
         CalculatedEngineTorque = engineTorque;
 
-        if (!CanClutchKick() || currentGear != clutchKickGear || ClutchInput > 0.05f)
+        if (!CanClutchKick() || currentGear != clutchKickGear || ClutchInput > 0.5f)
             clutchKick.Cancel();
-        float extraTorque = clutchKick.Step(ClutchRPMDifference, engineTorque,
-            maxEngineTorque, maxClutchTorque, clutchKickStrength, clutchKickMaxRPMDifference,
-            clutchKickResponse, clutchKickEngineInertia, ClutchEngagement, Time.fixedDeltaTime,
-            clutchKickMismatchExponent, 1f - Mathf.SmoothStep(0f, 1f,
-                Mathf.InverseLerp(clutchKickMidrangeFadeStartRPM,
-                    Mathf.Max(clutchKickMidrangeFadeStartRPM + 1f, clutchKickMidrangeFadeEndRPM), EngineRPM)));
-        engineTorque = Mathf.Min(Mathf.Max(0f, maxClutchTorque), engineTorque + extraTorque);
-        ClutchKickTorque = extraTorque * ClutchEngagement;
-        TransmittedEngineTorque = engineTorque * ClutchEngagement;
-
-        // Transfer surplus rotational energy through the tires, and consume it at
-        // the engine. This never applies a chassis force or changes velocity directly.
-        EngineRPM = Mathf.Max(idleRPM, EngineRPM - ClutchKickTorque * Time.fixedDeltaTime /
-            Mathf.Max(0.05f, clutchKickEngineInertia) * (60f / (2f * Mathf.PI)));
+        // Preserve the normal idle floor, but never turn an opposing shaft into
+        // forward overrun by taking its absolute RPM before clutch coupling.
+        float clutchShaftRPM = SignedDrivetrainRPM < 0f ? SignedDrivetrainRPM : Mathf.Max(idleRPM, SignedDrivetrainRPM);
+        float transmitted = clutchKick.Step(EngineRPM, clutchShaftRPM, engineTorque,
+            maxEngineTorque, maxClutchTorque, clutchCouplingStrength, clutchKickStrength,
+            engineInertia, ClutchEngagement, Time.fixedDeltaTime, ReflectedRearWheelInertia(gearRatio),
+            EstimateDrivetrainLoad(gearRatio));
+        previousDriveRPM = SignedDrivetrainRPM; previousDriveTorque = transmitted;
+        previousDriveRatio = gearRatio * GearDirection; hasDriveSample = true;
+        ClutchCouplingTorque = TransmittedEngineTorque = transmitted;
+        ClutchKickTorque = clutchKick.Active ? Mathf.Max(0f, clutchKick.SynchronizingTorque) : 0f;
+        if (ClutchEngagement > .001f)
+        {
+            float deltaRPM = (engineTorque - transmitted) * Time.fixedDeltaTime /
+                Mathf.Max(.05f, engineInertia) * (60f / (2f * Mathf.PI));
+            // Keep no-throttle free-engine drag on the uncoupled fraction only;
+            // do not add a new steady engine-braking force to the baseline car.
+            float freeDrag = (1f - EngineThrottle) * (1f - ClutchEngagement) *
+                engineRevDownSpeed * Time.fixedDeltaTime;
+            EngineRPM = Mathf.Clamp(EngineRPM + deltaRPM - freeDrag, idleRPM, redlineRPM);
+        }
 
 
         // =====================================================
         // DRIVETRAIN
         // =====================================================
 
-        float wheelTorque =
-            engineTorque *
-            Mathf.Abs(gearRatio) *
-            finalDrive *
-            drivetrainEfficiency *
-            ClutchEngagement;
-
-
-        if (currentGear == -1)
-        {
-            wheelTorque *= -1f;
-        }
+        float torqueScale = Mathf.Abs(gearRatio) * finalDrive * drivetrainEfficiency;
+        // Negative clutch torque is passive wheel-to-engine overrun, not reverse
+        // engine power. Wheel brakes oppose rotation without driving through zero.
+        EngineBrakeAxleTorque = Mathf.Max(0f, -transmitted) * torqueScale;
+        float wheelTorque = Mathf.Max(0f, transmitted) * GearDirection * torqueScale;
 
 
         SetRearMotorTorque(
@@ -1044,6 +1048,46 @@ public class CarController : MonoBehaviour
     {
         backLeft.motorTorque = axleTorque * rearLeftTorqueShare;
         backRight.motorTorque = axleTorque * (1f - rearLeftTorqueShare);
+    }
+
+    float ReflectedRearWheelInertia(float gearRatio)
+    {
+        // Read-only inertia estimate: gripping tires also accelerate the chassis;
+        // freely spinning tires mostly accelerate the wheels. Account for that
+        // transition instead of applying an engine-only synchronization impulse.
+        float axleInertia = .5f * (backLeft.mass * backLeft.radius * backLeft.radius +
+            backRight.mass * backRight.radius * backRight.radius);
+        float radiusSquared = .5f * (backLeft.radius * backLeft.radius + backRight.radius * backRight.radius);
+        float grip = .5f * (LongitudinalCoupling(backLeft) + LongitudinalCoupling(backRight));
+        axleInertia += rb.mass * radiusSquared * grip * grip;
+        float ratio = Mathf.Abs(gearRatio * finalDrive);
+        float target = axleInertia / Mathf.Max(.001f, ratio * ratio * Mathf.Max(.01f, drivetrainEfficiency));
+        // Once a release breaks traction, do not reinterpret a single low-slip
+        // sample as a suddenly rigid chassis load and fire a second torque hit.
+        // Rebuild the load smoothly after the release interval has finished.
+        if (reflectedDrivetrainInertia <= 0f || target < reflectedDrivetrainInertia)
+            reflectedDrivetrainInertia = target;
+        else if (!clutchKick.Active)
+            reflectedDrivetrainInertia = Mathf.Lerp(reflectedDrivetrainInertia, target,
+                1f - Mathf.Exp(-6f * Time.fixedDeltaTime));
+        return reflectedDrivetrainInertia;
+    }
+
+    static float LongitudinalCoupling(WheelCollider wheel) => wheel.GetGroundHit(out WheelHit hit)
+        ? 1f - Mathf.Clamp01(Mathf.Abs(hit.forwardSlip) / Mathf.Max(.01f, wheel.forwardFriction.extremumSlip))
+        : 0f;
+
+    float EstimateDrivetrainLoad(float gearRatio)
+    {
+        if (!hasDriveSample || !Mathf.Approximately(previousDriveRatio, gearRatio * GearDirection)) return 0f;
+        // Infer tire/road resistance from the last applied torque and the actual
+        // wheel acceleration, rather than assuming an unloaded spinning wheel.
+        float inertia = .5f * (backLeft.mass * backLeft.radius * backLeft.radius +
+            backRight.mass * backRight.radius * backRight.radius);
+        float ratio = Mathf.Abs(gearRatio * finalDrive);
+        inertia /= Mathf.Max(.001f, ratio * ratio * Mathf.Max(.01f, drivetrainEfficiency));
+        float acceleration = (SignedDrivetrainRPM - previousDriveRPM) * (2f * Mathf.PI / 60f) / Time.fixedDeltaTime;
+        return Mathf.Clamp(previousDriveTorque - inertia * acceleration, -maxClutchTorque, maxClutchTorque);
     }
 
     void UpdateDifferential()
@@ -1096,9 +1140,11 @@ public class CarController : MonoBehaviour
 
 
         float rate =
-            Mathf.Abs(SteeringInput) > 0.01f
+            Mathf.Abs(SteeringInput) > 0.01f && SteeringInput * currentSteerAngle >= 0f
             ? steeringSpeed
             : steeringReturnSpeed;
+
+        // Opposite input crosses center at the configured return rate.
 
 
         currentSteerAngle =
@@ -1166,18 +1212,18 @@ public class CarController : MonoBehaviour
         // =====================================================
 
         backLeft.brakeTorque =
-            normalBrake +
-            rearHandbrake;
+            normalBrake + rearHandbrake + EngineBrakeTorque(backLeft, rearLeftTorqueShare);
 
         backRight.brakeTorque =
-            normalBrake +
-            rearHandbrake;
+            normalBrake + rearHandbrake + EngineBrakeTorque(backRight, 1f - rearLeftTorqueShare);
 
 
         // =====================================================
         // HANDBRAKE REAR GRIP
         // =====================================================
 
+        UpdateSlipAngle();
+        UpdateDriftGripState();
         float targetGripMultiplier = Mathf.Lerp(1f, handbrakeRearGrip, HandbrakeInput);
 
 
@@ -1198,10 +1244,9 @@ public class CarController : MonoBehaviour
             );
 
 
-        // Keep the prior model/state intact for established drifting and handbrake.
+        // Keep handbrake grip independent of powered-drift recovery.
         leftPowerGrip = UpdatePowerGrip(backLeft, leftPowerGrip);
         rightPowerGrip = UpdatePowerGrip(backRight, rightPowerGrip);
-        UpdateSlipAngle();
         float driftHandoff = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(breakawayHandoffStartAngle,
             Mathf.Max(breakawayHandoffStartAngle + 0.01f, breakawayHandoffFullAngle), Mathf.Abs(VehicleSlipAngle)));
         float speedGate = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(25f, 30f, SpeedKmh));
@@ -1211,10 +1256,31 @@ public class CarController : MonoBehaviour
             ? speedGate * steeringGate * (1f - driftHandoff) : 0f;
         RearLeftCombinedSlipMultiplier = UpdateCombinedSlip(backLeft, RearLeftCombinedSlipMultiplier);
         RearRightCombinedSlipMultiplier = UpdateCombinedSlip(backRight, RearRightCombinedSlipMultiplier);
-        RearLeftGripMultiplier = currentHandbrakeGripMultiplier *
-            Mathf.Lerp(leftPowerGrip, RearLeftCombinedSlipMultiplier, CombinedSlipEntryWeight);
-        RearRightGripMultiplier = currentHandbrakeGripMultiplier *
-            Mathf.Lerp(rightPowerGrip, RearRightCombinedSlipMultiplier, CombinedSlipEntryWeight);
+        float leftTarget = currentHandbrakeGripMultiplier * Mathf.Lerp(leftPowerGrip, RearLeftCombinedSlipMultiplier, CombinedSlipEntryWeight);
+        float rightTarget = currentHandbrakeGripMultiplier * Mathf.Lerp(rightPowerGrip, RearRightCombinedSlipMultiplier, CombinedSlipEntryWeight);
+        if (HandbrakeInput > .05f)
+        {
+            leftTarget = Mathf.Min(leftTarget, leftRecoveredGrip);
+            rightTarget = Mathf.Min(rightTarget, rightRecoveredGrip);
+        }
+        // Smooth the actual final multiplier, including released handbrake grip.
+        // Applying the handbrake still follows the original drop/locking path.
+        if (HandbrakeInput > .05f || SpeedKmh < 1f || SignedLongitudinalSpeedKmh < -2f)
+            driftReleaseRecovery = false;
+        else if (DriftGripHeld && currentHandbrakeGripMultiplier < .999f)
+            driftReleaseRecovery = true;
+        if (currentHandbrakeGripMultiplier >= .999f && leftRecoveredGrip >= .999f && rightRecoveredGrip >= .999f)
+            driftReleaseRecovery = false;
+        bool normalGrip = HandbrakeInput <= .05f && (currentHandbrakeGripMultiplier >= .999f || driftReleaseRecovery);
+        if (SpeedKmh < 1f && HandbrakeInput <= .05f)
+        { leftRecoveredGrip = leftTarget; rightRecoveredGrip = rightTarget; }
+        float oldAverage = (leftRecoveredGrip + rightRecoveredGrip) * .5f;
+        leftRecoveredGrip = RecoverRearGrip(leftRecoveredGrip, leftTarget, normalGrip);
+        rightRecoveredGrip = RecoverRearGrip(rightRecoveredGrip, rightTarget, normalGrip);
+        currentRearGripRecovery = normalGrip ? Mathf.Max(0f,
+            ((leftRecoveredGrip + rightRecoveredGrip) * .5f - oldAverage) / Time.fixedDeltaTime) : 0f;
+        RearLeftGripMultiplier = leftRecoveredGrip;
+        RearRightGripMultiplier = rightRecoveredGrip;
         SetSidewaysStiffness(backLeft, rearLeftNormalStiffness * RearLeftGripMultiplier);
         SetSidewaysStiffness(backRight, rearRightNormalStiffness * RearRightGripMultiplier);
     }
@@ -1224,6 +1290,30 @@ public class CarController : MonoBehaviour
         Vector3 horizontal = Vector3.ProjectOnPlane(rb.linearVelocity, Vector3.up);
         VehicleSlipAngle = horizontal.sqrMagnitude > 1f
             ? Vector3.SignedAngle(Vector3.ProjectOnPlane(transform.forward, Vector3.up), horizontal, Vector3.up) : 0f;
+    }
+
+    float RecoverRearGrip(float current, float target, bool smoothRecovery)
+    {
+        float deliberateRecovery = frontAxleRecovery != null && frontAxleRecovery.isActiveAndEnabled
+            ? frontAxleRecovery.DeliberateRecoveryWeight : 0f;
+        float ordinaryResponse = frontAxleRecovery != null && frontAxleRecovery.isActiveAndEnabled && frontAxleRecovery.IsControlledDrift
+            ? controlledDriftGripRecoveryResponse : rearGripRecoveryResponse;
+        float response = Mathf.Lerp(ordinaryResponse, countersteerGripRecoveryResponse, deliberateRecovery);
+        return !smoothRecovery || target <= current ? target :
+            RearTraction.Follow(current, target, response, Time.fixedDeltaTime);
+    }
+
+    float EngineBrakeTorque(WheelCollider wheel, float share) =>
+        wheel.rpm * GearDirection > 0f ? EngineBrakeAxleTorque * share : 0f;
+
+    void UpdateDriftGripState()
+    {
+        // Handling-only hysteresis; DriftTelemetry/score detection is unchanged.
+        float threshold = DriftGripHeld ? Mathf.Min(driftGripExitAngle, driftGripEnterAngle) : driftGripEnterAngle;
+        driftGripHeld = SpeedKmh >= 28f && currentGear > 0 && HandbrakeInput <= .05f &&
+            BrakeInput <= .02f &&
+            Vector3.Dot(rb.linearVelocity, transform.forward) > 4f &&
+            backLeft.isGrounded && backRight.isGrounded && Mathf.Abs(VehicleSlipAngle) >= threshold;
     }
 
     float UpdateCombinedSlip(WheelCollider wheel, float current)
@@ -1243,7 +1333,10 @@ public class CarController : MonoBehaviour
             BrakeInput <= 0.02f && wheel.GetGroundHit(out WheelHit hit))
         {
             float referenceLoad = rb.mass * Physics.gravity.magnitude * 0.25f;
-            target = RearTraction.PowerGrip(hit.forwardSlip, hit.force, referenceLoad,
+            // Powered WheelHit slip can have either sign. Use magnitude only in
+            // the latched drift, retaining the existing normal-driving model.
+            float slip = DriftGripHeld && currentHandbrakeGripMultiplier >= .999f ? -Mathf.Abs(hit.forwardSlip) : hit.forwardSlip;
+            target = RearTraction.PowerGrip(slip, hit.force, referenceLoad,
                 ThrottleInput, wheel.forwardFriction.extremumSlip, powerSlipGripReduction);
         }
         return RearTraction.Follow(current, target, powerSlipGripResponse, Time.fixedDeltaTime);

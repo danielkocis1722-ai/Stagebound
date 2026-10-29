@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c986d9413bf427eba76573736aea7f8, type: 3}
+  m_Name: Vehicle02_VehicleDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleDefinition
+  vehicleId: vehicle02
+  displayName: Vehicle 02
+  manufacturer: 
+  drivetrainLabel: DEVELOPMENT
+  description: 'Your next vehicle.
+
+    Model and tuning to be prepared.'
+  selectable: 0
+  unavailableLabel: COMING SOON / DEVELOPMENT
+  config: {fileID: 0}
+  visualPrefab: {fileID: 0}
+  previewImage: {fileID: 0}
+  engineLoop: {fileID: 0}
+  power: 0
+  handling: 0
+  drift: 0
+  stability: 0

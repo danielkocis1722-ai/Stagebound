@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b44edf5ef824385901343559e9d9769, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
-  gameplayScene: SampleScene
   audioMixer: {fileID: 0}
+  stageCatalog: {fileID: 11400000, guid: 9933870ce2e546148d2b538e668703e4, type: 2}
+  vehicleCatalog: {fileID: 11400000, guid: 92deba8383bd3944296aa4ed00ef800d, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

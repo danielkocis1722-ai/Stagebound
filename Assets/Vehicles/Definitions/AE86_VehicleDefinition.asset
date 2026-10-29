@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c986d9413bf427eba76573736aea7f8, type: 3}
+  m_Name: AE86_VehicleDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleDefinition
+  vehicleId: ae86
+  displayName: Toyota AE86
+  manufacturer: Toyota
+  drivetrainLabel: RWD
+  description: 'Lightweight
+
+    Responsive
+
+    Drift-focused'
+  selectable: 1
+  unavailableLabel: COMING SOON / DEVELOPMENT
+  config: {fileID: 11400000, guid: c6f3041582a1b754887db8f222c84896, type: 2}
+  visualPrefab: {fileID: 2669357519052256417, guid: 22ded30d9b1b02347a62ddab14b129ae, type: 3}
+  previewImage: {fileID: 0}
+  engineLoop: {fileID: 0}
+  power: 0.55
+  handling: 0.8
+  drift: 0.9
+  stability: 0.6

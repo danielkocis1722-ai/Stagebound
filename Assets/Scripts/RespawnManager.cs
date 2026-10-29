@@ -72,6 +72,11 @@ public class RespawnManager : MonoBehaviour
 
     void Teleport(Pose pose, bool restart)
     {
+        // Recovery banks only the active combo; the running stage and area budgets survive.
+        var scoring = GetComponent<DriftScoreSystem>();
+        if (scoring != null) scoring.EndCombo();
+        var telemetry = GetComponent<DriftTelemetry>();
+        if (telemetry != null) telemetry.ResetDrift();
         // Ignore the first two physics steps at the destination so teleporting into
         // START or a checkpoint cannot count as crossing it or restart the timer.
         ignoreTriggersUntil = Time.fixedTime + 2f * Time.fixedDeltaTime;

@@ -327,7 +327,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 75ba245c92e45a94d847d45b62501290, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 396558266}
   m_SourcePrefab: {fileID: 100100000, guid: 75ba245c92e45a94d847d45b62501290, type: 3}
 --- !u!4 &274446784 stripped
 Transform:
@@ -708,11 +711,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.65
   m_SuspensionSpring:
-    spring: 20000
-    damper: 2800
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.32
-  m_ForceAppPointDistance: 0.15
+    spring: 26000
+    damper: 3600
+    targetPosition: 0.38
+  m_SuspensionDistance: 0.25
+  m_ForceAppPointDistance: 0.3
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -725,8 +728,8 @@ WheelCollider:
     m_ExtremumSlip: 0.28
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.88
-    m_Stiffness: 1.2
+    m_AsymptoteValue: 1
+    m_Stiffness: 1.16
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -779,11 +782,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.65
   m_SuspensionSpring:
-    spring: 20000
+    spring: 26000
     damper: 2800
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.32
-  m_ForceAppPointDistance: 0.15
+    targetPosition: 0.38
+  m_SuspensionDistance: 0.25
+  m_ForceAppPointDistance: 0.3
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -796,7 +799,7 @@ WheelCollider:
     m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.95
+    m_AsymptoteValue: 0.98
     m_Stiffness: 1.26
   m_IncludeLayers:
     serializedVersion: 2
@@ -1113,11 +1116,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.65
   m_SuspensionSpring:
-    spring: 20000
-    damper: 2800
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.32
-  m_ForceAppPointDistance: 0.15
+    spring: 26000
+    damper: 3600
+    targetPosition: 0.38
+  m_SuspensionDistance: 0.25
+  m_ForceAppPointDistance: 0.3
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -1130,8 +1133,8 @@ WheelCollider:
     m_ExtremumSlip: 0.28
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.88
-    m_Stiffness: 1.2
+    m_AsymptoteValue: 1
+    m_Stiffness: 1.16
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1274,6 +1277,13 @@ GameObject:
   - component: {fileID: 1369976814}
   - component: {fileID: 1369976815}
   - component: {fileID: 1369976816}
+  - component: {fileID: 1369976817}
+  - component: {fileID: 1369976818}
+  - component: {fileID: 1369976819}
+  - component: {fileID: 1369976821}
+  - component: {fileID: 1369976822}
+  - component: {fileID: 1369976823}
+  - component: {fileID: 1369976824}
   m_Layer: 0
   m_Name: CarRoot
   m_TagString: Untagged
@@ -1415,24 +1425,24 @@ MonoBehaviour:
   launchClutchSpeed: 15
   clutchEngageSpeed: 4
   clutchDisengageSpeed: 12
-  manualClutchEngageSpeed: 8
+  manualClutchEngageSpeed: 20
   manualClutchReleaseSpeed: 20
-  maxClutchTorque: 500
-  clutchKickStrength: 0.65
-  clutchKickMaxRPMDifference: 3000
-  clutchKickDuration: 0.22
-  clutchKickResponse: 18
-  clutchKickEngineInertia: 0.35
-  clutchKickMismatchExponent: 0.65
-  clutchKickMidrangeFadeStartRPM: 4500
-  clutchKickMidrangeFadeEndRPM: 6000
+  maxClutchTorque: 1400
+  clutchCouplingStrength: 1.2
+  clutchKickStrength: 1
+  engineInertia: 0.35
   brakeTorque: 8000
   handbrakeTorque: 15000
-  handbrakeRearGrip: 0.67
-  handbrakeGripDropSpeed: 1.1
+  handbrakeRearGrip: 0.8
+  handbrakeGripDropSpeed: 0.65
   handbrakeGripRecoverySpeed: 0.65
   powerSlipGripReduction: 0.08
   powerSlipGripResponse: 4
+  rearGripRecoveryResponse: 0.8
+  countersteerGripRecoveryResponse: 1.6
+  controlledDriftGripRecoveryResponse: 0.6
+  driftGripEnterAngle: 10
+  driftGripExitAngle: 7
   enableCombinedSlip: 1
   combinedSlipStart: 0.1
   combinedSlipFull: 0.22
@@ -1443,7 +1453,7 @@ MonoBehaviour:
   maxSteerAngle: 30
   useAckermannSteering: 1
   steeringSpeed: 95
-  steeringReturnSpeed: 75
+  steeringReturnSpeed: 150
   steeringInputSpeed: 2
   steeringInputReturnSpeed: 2.5
   throttleInputSpeed: 2.5
@@ -1452,7 +1462,7 @@ MonoBehaviour:
   lowSpeedSteeringExponent: 1.4
   highSpeedSteeringExponent: 2.1
   fullSteeringCurveSpeed: 130
-  centerOfMass: {x: 0, y: -0.35, z: 0}
+  centerOfMass: {x: 0, y: -0.3, z: 0}
   SpeedKmh: 0
   EngineRPM: 0
   finalClutchEngagement: 0
@@ -1533,10 +1543,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AntiRollBar
   frontLeft: {fileID: 691271475}
   frontRight: {fileID: 1975938481}
-  frontAntiRoll: 2500
+  frontAntiRoll: 2200
   rearLeft: {fileID: 426007252}
   rearRight: {fileID: 1070773121}
-  rearAntiRoll: 1800
+  rearAntiRoll: 1700
 --- !u!114 &1369976810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2282,6 +2292,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c552477a770ad24da5e13b618c85fc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaceTimer
+  stageDefinition: {fileID: 11400000, guid: 8e5f4a8da2e14ab5b813093c13257d7d, type: 2}
+  driftScore: {fileID: 1369976818}
   timerText: {fileID: 0}
   elapsedTime: 0
   raceRunning: 0
@@ -2522,11 +2534,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.65
   m_SuspensionSpring:
-    spring: 20000
+    spring: 26000
     damper: 2800
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.32
-  m_ForceAppPointDistance: 0.15
+    targetPosition: 0.38
+  m_SuspensionDistance: 0.25
+  m_ForceAppPointDistance: 0.3
   m_Mass: 20
   m_WheelDampingRate: 0.5
   m_ForwardFriction:
@@ -2539,7 +2551,7 @@ WheelCollider:
     m_ExtremumSlip: 0.3
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
-    m_AsymptoteValue: 0.95
+    m_AsymptoteValue: 0.98
     m_Stiffness: 1.26
   m_IncludeLayers:
     serializedVersion: 2
@@ -2550,6 +2562,56 @@ WheelCollider:
   m_LayerOverridePriority: 0
   m_Enabled: 1
   m_ProvidesContacts: 0
+--- !u!1 &396558265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 75ba245c92e45a94d847d45b62501290, type: 3}
+  m_PrefabInstance: {fileID: 274446783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &396558266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396558265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8989a6521e0d479bae4a49f899d5763b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleVisualSetup
+  bodyRoot: {fileID: 274446784}
+  frontLeftWheel: {fileID: 274446786}
+  frontRightWheel: {fileID: 274446785}
+  backLeftWheel: {fileID: 274446788}
+  backRightWheel: {fileID: 274446787}
+  unsprungAxles:
+  - visual: {fileID: 274446789}
+    leftWheelMesh: {fileID: 274446788}
+    rightWheelMesh: {fileID: 274446787}
+  - visual: {fileID: 274446790}
+    leftWheelMesh: {fileID: 274446786}
+    rightWheelMesh: {fileID: 274446785}
+  leftBrakeLight: {fileID: 0}
+  rightBrakeLight: {fileID: 0}
+  leftMaterialIndex: 0
+  rightMaterialIndex: 0
+  brakeLightMaterial: {fileID: 0}
+--- !u!114 &1369976824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8892af58b87a4bb18f3901024e56e2c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleRigLoader
+  catalog: {fileID: 11400000, guid: 92deba8383bd3944296aa4ed00ef800d, type: 2}
+  existingDefinition: {fileID: 11400000, guid: c695c3965b57c0d4c909dce2d6490d03, type: 2}
+  existingVisual: {fileID: 396558266}
+  chassisCollider: {fileID: 1094316333}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2564,3 +2626,136 @@ SceneRoots:
   - {fileID: 1901859222}
   - {fileID: 755717543}
   - {fileID: 1508368741}
+
+--- !u!114 &1369976817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d23d20a3b234827a3d5a76e06cc9f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DriftTelemetry
+--- !u!114 &1369976818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9fff898ae24e09acc80f84d8e48746, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DriftScoreSystem
+  raceTimer: {fileID: 1757183761}
+
+--- !u!114 &1369976819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfece31b68fc4b9dbdbac83adbb322a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FrontAxleRecovery
+  minimumSpeedKmh: 28
+  minimumForwardSpeedKmh: 15
+  minimumDriftAngle: 15
+  minimumRearSidewaysSlip: 0.15
+  minimumRearForwardSlip: 0.25
+  minimumCountersteerInput: 0.08
+  maximumRecoveryMultiplier: 1.02
+  blendResponse: 3
+  recoveryGripInput: 0.25
+  deliberateRecoveryMultiplier: 1.1
+  recoveryStartAngle: 33
+  recoveryFullAngle: 45
+  recoveryThrottleCeiling: 0.2
+  deliberateCountersteerInput: 0.65
+  recoveryBlendResponse: 6
+--- !u!114 &1369976821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eefe4fd6a4346a4ac2a66efd127dcc3, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SuspensionTelemetry
+  accelerationResponse: 12
+
+--- !u!114 &1369976822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a9920710eb470a82955374e6cda7dd, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::VisualBodyRoll
+  visualModel: {fileID: 274446784}
+  unsprungAxles:
+  - visual: {fileID: 274446789}
+    leftWheelMesh: {fileID: 274446788}
+    rightWheelMesh: {fileID: 274446787}
+  - visual: {fileID: 274446790}
+    leftWheelMesh: {fileID: 274446786}
+    rightWheelMesh: {fileID: 274446785}
+  visualRollStrength: 0.18
+  visualPitchStrength: 0.08
+  bodySpring: 90
+  bodyDamping: 19
+  maximumVisualRoll: 1
+  maximumVisualPitch: 0.6
+--- !u!4 &274446789 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8218352541718835037, guid: 75ba245c92e45a94d847d45b62501290, type: 3}
+  m_PrefabInstance: {fileID: 274446783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &274446790 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6390965886483609464, guid: 75ba245c92e45a94d847d45b62501290, type: 3}
+  m_PrefabInstance: {fileID: 274446783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1369976823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369976804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d882b98e8042ae9b4ecbceaed9b60b, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::DriftYawStability
+  minimumSpeedKmh: 28
+  fullSpeedKmh: 40
+  minimumForwardSpeedKmh: 15
+  startAngle: 6
+  fullAngle: 14
+  startYawRate: 45
+  fullYawRate: 95
+  startAngleGrowth: 10
+  fullAngleGrowth: 35
+  maximumDampingRate: 6
+  slipAngle: 0
+  yawRate: 0
+  angleGrowth: 0
+  yawAcceleration: 0
+  appliedDampingRate: 0
+  removedYawRate: 0
+  countersteering: 0

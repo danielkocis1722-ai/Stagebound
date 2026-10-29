@@ -1,96 +1,35 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class AntiRollBar : MonoBehaviour
 {
     [Header("Front")]
     public WheelCollider frontLeft;
     public WheelCollider frontRight;
     public float frontAntiRoll = 2500f;
-
     [Header("Rear")]
     public WheelCollider rearLeft;
     public WheelCollider rearRight;
     public float rearAntiRoll = 1800f;
+    Rigidbody body;
 
-    private Rigidbody rb;
-
-    void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
-
+    void Awake() => body = GetComponent<Rigidbody>();
     void FixedUpdate()
     {
-        ApplyAntiRoll(
-            frontLeft,
-            frontRight,
-            frontAntiRoll
-        );
-
-        ApplyAntiRoll(
-            rearLeft,
-            rearRight,
-            rearAntiRoll
-        );
+        ApplyAntiRoll(frontLeft, frontRight, frontAntiRoll);
+        ApplyAntiRoll(rearLeft, rearRight, rearAntiRoll);
     }
-
-    void ApplyAntiRoll(
-        WheelCollider leftWheel,
-        WheelCollider rightWheel,
-        float antiRollForce
-    )
+    void ApplyAntiRoll(WheelCollider left, WheelCollider right, float strength)
     {
-        if (leftWheel == null || rightWheel == null)
-            return;
-
-        float leftTravel = 1f;
-        float rightTravel = 1f;
-
-        bool leftGrounded =
-            leftWheel.GetGroundHit(out WheelHit leftHit);
-
-        bool rightGrounded =
-            rightWheel.GetGroundHit(out WheelHit rightHit);
-
-
-        if (leftGrounded)
-        {
-            leftTravel =
-                (-leftWheel.transform.InverseTransformPoint(
-                    leftHit.point
-                ).y - leftWheel.radius)
-                / leftWheel.suspensionDistance;
-        }
-
-        if (rightGrounded)
-        {
-            rightTravel =
-                (-rightWheel.transform.InverseTransformPoint(
-                    rightHit.point
-                ).y - rightWheel.radius)
-                / rightWheel.suspensionDistance;
-        }
-
-
-        float antiRoll =
-            (leftTravel - rightTravel)
-            * antiRollForce;
-
-
-        if (leftGrounded)
-        {
-            rb.AddForceAtPosition(
-                leftWheel.transform.up * -antiRoll,
-                leftWheel.transform.position
-            );
-        }
-
-        if (rightGrounded)
-        {
-            rb.AddForceAtPosition(
-                rightWheel.transform.up * antiRoll,
-                rightWheel.transform.position
-            );
-        }
+        if (left == null || right == null ||
+            !left.GetGroundHit(out WheelHit leftHit) || !right.GetGroundHit(out WheelHit rightHit)) return;
+        // Use a balanced couple only. With one wheel airborne, the old bar
+        // applied an unopposed upward force to the remaining grounded wheel.
+        float force = (Travel(left, leftHit) - Travel(right, rightHit)) * Mathf.Max(0f, strength);
+        body.AddForceAtPosition(-left.transform.up * force, left.transform.position);
+        body.AddForceAtPosition(right.transform.up * force, right.transform.position);
     }
+    static float Travel(WheelCollider wheel, WheelHit hit) => Mathf.Clamp01(
+        (-wheel.transform.InverseTransformPoint(hit.point).y + wheel.center.y - wheel.radius) /
+        Mathf.Max(.001f, wheel.suspensionDistance));
 }

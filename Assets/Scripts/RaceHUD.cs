@@ -19,6 +19,7 @@ public class RaceHUD : MonoBehaviour
     GameObject hudRoot;
     RectTransform safeArea;
     DraggableHUDPanel timingPanel, vehiclePanel;
+    DriftHUD driftHUD;
     TMP_Text editLabel;
     bool hudEditMode;
     Rect lastSafeArea;
@@ -79,6 +80,11 @@ public class RaceHUD : MonoBehaviour
         checkpoints = Text(right, "0 / 0", 30, new Vector2(230, -220), Color.white);
         right.localScale = Vector3.one * PanelScale;
 
+        if (race.driftScore != null)
+        {
+            driftHUD = root.AddComponent<DriftHUD>();
+            driftHUD.Initialize(safe, race, race.driftScore);
+        }
         editLabel = Text(safe, "HUD EDIT MODE • DRAG PANELS • F2 DONE • SHIFT+F2 RESET • T BACKGROUND", 13, Vector2.zero, Mint);
         editLabel.rectTransform.anchorMin = editLabel.rectTransform.anchorMax = Vector2.zero;
         editLabel.rectTransform.pivot = Vector2.zero;
@@ -116,7 +122,7 @@ public class RaceHUD : MonoBehaviour
             revFill.color = rev > .88f ? Red : Mint;
         }
         clock.text = race.GetFormattedTime();
-        best.text = "BEST  " + (race.BestTime > 0 ? RaceTimer.FormatTime(race.BestTime) : "--:--.---");
+        best.text = "BEST  " + (race.HasBest ? RaceTimer.FormatTime(race.BestTime) : "--:--.---");
         checkpoints.text = $"{race.PassedCheckpoints} / {race.TotalCheckpoints}";
         delta.text = "SPLIT  " + (race.Delta.HasValue ? DeltaText(race.Delta) :
             race.LatestSplit.HasValue ? RaceTimer.FormatTime(race.LatestSplit.Value) : "--");
@@ -131,7 +137,7 @@ public class RaceHUD : MonoBehaviour
         bool visible = completed != null && now - completed.CompletedAt < Mathf.Max(0f, resultDisplayDuration);
         results.SetActive(visible);
         if (visible)
-            result.text = $"<size=20>YOUR TIME</size>\n<size=52>{RaceTimer.FormatTime(completed.Time)}</size>\n<size=23>BEST   {RaceTimer.FormatTime(completed.Best)}\nGAP TO PREVIOUS BEST   {DeltaText(completed.Gap)}</size>\n<size=20><color=#5BFFBF>{(completed.IsNewBest ? "NEW PERSONAL BEST" : "NEXT RUN IN PROGRESS")}</color></size>";
+            result.text = $"<size=23>RAW TIME    {RaceTimer.FormatTime(completed.RawTime)}\nDRIFT SCORE    {completed.DriftScore:N0}\nSTYLE CREDIT    -{completed.StyleCredit:00.000} s</size>\n<size=34>FINAL TIME    {RaceTimer.FormatTime(completed.FinalAdjustedTime)}</size>\n<size=23>BEST    {RaceTimer.FormatTime(completed.Best)}</size>\n<size=20><color=#5BFFBF>{(completed.IsNewBest ? "NEW BEST" : "NEXT RUN IN PROGRESS")}</color></size>";
     }
 
     void UpdateHUDEditor()
@@ -147,6 +153,7 @@ public class RaceHUD : MonoBehaviour
         }
         timingPanel.RefreshLayout();
         vehiclePanel.RefreshLayout();
+        if (driftHUD != null) driftHUD.Panel.RefreshLayout();
 
         var keyboard = Keyboard.current;
         if (keyboard != null && keyboard.f2Key.wasPressedThisFrame)
@@ -161,6 +168,7 @@ public class RaceHUD : MonoBehaviour
             bool transparent = !timingPanel.BackgroundTransparent;
             timingPanel.SetBackgroundTransparent(transparent);
             vehiclePanel.SetBackgroundTransparent(transparent);
+            if (driftHUD != null) driftHUD.Panel.SetBackgroundTransparent(transparent);
             PlayerPrefs.Save();
         }
     }
@@ -184,6 +192,7 @@ public class RaceHUD : MonoBehaviour
         if (editLabel != null) editLabel.gameObject.SetActive(enabled);
         if (timingPanel != null) timingPanel.SetEditMode(enabled);
         if (vehiclePanel != null) vehiclePanel.SetEditMode(enabled);
+        if (driftHUD != null) driftHUD.Panel.SetEditMode(enabled);
         Cursor.lockState = enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = enabled;
     }
@@ -192,6 +201,7 @@ public class RaceHUD : MonoBehaviour
     {
         if (timingPanel != null) timingPanel.ResetPosition();
         if (vehiclePanel != null) vehiclePanel.ResetPosition();
+        if (driftHUD != null) driftHUD.Panel.ResetPosition();
         PlayerPrefs.Save();
     }
 

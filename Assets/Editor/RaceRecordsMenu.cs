@@ -12,7 +12,7 @@ public static class RaceRecordsMenu
         {
             var timer = root.GetComponentInChildren<RaceTimer>();
             if (timer == null) continue;
-            string key = timer.BestTimeKey;
+            string key = timer.BestTimeKey + " + " + timer.StageRecordKey;
             timer.ResetBestTime();
             Debug.Log("Reset Stagebound best time: " + key, timer);
             return;

@@ -1,0 +1,354 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574821ee938740f2b614fad479ebbc87, type: 3}
+  m_Name: AE86_VehicleConfig
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleConfig
+  engine:
+    maxEngineTorque: 360
+    idleRPM: 900
+    redlineRPM: 7500
+    engineRevUpSpeed: 9000
+    engineRevDownSpeed: 5000
+    engineThrottleResponse: 24
+    torqueCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 900
+        value: 0.6
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 2000
+        value: 0.84
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 3000
+        value: 0.95
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 4000
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5000
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 6000
+        value: 0.9
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 7500
+        value: 0.65
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  transmission:
+    gearRatios:
+    - 4.2
+    - 3
+    - 2.1
+    - 1.55
+    - 1.2
+    reverseRatio: 3.8
+    finalDrive: 5.3
+    drivetrainEfficiency: 0.9
+    shiftDuration: 0.2
+  steering:
+    maxSteerAngle: 30
+    useAckermannSteering: 1
+    steeringSpeed: 95
+    steeringReturnSpeed: 150
+    steeringInputSpeed: 2
+    steeringInputReturnSpeed: 2.5
+    throttleInputSpeed: 2.5
+    throttleInputReturnSpeed: 3
+    steeringDeadzone: 0.06
+    lowSpeedSteeringExponent: 1.4
+    highSpeedSteeringExponent: 2.1
+    fullSteeringCurveSpeed: 130
+  differential:
+    differentialMode: 1
+    lsdStrength: 0.6
+    differentialResponse: 5
+  clutch:
+    launchClutchMin: 0.55
+    launchClutchSpeed: 15
+    clutchEngageSpeed: 4
+    clutchDisengageSpeed: 12
+    manualClutchEngageSpeed: 20
+    manualClutchReleaseSpeed: 20
+    maxClutchTorque: 1400
+    clutchCouplingStrength: 1.2
+    clutchKickStrength: 1
+    engineInertia: 0.35
+  handbrake:
+    brakeTorque: 8000
+    handbrakeTorque: 15000
+    handbrakeRearGrip: 0.8
+    handbrakeGripDropSpeed: 0.65
+    handbrakeGripRecoverySpeed: 0.65
+  rearGrip:
+    powerSlipGripReduction: 0.08
+    powerSlipGripResponse: 4
+    rearGripRecoveryResponse: 0.8
+    countersteerGripRecoveryResponse: 1.6
+    controlledDriftGripRecoveryResponse: 0.6
+    driftGripEnterAngle: 10
+    driftGripExitAngle: 7
+    enableCombinedSlip: 1
+    combinedSlipStart: 0.1
+    combinedSlipFull: 0.22
+    minimumCombinedSlipMultiplier: 0.85
+    combinedSlipResponse: 8
+    breakawayHandoffStartAngle: 8
+    breakawayHandoffFullAngle: 18
+  frontRecovery:
+    minimumSpeedKmh: 28
+    minimumForwardSpeedKmh: 15
+    minimumDriftAngle: 15
+    minimumRearSidewaysSlip: 0.15
+    minimumRearForwardSlip: 0.25
+    minimumCountersteerInput: 0.08
+    recoveryByAngle:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 15
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 20
+        value: 1.02
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 30
+        value: 1.08
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 40
+        value: 1.12
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 60
+        value: 1.12
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    maximumRecoveryMultiplier: 1.02
+    blendResponse: 3
+    recoveryGripInput: 0.25
+    deliberateRecoveryMultiplier: 1.1
+    recoveryStartAngle: 33
+    recoveryFullAngle: 45
+    recoveryThrottleCeiling: 0.2
+    deliberateCountersteerInput: 0.65
+    recoveryBlendResponse: 6
+  yawStability:
+    minimumSpeedKmh: 28
+    fullSpeedKmh: 40
+    minimumForwardSpeedKmh: 15
+    startAngle: 6
+    fullAngle: 14
+    startYawRate: 45
+    fullYawRate: 95
+    startAngleGrowth: 10
+    fullAngleGrowth: 35
+    maximumDampingRate: 6
+  visualMotion:
+    visualRollStrength: 0.18
+    visualPitchStrength: 0.08
+    bodySpring: 90
+    bodyDamping: 19
+    maximumVisualRoll: 1
+    maximumVisualPitch: 0.6
+  chassis:
+    mass: 1100
+    linearDamping: 0
+    angularDamping: 0.225
+    centerOfMass: {x: 0, y: -0.3, z: 0}
+    colliderPosition: {x: 0, y: 0, z: 0}
+    colliderScale: {x: 1.8, y: 0.5, z: 4}
+    colliderCenter: {x: 0, y: 0, z: 0}
+    colliderSize: {x: 1, y: 1, z: 1}
+    colliderRotation: {x: -0, y: -0, z: -0, w: 1}
+    frontAntiRoll: 2200
+    rearAntiRoll: 1700
+  frontLeft:
+    localPosition: {x: -1.605, y: -0.2, z: 3.323}
+    localScale: {x: 1, y: 1, z: 1}
+    center: {x: 0, y: 0, z: 0}
+    localRotation: {x: -0, y: -0, z: -0, w: 1}
+    radius: 0.65
+    mass: 20
+    damping: 0.5
+    suspensionDistance: 0.25
+    forceAppPointDistance: 0.3
+    spring: 26000
+    damper: 2800
+    targetPosition: 0.38
+    forwardTires:
+      extremumSlip: 0.4
+      extremumValue: 1
+      asymptoteSlip: 0.8
+      asymptoteValue: 0.5
+      stiffness: 1
+    sidewaysTires:
+      extremumSlip: 0.3
+      extremumValue: 1
+      asymptoteSlip: 0.8
+      asymptoteValue: 0.98
+      stiffness: 1.26
+  frontRight:
+    localPosition: {x: 1.605, y: -0.2, z: 3.323}
+    localScale: {x: 1, y: 1, z: 1}
+    center: {x: 0, y: 0, z: 0}
+    localRotation: {x: -0, y: -0, z: -0, w: 1}
+    radius: 0.65
+    mass: 20
+    damping: 0.5
+    suspensionDistance: 0.25
+    forceAppPointDistance: 0.3
+    spring: 26000
+    damper: 2800
+    targetPosition: 0.38
+    forwardTires:
+      extremumSlip: 0.4
+      extremumValue: 1
+      asymptoteSlip: 0.8
+      asymptoteValue: 0.5
+      stiffness: 1
+    sidewaysTires:
+      extremumSlip: 0.3
+      extremumValue: 1
+      asymptoteSlip: 0.8
+      asymptoteValue: 0.98
+      stiffness: 1.26
+  backLeft:
+    localPosition: {x: -1.605, y: -0.25, z: -1.938}
+    localScale: {x: 1, y: 1, z: 1}
+    center: {x: 0, y: 0, z: 0}
+    localRotation: {x: 0, y: 0, z: 0, w: 1}
+    radius: 0.65
+    mass: 20
+    damping: 0.5
+    suspensionDistance: 0.25
+    forceAppPointDistance: 0.3
+    spring: 26000
+    damper: 3600
+    targetPosition: 0.38
+    forwardTires:
+      extremumSlip: 0.25
+      extremumValue: 1
+      asymptoteSlip: 1
+      asymptoteValue: 0.88
+      stiffness: 0.9
+    sidewaysTires:
+      extremumSlip: 0.28
+      extremumValue: 1
+      asymptoteSlip: 0.8
+      asymptoteValue: 1
+      stiffness: 1.16
+  backRight:
+    localPosition: {x: 1.605, y: -0.25, z: -1.938}
+    localScale: {x: 1, y: 1, z: 1}
+    center: {x: 0, y: 0, z: 0}
+    localRotation: {x: -0, y: -0, z: -0, w: 1}
+    radius: 0.65
+    mass: 20
+    damping: 0.5
+    suspensionDistance: 0.25
+    forceAppPointDistance: 0.3
+    spring: 26000
+    damper: 3600
+    targetPosition: 0.38
+    forwardTires:
+      extremumSlip: 0.25
+      extremumValue: 1
+      asymptoteSlip: 1
+      asymptoteValue: 0.88
+      stiffness: 0.9
+    sidewaysTires:
+      extremumSlip: 0.28
+      extremumValue: 1
+      asymptoteSlip: 0.8
+      asymptoteValue: 1
+      stiffness: 1.16
+  visualPositionOffset: {x: 0.115, y: -0.92, z: 0.7624253}
+  visualRotationOffset: {x: -0, y: 0, z: 0}
+  visualScale: {x: 0.5, y: 0.5, z: 0.5}
+  frontRecoveryEnabled: 1
+  yawStabilityEnabled: 1
+  visualMotionEnabled: 1
+  startingGear: 1

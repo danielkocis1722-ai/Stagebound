@@ -5,12 +5,15 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public string gameplayScene = "SampleScene";
     [Tooltip("Optional future mixer with MasterVolume/MusicVolume/SFXVolume exposed in dB.")]
     public AudioMixer audioMixer;
+    public VehicleCatalog vehicleCatalog;
+    public StageCatalog stageCatalog;
     GameObject menu;
     AudioSettingsPanel settings;
-    Button play, settingsButton;
+    Button play, carButton, settingsButton;
+    CarSelectPanel cars;
+    StageSelectPanel maps;
 
     void Start()
     {
@@ -32,18 +35,35 @@ public class MainMenu : MonoBehaviour
         StageboundMenuUI.Text(menu.transform,"TIME ATTACK",20,new Vector2(4,-108),new Vector2(600,40),StageboundMenuUI.Mint);
         StageboundMenuUI.Panel(menu.transform,"Accent",new Vector2(0,1),new Vector2(4,-170),new Vector2(54,3),StageboundMenuUI.Mint);
         play=StageboundMenuUI.Button(menu.transform,"PLAY",new Vector2(0,-215),new Vector2(400,64),Play);
-        settingsButton=StageboundMenuUI.Button(menu.transform,"SETTINGS",new Vector2(0,-295),new Vector2(400,64),ShowSettings);
-        StageboundMenuUI.Button(menu.transform,"QUIT",new Vector2(0,-375),new Vector2(400,64),Quit);
-        StageboundMenuUI.Text(menu.transform,"A STAGE. YOUR LINE. YOUR TIME.",16,new Vector2(4,-515),new Vector2(800,30),StageboundMenuUI.Muted);
+        carButton=StageboundMenuUI.Button(menu.transform,"CAR SELECT",new Vector2(0,-295),new Vector2(400,64),ShowCarSelect);
+        settingsButton=StageboundMenuUI.Button(menu.transform,"SETTINGS",new Vector2(0,-375),new Vector2(400,64),ShowSettings);
+        StageboundMenuUI.Button(menu.transform,"QUIT",new Vector2(0,-455),new Vector2(400,64),Quit);
+        StageboundMenuUI.Text(menu.transform,"A STAGE. YOUR LINE. YOUR TIME.",16,new Vector2(4,-565),new Vector2(800,30),StageboundMenuUI.Muted);
         settings=AudioSettingsPanel.Create(shade,ShowMenu);
+        cars=CarSelectPanel.Create(shade,vehicleCatalog,ShowCarMenu,ChooseCar);
+        maps=StageSelectPanel.Create(shade,stageCatalog,ShowPlayMenu,StartStage);
         StageboundMenuUI.Select(play);
     }
     public void Play()
     {
-        if(!Application.CanStreamedLevelBeLoaded(gameplayScene))return;
+        menu.SetActive(false); cars.gameObject.SetActive(false); maps.Show(VehicleSelection.Resolve(vehicleCatalog));
+    }
+    public void ShowCarSelect() { menu.SetActive(false);maps.gameObject.SetActive(false);cars.Show(); }
+    void ShowCarMenu() { menu.SetActive(true);StageboundMenuUI.Select(carButton); }
+    void ChooseCar(VehicleDefinition vehicle)
+    {
+        if(!VehicleSelection.Save(vehicleCatalog,vehicle)) return;
+        cars.gameObject.SetActive(false);ShowCarMenu();
+    }
+    void ShowPlayMenu() { menu.SetActive(true); StageboundMenuUI.Select(play); }
+    void StartStage(StageDefinition stage)
+    {
+        if(stage==null||!stage.IsPlayable) {maps.ShowError("MAP UNAVAILABLE");return;}
+        if(VehicleSelection.Resolve(vehicleCatalog)==null) {maps.ShowError("CHOOSE A PLAYABLE CAR FIRST");return;}
+        PlayerPrefs.SetString(StageCatalog.SelectedStageKey,stage.stageId);PlayerPrefs.Save();
         StageboundAudioSettings.Save();PauseMenu.ResetPauseState();
         Cursor.lockState=CursorLockMode.Locked;Cursor.visible=false;
-        SceneManager.LoadScene(gameplayScene);
+        SceneManager.LoadScene(stage.BuildIndex);
     }
     public void ShowSettings() { menu.SetActive(false);settings.Show(); }
     void ShowMenu() { menu.SetActive(true);StageboundMenuUI.Select(settingsButton); }

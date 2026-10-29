@@ -1,43 +1,48 @@
 using UnityEngine;
 
-// Bounded engine-side transient. The controller supplies the final clutch value
-// and applies the result through its existing gearbox and rear differential.
+// One engine-side clutch torque, with equal reaction on the engine flywheel.
+// The controller multiplies this torque through the existing gearbox and LSD once.
 public sealed class ClutchKickCoupling
 {
-    float remaining, duration, torque, releaseRPMDifference;
-    public bool Active => remaining > 0f;
+    const float RPMPerRadian = 60f / (2f * Mathf.PI);
+    float releaseRate, releaseRemaining;
+    public bool Active => releaseRemaining > 0f && releaseRate > 1f;
+    public float SynchronizingTorque { get; private set; }
 
-    public void Begin(float seconds, float rpmDifference)
+    public void Begin(float engagementRate)
+    { releaseRate = Mathf.Max(0f, engagementRate); releaseRemaining = .3f; }
+    public void Cancel() { releaseRate = releaseRemaining = 0f; SynchronizingTorque = 0f; }
+
+    public float Step(float engineRPM, float drivetrainRPM, float engineTorque, float engineTorqueRating,
+        float maxClutchTorque, float couplingStrength, float kickStrength, float engineInertia,
+        float engagement, float deltaTime, float reflectedWheelInertia, float drivetrainLoadTorque = 0f)
     {
-        duration = Mathf.Max(0.01f, seconds);
-        remaining = duration;
-        torque = 0f;
-        releaseRPMDifference = Mathf.Max(0f, rpmDifference);
-    }
-
-    public void Cancel() { remaining = torque = 0f; }
-
-    public float Step(float rpmDifference, float normalEngineTorque, float engineTorqueRating,
-        float maxClutchTorque, float strength, float maxRPMDifference, float response,
-        float engineInertia, float engagement, float deltaTime,
-        float mismatchExponent = 1f, float midrangeWeight = 0f)
-    {
-        if (!Active || rpmDifference <= 0f || strength <= 0f || deltaTime <= 0f)
-        { Cancel(); return 0f; }
-        float mismatch = Mathf.Clamp01(Mathf.Min(rpmDifference, releaseRPMDifference) /
-            Mathf.Max(1f, maxRPMDifference));
-        mismatch = Mathf.Lerp(mismatch, Mathf.Pow(mismatch, Mathf.Clamp(mismatchExponent, 0.5f, 1f)),
-            Mathf.Clamp01(midrangeWeight));
-        float envelope = Mathf.Clamp01(remaining / duration);
-        float target = Mathf.Max(0f, engineTorqueRating) * Mathf.Clamp01(strength) * mismatch;
-        torque = Mathf.Lerp(torque, target, 1f - Mathf.Exp(-Mathf.Max(0f, response) * deltaTime));
-        remaining = Mathf.Max(0f, remaining - deltaTime);
-
-        // Capacity limits the total engine-side torque, not an extra multiplier.
-        float capacity = Mathf.Max(0f, maxClutchTorque - normalEngineTorque);
-        // Do not debit more rotational speed than the remaining RPM surplus.
-        float available = rpmDifference * (2f * Mathf.PI / 60f) * Mathf.Max(0.05f, engineInertia) /
-            (deltaTime * Mathf.Max(0.001f, Mathf.Clamp01(engagement)));
-        return Mathf.Min(torque * envelope, Mathf.Min(capacity, available));
+        SynchronizingTorque = 0f;
+        if (engagement <= 0f || deltaTime <= 0f) return 0f;
+        engagement = Mathf.Clamp01(engagement);
+        float difference = engineRPM - drivetrainRPM;
+        // Gentle reconnection retains normal holding capacity. Quick manual release
+        // can use higher capacity during the release interval. Torque still
+        // requires a current RPM mismatch; there is no timed torque envelope.
+        float rapidRelease = Active ? Mathf.InverseLerp(1f, 8f, releaseRate) : 0f;
+        releaseRemaining = Mathf.Max(0f, releaseRemaining - deltaTime);
+        float capacity = Mathf.Lerp(Mathf.Min(engineTorqueRating, maxClutchTorque), maxClutchTorque,
+            rapidRelease * Mathf.Clamp01(kickStrength)) * engagement;
+        float engine = Mathf.Max(.05f, engineInertia);
+        float wheels = Mathf.Max(.001f, reflectedWheelInertia);
+        float inertia = 1f / (1f / engine + 1f / wheels);
+        // Reduced inertia accounts for BOTH flywheels: spinning the rear wheels
+        // changes drivetrain RPM too. Engine-only bounds can overshoot and reverse
+        // the relative speed, creating an oscillating torque/braking pulse.
+        float follow = 1f - Mathf.Exp(-Mathf.Max(0f, couplingStrength) * engagement *
+            deltaTime * RPMPerRadian / inertia);
+        // Include this step's combustion impulse before solving the clutch.
+        // Engine torque is NOT separately added to the resulting clutch torque.
+        float predictedDifference = difference + (engineTorque / engine + drivetrainLoadTorque / wheels) *
+            deltaTime * RPMPerRadian;
+        float demanded = predictedDifference / RPMPerRadian * inertia / deltaTime * follow;
+        float transmitted = Mathf.Clamp(demanded, -Mathf.Max(0f, capacity), Mathf.Max(0f, capacity));
+        SynchronizingTorque = transmitted - engineTorque * engagement;
+        return transmitted;
     }
 }
