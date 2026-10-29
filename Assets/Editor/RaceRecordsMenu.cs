@@ -11,12 +11,14 @@ public static class RaceRecordsMenu
         foreach (var root in scene.GetRootGameObjects())
         {
             var timer = root.GetComponentInChildren<RaceTimer>();
-            if (timer == null) continue;
+            if (timer == null)
+                continue;
             string key = timer.BestTimeKey + " + " + timer.StageRecordKey;
             timer.ResetBestTime();
             Debug.Log("Reset Stagebound best time: " + key, timer);
             return;
         }
+
         Debug.LogWarning("No active RaceTimer in the current scene. Open SampleScene to reset its best time.");
     }
 }

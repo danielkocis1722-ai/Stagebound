@@ -4,21 +4,21 @@ using UnityEngine.UI;
 
 // Reusable for unrotated panels on a Screen Space - Overlay canvas.
 [RequireComponent(typeof(RectTransform), typeof(Image))]
-public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
-    IInitializePotentialDragHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
-    IPointerEnterHandler, IPointerExitHandler
+public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IInitializePotentialDragHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    [Range(0f, 1f)] public float backgroundOpacity = .4f;
-    RectTransform panel, container;
-    Image background;
-    Color normalColor;
-    string preferenceKey;
-    Vector2 defaultPosition, pointerOffset, normalizedPosition;
-    Rect previousBounds;
-    bool editMode, initialized;
-    bool hovered, backgroundTransparent;
-    int dragPointerId;
-    GameObject hoverBorder;
+    [Range(0f, 1f)]
+    public float backgroundOpacity = .4f;
+    private RectTransform panel, container;
+    private Image background;
+    private Color normalColor;
+    private string preferenceKey;
+    private Vector2 defaultPosition, pointerOffset, normalizedPosition;
+    private Rect previousBounds;
+    private bool editMode, initialized;
+    private bool hovered, backgroundTransparent;
+    private int dragPointerId;
+    private GameObject hoverBorder;
+
     public bool IsDragging { get; private set; }
 
     public void Initialize(string key)
@@ -38,13 +38,13 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
         if (PlayerPrefs.HasKey(key + ".X") && PlayerPrefs.HasKey(key + ".Y"))
         {
             normalizedPosition = new Vector2(PlayerPrefs.GetFloat(key + ".X"), PlayerPrefs.GetFloat(key + ".Y"));
-            bool invalid = !Finite(normalizedPosition.x) || !Finite(normalizedPosition.y) ||
-                normalizedPosition.x < 0 || normalizedPosition.x > 1 || normalizedPosition.y < 0 || normalizedPosition.y > 1;
+            bool invalid = !Finite(normalizedPosition.x) || !Finite(normalizedPosition.y) || normalizedPosition.x < 0 || normalizedPosition.x > 1 || normalizedPosition.y < 0 || normalizedPosition.y > 1;
             if (!invalid)
             {
                 RestoreNormalizedPosition();
                 invalid = !FitsInsideContainer();
             }
+
             if (invalid)
             {
                 panel.anchoredPosition = defaultPosition;
@@ -55,23 +55,20 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
                 PlayerPrefs.Save();
             }
         }
+
         ClampPosition();
         background.raycastTarget = editMode;
         UpdateAppearance();
     }
 
-    static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+    private static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 
-    bool FitsInsideContainer()
+    private bool FitsInsideContainer()
     {
         Rect bounds = container.rect;
         Vector2 size = Vector2.Scale(panel.rect.size, panel.localScale);
         Vector2 position = panel.localPosition;
-        return bounds.width > 0 && bounds.height > 0 &&
-            position.x - size.x * panel.pivot.x >= bounds.xMin - .01f &&
-            position.x + size.x * (1 - panel.pivot.x) <= bounds.xMax + .01f &&
-            position.y - size.y * panel.pivot.y >= bounds.yMin - .01f &&
-            position.y + size.y * (1 - panel.pivot.y) <= bounds.yMax + .01f;
+        return bounds.width > 0 && bounds.height > 0 && position.x - size.x * panel.pivot.x >= bounds.xMin - .01f && position.x + size.x * (1 - panel.pivot.x) <= bounds.xMax + .01f && position.y - size.y * panel.pivot.y >= bounds.yMin - .01f && position.y + size.y * (1 - panel.pivot.y) <= bounds.yMax + .01f;
     }
 
     public void SetEditMode(bool enabled)
@@ -79,7 +76,8 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
         StopDragging();
         editMode = enabled;
         hovered = false;
-        if (background != null) background.raycastTarget = enabled;
+        if (background != null)
+            background.raycastTarget = enabled;
         UpdateAppearance();
     }
 
@@ -95,8 +93,10 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!initialized || !editMode || eventData.button != PointerEventData.InputButton.Left) return;
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(container, eventData.position, null, out var localPointer)) return;
+        if (!initialized || !editMode || eventData.button != PointerEventData.InputButton.Left)
+            return;
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(container, eventData.position, null, out var localPointer))
+            return;
         IsDragging = true;
         dragPointerId = eventData.pointerId;
         pointerOffset = (Vector2)panel.localPosition - localPointer;
@@ -104,12 +104,13 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
     }
 
     public void OnInitializePotentialDrag(PointerEventData eventData) => eventData.useDragThreshold = false;
+
     public void OnBeginDrag(PointerEventData eventData) => OnDrag(eventData);
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!editMode || !IsDragging || eventData.pointerId != dragPointerId ||
-            eventData.button != PointerEventData.InputButton.Left) return;
+        if (!editMode || !IsDragging || eventData.pointerId != dragPointerId || eventData.button != PointerEventData.InputButton.Left)
+            return;
         // Screen Space - Overlay uses a null camera. Convert into the parent,
         // rather than mixing screen pixels with scaled anchored coordinates.
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(container, eventData.position, null, out var localPointer))
@@ -121,7 +122,8 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left || eventData.pointerId != dragPointerId) return;
+        if (eventData.button != PointerEventData.InputButton.Left || eventData.pointerId != dragPointerId)
+            return;
         OnDrag(eventData);
         StopDragging();
         UpdateAppearance();
@@ -143,19 +145,22 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void RefreshLayout()
     {
-        if (!initialized) return;
+        if (!initialized)
+            return;
         if (previousBounds != container.rect)
         {
             StopDragging();
             previousBounds = container.rect;
             RestoreNormalizedPosition();
         }
+
         ClampPosition();
     }
 
     public void ResetPosition()
     {
-        if (!initialized) return;
+        if (!initialized)
+            return;
         // Discard an in-progress drag before restoring defaults.
         IsDragging = false;
         panel.anchoredPosition = defaultPosition;
@@ -166,7 +171,7 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
         UpdateAppearance();
     }
 
-    void ClampPosition()
+    private void ClampPosition()
     {
         Rect bounds = container.rect;
         Vector2 size = Vector2.Scale(panel.rect.size, panel.localScale);
@@ -178,39 +183,35 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
         position.x = minX <= maxX ? Mathf.Clamp(position.x, minX, maxX) : (minX + maxX) * .5f;
         position.y = minY <= maxY ? Mathf.Clamp(position.y, minY, maxY) : (minY + maxY) * .5f;
         SetLocalPosition(position);
-        normalizedPosition = new Vector2(
-            Mathf.InverseLerp(bounds.xMin, bounds.xMax, position.x),
-            Mathf.InverseLerp(bounds.yMin, bounds.yMax, position.y));
+        normalizedPosition = new Vector2(Mathf.InverseLerp(bounds.xMin, bounds.xMax, position.x), Mathf.InverseLerp(bounds.yMin, bounds.yMax, position.y));
     }
 
-    void RestoreNormalizedPosition()
+    private void RestoreNormalizedPosition()
     {
         Rect bounds = container.rect;
-        SetLocalPosition(new Vector2(
-            Mathf.Lerp(bounds.xMin, bounds.xMax, normalizedPosition.x),
-            Mathf.Lerp(bounds.yMin, bounds.yMax, normalizedPosition.y)));
+        SetLocalPosition(new Vector2(Mathf.Lerp(bounds.xMin, bounds.xMax, normalizedPosition.x), Mathf.Lerp(bounds.yMin, bounds.yMax, normalizedPosition.y)));
     }
 
-    void SetLocalPosition(Vector2 position) =>
-        panel.localPosition = new Vector3(position.x, position.y, panel.localPosition.z);
+    private void SetLocalPosition(Vector2 position) => panel.localPosition = new Vector3(position.x, position.y, panel.localPosition.z);
 
-    void UpdateAppearance()
+    private void UpdateAppearance()
     {
-        if (background == null) return;
+        if (background == null)
+            return;
         bool highlighted = editMode && (hovered || IsDragging);
         float opacity = backgroundTransparent ? 0f : Mathf.Clamp01(backgroundOpacity);
-        background.color = highlighted
-            ? new Color(normalColor.r + .035f, normalColor.g + .055f, normalColor.b + .05f, opacity)
-            : new Color(normalColor.r, normalColor.g, normalColor.b, opacity);
-        if (hoverBorder != null) hoverBorder.SetActive(highlighted);
+        background.color = highlighted ? new Color(normalColor.r + .035f, normalColor.g + .055f, normalColor.b + .05f, opacity) : new Color(normalColor.r, normalColor.g, normalColor.b, opacity);
+        if (hoverBorder != null)
+            hoverBorder.SetActive(highlighted);
     }
 
-    void CreateHoverBorder()
+    private void CreateHoverBorder()
     {
         hoverBorder = new GameObject("Edit hover outline", typeof(RectTransform));
         var rect = (RectTransform)hoverBorder.transform;
         rect.SetParent(panel, false);
-        rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one;
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
         rect.offsetMin = rect.offsetMax = Vector2.zero;
         AddBorderEdge(rect, "Top", new Vector2(0, 1), Vector2.one, new Vector2(0, 1.5f));
         AddBorderEdge(rect, "Bottom", Vector2.zero, new Vector2(1, 0), new Vector2(0, 1.5f));
@@ -219,38 +220,46 @@ public class DraggableHUDPanel : MonoBehaviour, IPointerDownHandler, IPointerUpH
         hoverBorder.SetActive(false);
     }
 
-    static void AddBorderEdge(RectTransform parent, string name, Vector2 min, Vector2 max, Vector2 thickness)
+    private static void AddBorderEdge(RectTransform parent, string name, Vector2 min, Vector2 max, Vector2 thickness)
     {
         var edge = new GameObject(name, typeof(RectTransform), typeof(Image));
         var rect = (RectTransform)edge.transform;
         rect.SetParent(parent, false);
-        rect.anchorMin = min; rect.anchorMax = max;
-        rect.anchoredPosition = Vector2.zero; rect.sizeDelta = thickness;
+        rect.anchorMin = min;
+        rect.anchorMax = max;
+        rect.anchoredPosition = Vector2.zero;
+        rect.sizeDelta = thickness;
         var image = edge.GetComponent<Image>();
         image.color = new Color32(91, 255, 191, 140);
         image.raycastTarget = false;
     }
 
-    void StopDragging()
+    private void StopDragging()
     {
-        if (!IsDragging) return;
+        if (!IsDragging)
+            return;
         IsDragging = false;
         PlayerPrefs.SetFloat(preferenceKey + ".X", normalizedPosition.x);
         PlayerPrefs.SetFloat(preferenceKey + ".Y", normalizedPosition.y);
         PlayerPrefs.Save();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         StopDragging();
         hovered = false;
         UpdateAppearance();
     }
 
-    void OnApplicationFocus(bool focused)
+    private void OnApplicationFocus(bool focused)
     {
-        if (!focused) { StopDragging(); hovered = false; UpdateAppearance(); }
+        if (!focused)
+        {
+            StopDragging();
+            hovered = false;
+            UpdateAppearance();
+        }
     }
 
-    void OnValidate() => UpdateAppearance();
+    private void OnValidate() => UpdateAppearance();
 }

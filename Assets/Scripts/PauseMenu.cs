@@ -11,44 +11,58 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     public string mainMenuScene = "MainMenu";
+
     public static bool IsPaused { get; private set; }
-    CarController car;
-    RespawnManager respawn;
-    RaceHUD hud;
-    GameObject canvasRoot, menu;
-    AudioSettingsPanel settings;
-    Button resumeButton;
-    TMP_Text notice;
-    bool paused, carWasEnabled, hudWasEnabled, hudWasEditing;
-    bool cursorWasVisible;
-    CursorLockMode previousCursorLock;
-    float previousTimeScale;
+
+    private CarController car;
+    private RespawnManager respawn;
+    private RaceHUD hud;
+    private GameObject canvasRoot, menu;
+    private AudioSettingsPanel settings;
+    private Button resumeButton;
+    private TMP_Text notice;
+    private bool paused, carWasEnabled, hudWasEnabled, hudWasEditing;
+    private bool cursorWasVisible;
+    private CursorLockMode previousCursorLock;
+    private float previousTimeScale;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { ResetPauseState(); }
-    public static void ResetPauseState() { IsPaused = false; Time.timeScale = 1f; }
+    private static void ResetStatics()
+    {
+        ResetPauseState();
+    }
 
-    void Awake()
+    public static void ResetPauseState()
+    {
+        IsPaused = false;
+        Time.timeScale = 1f;
+    }
+
+    private void Awake()
     {
         car = GetComponent<CarController>();
         respawn = GetComponent<RespawnManager>();
     }
 
-    void Update()
+    private void Update()
     {
         var keyboard = Keyboard.current;
         var pad = Gamepad.current;
-        if ((keyboard != null && keyboard.escapeKey.wasPressedThisFrame) ||
-            (pad != null && pad.startButton.wasPressedThisFrame))
+        if ((keyboard != null && keyboard.escapeKey.wasPressedThisFrame) || (pad != null && pad.startButton.wasPressedThisFrame))
         {
-            if (paused) Resume(); else Pause();
+            if (paused)
+                Resume();
+            else
+                Pause();
         }
     }
 
     public void Pause()
     {
-        if (paused) return;
-        if (canvasRoot == null) BuildMenu();
+        if (paused)
+            return;
+        if (canvasRoot == null)
+            BuildMenu();
         previousTimeScale = Time.timeScale;
         previousCursorLock = Cursor.lockState;
         cursorWasVisible = Cursor.visible;
@@ -59,7 +73,8 @@ public class PauseMenu : MonoBehaviour
         hudWasEditing = hudWasEnabled && cursorWasVisible && previousCursorLock == CursorLockMode.None;
         paused = IsPaused = true;
         car.enabled = false;
-        if (hudWasEnabled) hud.enabled = false;
+        if (hudWasEnabled)
+            hud.enabled = false;
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -69,16 +84,20 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        if (!paused) return;
+        if (!paused)
+            return;
         paused = IsPaused = false;
-        if (canvasRoot != null) canvasRoot.SetActive(false);
+        if (canvasRoot != null)
+            canvasRoot.SetActive(false);
         Time.timeScale = previousTimeScale;
-        if (car != null) car.enabled = carWasEnabled;
+        if (car != null)
+            car.enabled = carWasEnabled;
         if (hud != null && hudWasEnabled)
         {
             hud.enabled = true;
             hud.SetHUDEditMode(hudWasEditing);
         }
+
         Cursor.lockState = previousCursorLock;
         Cursor.visible = cursorWasVisible;
     }
@@ -91,12 +110,14 @@ public class PauseMenu : MonoBehaviour
 
     public void ShowSettings()
     {
-        menu.SetActive(false); settings.Show();
+        menu.SetActive(false);
+        settings.Show();
     }
 
-    void ShowMainPanel()
+    private void ShowMainPanel()
     {
-        settings.gameObject.SetActive(false); menu.SetActive(true);
+        settings.gameObject.SetActive(false);
+        menu.SetActive(true);
         notice.text = "";
         Select(resumeButton);
     }
@@ -108,6 +129,7 @@ public class PauseMenu : MonoBehaviour
             notice.text = "Main Menu scene is unavailable in the build configuration.";
             return;
         }
+
         Resume();
         ResetPauseState();
         StageboundAudioSettings.Save();
@@ -116,24 +138,30 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
-    void BuildMenu()
+    private void BuildMenu()
     {
         var events = EventSystem.current;
-        if (events == null) events = FindAnyObjectByType<EventSystem>();
-        if (events == null) events = new GameObject("Pause EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule)).GetComponent<EventSystem>();
+        if (events == null)
+            events = FindAnyObjectByType<EventSystem>();
+        if (events == null)
+            events = new GameObject("Pause EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule)).GetComponent<EventSystem>();
         if (events.GetComponent<InputSystemUIInputModule>() == null)
         {
-            foreach (var module in events.GetComponents<BaseInputModule>()) module.enabled = false;
+            foreach (var module in events.GetComponents<BaseInputModule>())
+                module.enabled = false;
             events.gameObject.AddComponent<InputSystemUIInputModule>();
         }
+
         canvasRoot = new GameObject("Stagebound Pause Menu", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         var canvas = canvasRoot.GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.sortingOrder = 100;
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 100;
         var scaler = canvasRoot.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
         var shade = Panel(canvasRoot.transform, "Pause shade", Vector2.zero);
-        shade.anchorMin = Vector2.zero; shade.anchorMax = Vector2.one;
+        shade.anchorMin = Vector2.zero;
+        shade.anchorMax = Vector2.one;
         shade.offsetMin = shade.offsetMax = Vector2.zero;
         shade.GetComponent<Image>().color = new Color(0, 0, 0, .5f);
         menu = Panel(shade, "Pause", new Vector2(480, 430)).gameObject;
@@ -147,7 +175,7 @@ public class PauseMenu : MonoBehaviour
         canvasRoot.SetActive(false);
     }
 
-    static RectTransform Panel(Transform parent, string name, Vector2 size)
+    private static RectTransform Panel(Transform parent, string name, Vector2 size)
     {
         var obj = new GameObject(name, typeof(RectTransform), typeof(Image));
         var rect = (RectTransform)obj.transform;
@@ -158,7 +186,7 @@ public class PauseMenu : MonoBehaviour
         return rect;
     }
 
-    static TMP_Text Label(Transform parent, string value, float fontSize, float y)
+    private static TMP_Text Label(Transform parent, string value, float fontSize, float y)
     {
         var obj = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
         var text = obj.GetComponent<TextMeshProUGUI>();
@@ -166,13 +194,15 @@ public class PauseMenu : MonoBehaviour
         text.rectTransform.anchorMin = text.rectTransform.anchorMax = new Vector2(.5f, .5f);
         text.rectTransform.anchoredPosition = new Vector2(0, y);
         text.rectTransform.sizeDelta = new Vector2(440, 50);
-        text.text = value; text.fontSize = fontSize;
+        text.text = value;
+        text.fontSize = fontSize;
         text.alignment = TextAlignmentOptions.Center;
-        text.color = Color.white; text.raycastTarget = false;
+        text.color = Color.white;
+        text.raycastTarget = false;
         return text;
     }
 
-    static Button MenuButton(Transform parent, string title, float y, UnityEngine.Events.UnityAction action)
+    private static Button MenuButton(Transform parent, string title, float y, UnityEngine.Events.UnityAction action)
     {
         var rect = Panel(parent, title, new Vector2(390, 52));
         rect.anchoredPosition = new Vector2(0, y);
@@ -189,11 +219,20 @@ public class PauseMenu : MonoBehaviour
         return button;
     }
 
-    static void Select(Button button)
+    private static void Select(Button button)
     {
-        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(button.gameObject);
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(button.gameObject);
     }
 
-    void OnDisable() { Resume(); }
-    void OnDestroy() { if (canvasRoot != null) Destroy(canvasRoot); }
+    private void OnDisable()
+    {
+        Resume();
+    }
+
+    private void OnDestroy()
+    {
+        if (canvasRoot != null)
+            Destroy(canvasRoot);
+    }
 }
