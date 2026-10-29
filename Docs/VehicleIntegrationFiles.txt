@@ -1,0 +1,492 @@
+Stagebound three-vehicle/two-stage integration - 29 October 2026
+No commit or push.
+
+Cumulative Git status (includes earlier vehicle work and pre-existing user settings changes):
+ M Assets/Scripts/CarSelectNavigation.cs
+ M Assets/Scripts/CarSelectPanel.cs
+ M Assets/Scripts/MainMenu.cs
+ M Assets/Scripts/StageDefinition.cs
+ M Assets/Scripts/StageSelectPanel.cs
+ M Assets/Stages/StageCatalog.asset
+ M Assets/Vehicles/Definitions/AE86_VehicleDefinition.asset
+ M Assets/Vehicles/VehicleCatalog.asset
+ M Docs/MenuAndRaceFlow.md
+ M Docs/Stages.md
+ M Docs/Vehicles.md
+ M Packages/manifest.json
+ M Packages/packages-lock.json
+ M ProjectSettings/EditorBuildSettings.asset
+ M ProjectSettings/ProjectAuditorSettings.asset
+ M ProjectSettings/ProjectSettings.asset
+ M ProjectSettings/ProjectVersion.txt
+ M ProjectSettings/QualitySettings.asset
+?? Assets/Editor/IntegrateVehicles.cs
+?? Assets/Editor/IntegrateVehicles.cs.meta
+?? Assets/Editor/RX7ImportPostprocessor.cs
+?? Assets/Editor/RX7ImportPostprocessor.cs.meta
+?? Assets/Editor/TrackCompleSetup.cs
+?? Assets/Editor/TrackCompleSetup.cs.meta
+?? Assets/Editor/ValidateVehicleFlow.cs
+?? Assets/Editor/ValidateVehicleFlow.cs.meta
+?? Assets/Scenes/TrackCompleCircuit.unity
+?? Assets/Scenes/TrackCompleCircuit.unity.meta
+?? Assets/Stages/TrackComple.meta
+?? Assets/Stages/TrackComple/CollisionMeshes.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/Earth.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/Earth.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/JumpConnectorVisual.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/JumpConnectorVisual.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/Jump_Connector.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/Jump_Connector.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bridge.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bridge.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.002.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.002.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.003.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.003.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.004.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.004.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.005.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.005.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.006.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.006.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.007.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.007.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.008.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.008.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.009.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.009.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/crooked_road.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/crooked_road.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/finish_board.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/finish_board.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/parking.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/parking.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road.002.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road.002.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road.003.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road.003.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_180.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_180.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_180.002.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_180.002.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_180.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_180.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90.002.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90.002.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90_fix.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/road_90_fix.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/springboard.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/springboard.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/springboard.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/springboard.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/stack_of_wheels.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/stack_of_wheels.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.002.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.002.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.004.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.004.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/stone.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/tribune.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/tribune.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.001.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.001.asset.meta
+?? Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.asset
+?? Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.asset.meta
+?? Assets/Stages/TrackComple/TrackComple.asset
+?? Assets/Stages/TrackComple/TrackComple.asset.meta
+?? Assets/Vehicles/Configs/RX7_VehicleConfig.asset
+?? Assets/Vehicles/Configs/RX7_VehicleConfig.asset.meta
+?? Assets/Vehicles/Configs/SkylineR32_VehicleConfig.asset
+?? Assets/Vehicles/Configs/SkylineR32_VehicleConfig.asset.meta
+?? Assets/Vehicles/Definitions/RX7_VehicleDefinition.asset
+?? Assets/Vehicles/Definitions/RX7_VehicleDefinition.asset.meta
+?? Assets/Vehicles/Definitions/SkylineR32_VehicleDefinition.asset
+?? Assets/Vehicles/Definitions/SkylineR32_VehicleDefinition.asset.meta
+?? Assets/Vehicles/Materials.meta
+?? Assets/Vehicles/Materials/RX7.meta
+?? Assets/Vehicles/Materials/RX7/MAX.mat
+?? Assets/Vehicles/Materials/RX7/MAX.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface12.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface12.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface13.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface13.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface14.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface14.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface15.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface15.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface18.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface18.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface19.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface19.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface2.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface2.mat.meta
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface55.mat
+?? Assets/Vehicles/Materials/RX7/aiStandardSurface55.mat.meta
+?? Assets/Vehicles/Materials/RX7/black_hold.mat
+?? Assets/Vehicles/Materials/RX7/black_hold.mat.meta
+?? Assets/Vehicles/Materials/RX7/body.mat
+?? Assets/Vehicles/Materials/RX7/body.mat.meta
+?? Assets/Vehicles/Materials/RX7/body_black_fiber.mat
+?? Assets/Vehicles/Materials/RX7/body_black_fiber.mat.meta
+?? Assets/Vehicles/Materials/RX7/case_light.mat
+?? Assets/Vehicles/Materials/RX7/case_light.mat.meta
+?? Assets/Vehicles/Materials/RX7/choem.mat
+?? Assets/Vehicles/Materials/RX7/choem.mat.meta
+?? Assets/Vehicles/Materials/RX7/chorm.mat
+?? Assets/Vehicles/Materials/RX7/chorm.mat.meta
+?? Assets/Vehicles/Materials/RX7/hand_door.mat
+?? Assets/Vehicles/Materials/RX7/hand_door.mat.meta
+?? Assets/Vehicles/Materials/RX7/inter_cooler.mat
+?? Assets/Vehicles/Materials/RX7/inter_cooler.mat.meta
+?? Assets/Vehicles/Materials/RX7/light_back.mat
+?? Assets/Vehicles/Materials/RX7/light_back.mat.meta
+?? Assets/Vehicles/Materials/RX7/line.mat
+?? Assets/Vehicles/Materials/RX7/line.mat.meta
+?? Assets/Vehicles/Materials/RX7/max_outline.mat
+?? Assets/Vehicles/Materials/RX7/max_outline.mat.meta
+?? Assets/Vehicles/Materials/RX7/mirror.mat
+?? Assets/Vehicles/Materials/RX7/mirror.mat.meta
+?? Assets/Vehicles/Materials/RX7/mirror_reflex.mat
+?? Assets/Vehicles/Materials/RX7/mirror_reflex.mat.meta
+?? Assets/Vehicles/Materials/RX7/plate2.mat
+?? Assets/Vehicles/Materials/RX7/plate2.mat.meta
+?? Assets/Vehicles/Materials/RX7/tire_side1.mat
+?? Assets/Vehicles/Materials/RX7/tire_side1.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_bolt.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_bolt.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_disbreak.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_disbreak.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_max.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_max.mat.meta
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_tire.mat
+?? Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_tire.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32.meta
+?? Assets/Vehicles/Materials/SkylineR32/Material.001.mat
+?? Assets/Vehicles/Materials/SkylineR32/Material.001.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/RearLens_0.mat
+?? Assets/Vehicles/Materials/SkylineR32/RearLens_0.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/RearLens_1.mat
+?? Assets/Vehicles/Materials/SkylineR32/RearLens_1.mat.meta
+?? "Assets/Vehicles/Materials/SkylineR32/black plastic.001.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/black plastic.001.mat.meta"
+?? "Assets/Vehicles/Materials/SkylineR32/black plastic.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/black plastic.mat.meta"
+?? "Assets/Vehicles/Materials/SkylineR32/black windows.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/black windows.mat.meta"
+?? "Assets/Vehicles/Materials/SkylineR32/brake caliper.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/brake caliper.mat.meta"
+?? Assets/Vehicles/Materials/SkylineR32/brake.mat
+?? Assets/Vehicles/Materials/SkylineR32/brake.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/chrome.mat
+?? Assets/Vehicles/Materials/SkylineR32/chrome.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/dummy.mat
+?? Assets/Vehicles/Materials/SkylineR32/dummy.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/exhaust.mat
+?? Assets/Vehicles/Materials/SkylineR32/exhaust.mat.meta
+?? "Assets/Vehicles/Materials/SkylineR32/headlights orange.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/headlights orange.mat.meta"
+?? Assets/Vehicles/Materials/SkylineR32/headlights.001.mat
+?? Assets/Vehicles/Materials/SkylineR32/headlights.001.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/headlights.002.mat
+?? Assets/Vehicles/Materials/SkylineR32/headlights.002.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/headlights.mat
+?? Assets/Vehicles/Materials/SkylineR32/headlights.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/paint.mat
+?? Assets/Vehicles/Materials/SkylineR32/paint.mat.meta
+?? "Assets/Vehicles/Materials/SkylineR32/rear light.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/rear light.mat.meta"
+?? "Assets/Vehicles/Materials/SkylineR32/rear lights.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/rear lights.mat.meta"
+?? "Assets/Vehicles/Materials/SkylineR32/rear lights2.mat"
+?? "Assets/Vehicles/Materials/SkylineR32/rear lights2.mat.meta"
+?? Assets/Vehicles/Materials/SkylineR32/red.mat
+?? Assets/Vehicles/Materials/SkylineR32/red.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/rims.mat
+?? Assets/Vehicles/Materials/SkylineR32/rims.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/tyre.mat
+?? Assets/Vehicles/Materials/SkylineR32/tyre.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/white.mat
+?? Assets/Vehicles/Materials/SkylineR32/white.mat.meta
+?? Assets/Vehicles/Materials/SkylineR32/widnows.mat
+?? Assets/Vehicles/Materials/SkylineR32/widnows.mat.meta
+?? Assets/Vehicles/Visuals/RX7_Visual.prefab
+?? Assets/Vehicles/Visuals/RX7_Visual.prefab.meta
+?? Assets/Vehicles/Visuals/SkylineR32_Visual.prefab
+?? Assets/Vehicles/Visuals/SkylineR32_Visual.prefab.meta
+?? Docs/RX7SourceMaterials.json
+?? Docs/TrackCompleIntegration.md
+?? Docs/TrackCompleMeasurements.txt
+?? Docs/VehicleIntegrationFiles.txt
+
+Tracked diff summary:
+ Assets/Scripts/CarSelectNavigation.cs              |   1 -
+ Assets/Scripts/CarSelectPanel.cs                   |  15 +-
+ Assets/Scripts/MainMenu.cs                         |   6 +-
+ Assets/Scripts/StageDefinition.cs                  |   2 +
+ Assets/Scripts/StageSelectPanel.cs                 |  21 +--
+ Assets/Stages/StageCatalog.asset                   |   1 +
+ .../Definitions/AE86_VehicleDefinition.asset       |   6 +-
+ Assets/Vehicles/VehicleCatalog.asset               |   3 +-
+ Docs/MenuAndRaceFlow.md                            |   6 +-
+ Docs/Stages.md                                     |  13 +-
+ Docs/Vehicles.md                                   | 160 ++++++++++++++-------
+ Packages/manifest.json                             |   6 +-
+ Packages/packages-lock.json                        |  10 +-
+ ProjectSettings/EditorBuildSettings.asset          |   3 +
+ ProjectSettings/ProjectVersion.txt                 |   4 +-
+ 15 files changed, 163 insertions(+), 94 deletions(-)
+
+New files, including Unity metadata:
+Assets/Editor/IntegrateVehicles.cs
+Assets/Editor/IntegrateVehicles.cs.meta
+Assets/Editor/RX7ImportPostprocessor.cs
+Assets/Editor/RX7ImportPostprocessor.cs.meta
+Assets/Editor/TrackCompleSetup.cs
+Assets/Editor/TrackCompleSetup.cs.meta
+Assets/Editor/ValidateVehicleFlow.cs
+Assets/Editor/ValidateVehicleFlow.cs.meta
+Assets/Scenes/TrackCompleCircuit.unity
+Assets/Scenes/TrackCompleCircuit.unity.meta
+Assets/Stages/TrackComple.meta
+Assets/Stages/TrackComple/CollisionMeshes.meta
+Assets/Stages/TrackComple/CollisionMeshes/Earth.asset
+Assets/Stages/TrackComple/CollisionMeshes/Earth.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/JumpConnectorVisual.asset
+Assets/Stages/TrackComple/CollisionMeshes/JumpConnectorVisual.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/Jump_Connector.asset
+Assets/Stages/TrackComple/CollisionMeshes/Jump_Connector.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bridge.asset
+Assets/Stages/TrackComple/CollisionMeshes/bridge.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.002.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.002.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.003.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.003.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.004.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.004.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.005.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.005.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.006.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.006.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.007.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.007.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.008.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.008.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.009.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.009.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.asset
+Assets/Stages/TrackComple/CollisionMeshes/bunch_of_wheels.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/crooked_road.asset
+Assets/Stages/TrackComple/CollisionMeshes/crooked_road.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/finish_board.asset
+Assets/Stages/TrackComple/CollisionMeshes/finish_board.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/parking.asset
+Assets/Stages/TrackComple/CollisionMeshes/parking.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/road.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road.002.asset
+Assets/Stages/TrackComple/CollisionMeshes/road.002.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road.003.asset
+Assets/Stages/TrackComple/CollisionMeshes/road.003.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road.asset
+Assets/Stages/TrackComple/CollisionMeshes/road.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_180.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_180.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_180.002.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_180.002.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_180.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_180.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_90.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_90.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_90.002.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_90.002.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_90.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_90.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/road_90_fix.asset
+Assets/Stages/TrackComple/CollisionMeshes/road_90_fix.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/springboard.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/springboard.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/springboard.asset
+Assets/Stages/TrackComple/CollisionMeshes/springboard.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/stack_of_wheels.asset
+Assets/Stages/TrackComple/CollisionMeshes/stack_of_wheels.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/stone.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/stone.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/stone.002.asset
+Assets/Stages/TrackComple/CollisionMeshes/stone.002.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/stone.004.asset
+Assets/Stages/TrackComple/CollisionMeshes/stone.004.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/stone.asset
+Assets/Stages/TrackComple/CollisionMeshes/stone.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/tribune.asset
+Assets/Stages/TrackComple/CollisionMeshes/tribune.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.001.asset
+Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.001.asset.meta
+Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.asset
+Assets/Stages/TrackComple/CollisionMeshes/wheel_fence.asset.meta
+Assets/Stages/TrackComple/TrackComple.asset
+Assets/Stages/TrackComple/TrackComple.asset.meta
+Assets/Vehicles/Configs/RX7_VehicleConfig.asset
+Assets/Vehicles/Configs/RX7_VehicleConfig.asset.meta
+Assets/Vehicles/Configs/SkylineR32_VehicleConfig.asset
+Assets/Vehicles/Configs/SkylineR32_VehicleConfig.asset.meta
+Assets/Vehicles/Definitions/RX7_VehicleDefinition.asset
+Assets/Vehicles/Definitions/RX7_VehicleDefinition.asset.meta
+Assets/Vehicles/Definitions/SkylineR32_VehicleDefinition.asset
+Assets/Vehicles/Definitions/SkylineR32_VehicleDefinition.asset.meta
+Assets/Vehicles/Materials.meta
+Assets/Vehicles/Materials/RX7.meta
+Assets/Vehicles/Materials/RX7/MAX.mat
+Assets/Vehicles/Materials/RX7/MAX.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface12.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface12.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface13.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface13.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface14.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface14.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface15.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface15.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface18.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface18.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface19.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface19.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface2.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface2.mat.meta
+Assets/Vehicles/Materials/RX7/aiStandardSurface55.mat
+Assets/Vehicles/Materials/RX7/aiStandardSurface55.mat.meta
+Assets/Vehicles/Materials/RX7/black_hold.mat
+Assets/Vehicles/Materials/RX7/black_hold.mat.meta
+Assets/Vehicles/Materials/RX7/body.mat
+Assets/Vehicles/Materials/RX7/body.mat.meta
+Assets/Vehicles/Materials/RX7/body_black_fiber.mat
+Assets/Vehicles/Materials/RX7/body_black_fiber.mat.meta
+Assets/Vehicles/Materials/RX7/case_light.mat
+Assets/Vehicles/Materials/RX7/case_light.mat.meta
+Assets/Vehicles/Materials/RX7/choem.mat
+Assets/Vehicles/Materials/RX7/choem.mat.meta
+Assets/Vehicles/Materials/RX7/chorm.mat
+Assets/Vehicles/Materials/RX7/chorm.mat.meta
+Assets/Vehicles/Materials/RX7/hand_door.mat
+Assets/Vehicles/Materials/RX7/hand_door.mat.meta
+Assets/Vehicles/Materials/RX7/inter_cooler.mat
+Assets/Vehicles/Materials/RX7/inter_cooler.mat.meta
+Assets/Vehicles/Materials/RX7/light_back.mat
+Assets/Vehicles/Materials/RX7/light_back.mat.meta
+Assets/Vehicles/Materials/RX7/line.mat
+Assets/Vehicles/Materials/RX7/line.mat.meta
+Assets/Vehicles/Materials/RX7/max_outline.mat
+Assets/Vehicles/Materials/RX7/max_outline.mat.meta
+Assets/Vehicles/Materials/RX7/mirror.mat
+Assets/Vehicles/Materials/RX7/mirror.mat.meta
+Assets/Vehicles/Materials/RX7/mirror_reflex.mat
+Assets/Vehicles/Materials/RX7/mirror_reflex.mat.meta
+Assets/Vehicles/Materials/RX7/plate2.mat
+Assets/Vehicles/Materials/RX7/plate2.mat.meta
+Assets/Vehicles/Materials/RX7/tire_side1.mat
+Assets/Vehicles/Materials/RX7/tire_side1.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_bolt.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_bolt.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_disbreak.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_disbreak.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_max.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_max.mat.meta
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_tire.mat
+Assets/Vehicles/Materials/RX7/v_cross_hood_wheel_BBS_ad_size_tire.mat.meta
+Assets/Vehicles/Materials/SkylineR32.meta
+Assets/Vehicles/Materials/SkylineR32/Material.001.mat
+Assets/Vehicles/Materials/SkylineR32/Material.001.mat.meta
+Assets/Vehicles/Materials/SkylineR32/RearLens_0.mat
+Assets/Vehicles/Materials/SkylineR32/RearLens_0.mat.meta
+Assets/Vehicles/Materials/SkylineR32/RearLens_1.mat
+Assets/Vehicles/Materials/SkylineR32/RearLens_1.mat.meta
+Assets/Vehicles/Materials/SkylineR32/black plastic.001.mat
+Assets/Vehicles/Materials/SkylineR32/black plastic.001.mat.meta
+Assets/Vehicles/Materials/SkylineR32/black plastic.mat
+Assets/Vehicles/Materials/SkylineR32/black plastic.mat.meta
+Assets/Vehicles/Materials/SkylineR32/black windows.mat
+Assets/Vehicles/Materials/SkylineR32/black windows.mat.meta
+Assets/Vehicles/Materials/SkylineR32/brake caliper.mat
+Assets/Vehicles/Materials/SkylineR32/brake caliper.mat.meta
+Assets/Vehicles/Materials/SkylineR32/brake.mat
+Assets/Vehicles/Materials/SkylineR32/brake.mat.meta
+Assets/Vehicles/Materials/SkylineR32/chrome.mat
+Assets/Vehicles/Materials/SkylineR32/chrome.mat.meta
+Assets/Vehicles/Materials/SkylineR32/dummy.mat
+Assets/Vehicles/Materials/SkylineR32/dummy.mat.meta
+Assets/Vehicles/Materials/SkylineR32/exhaust.mat
+Assets/Vehicles/Materials/SkylineR32/exhaust.mat.meta
+Assets/Vehicles/Materials/SkylineR32/headlights orange.mat
+Assets/Vehicles/Materials/SkylineR32/headlights orange.mat.meta
+Assets/Vehicles/Materials/SkylineR32/headlights.001.mat
+Assets/Vehicles/Materials/SkylineR32/headlights.001.mat.meta
+Assets/Vehicles/Materials/SkylineR32/headlights.002.mat
+Assets/Vehicles/Materials/SkylineR32/headlights.002.mat.meta
+Assets/Vehicles/Materials/SkylineR32/headlights.mat
+Assets/Vehicles/Materials/SkylineR32/headlights.mat.meta
+Assets/Vehicles/Materials/SkylineR32/paint.mat
+Assets/Vehicles/Materials/SkylineR32/paint.mat.meta
+Assets/Vehicles/Materials/SkylineR32/rear light.mat
+Assets/Vehicles/Materials/SkylineR32/rear light.mat.meta
+Assets/Vehicles/Materials/SkylineR32/rear lights.mat
+Assets/Vehicles/Materials/SkylineR32/rear lights.mat.meta
+Assets/Vehicles/Materials/SkylineR32/rear lights2.mat
+Assets/Vehicles/Materials/SkylineR32/rear lights2.mat.meta
+Assets/Vehicles/Materials/SkylineR32/red.mat
+Assets/Vehicles/Materials/SkylineR32/red.mat.meta
+Assets/Vehicles/Materials/SkylineR32/rims.mat
+Assets/Vehicles/Materials/SkylineR32/rims.mat.meta
+Assets/Vehicles/Materials/SkylineR32/tyre.mat
+Assets/Vehicles/Materials/SkylineR32/tyre.mat.meta
+Assets/Vehicles/Materials/SkylineR32/white.mat
+Assets/Vehicles/Materials/SkylineR32/white.mat.meta
+Assets/Vehicles/Materials/SkylineR32/widnows.mat
+Assets/Vehicles/Materials/SkylineR32/widnows.mat.meta
+Assets/Vehicles/Visuals/RX7_Visual.prefab
+Assets/Vehicles/Visuals/RX7_Visual.prefab.meta
+Assets/Vehicles/Visuals/SkylineR32_Visual.prefab
+Assets/Vehicles/Visuals/SkylineR32_Visual.prefab.meta
+Docs/RX7SourceMaterials.json
+Docs/TrackCompleIntegration.md
+Docs/TrackCompleMeasurements.txt
+Docs/VehicleIntegrationFiles.txt
+
+This pass: TrackCompleCircuit scene; TrackComple stage/collision/deck assets; TrackCompleSetup editor authoring; StageCatalog and enabled build scene; record labels; six-case validator; authoring assertion; documentation.
+South Loop scene, imported track files, AE86 baseline config/prefab and shared driving/race/scoring/effect runtime implementations are unchanged from HEAD.
+Existing user package/player/quality/version changes were preserved from the start-of-pass snapshot.

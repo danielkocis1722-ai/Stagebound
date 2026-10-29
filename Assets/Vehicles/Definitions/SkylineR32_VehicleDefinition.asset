@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c986d9413bf427eba76573736aea7f8, type: 3}
+  m_Name: SkylineR32_VehicleDefinition
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleDefinition
+  vehicleId: skyline-r32
+  displayName: Nissan Skyline R32
+  manufacturer: Nissan
+  drivetrainLabel: RWD (DRIFT SETUP)
+  description: 'Heavy, planted drift setup.
+
+    Stable at speed with sustained momentum.'
+  selectable: 1
+  unavailableLabel: COMING SOON / DEVELOPMENT
+  config: {fileID: 11400000, guid: 47f9c435941c68548be2b3edff86f001, type: 2}
+  visualPrefab: {fileID: 7529558345435346906, guid: 874a47a574158774e872432f327e5c2a, type: 3}
+  previewImage: {fileID: 0}
+  engineLoop: {fileID: 0}
+  power: 0.7
+  handling: 0.7
+  drift: 0.8
+  stability: 0.8

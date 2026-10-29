@@ -4,6 +4,8 @@ No commit or push. Vehicle handling/physics, camera, audio generation, effects a
 respawn physics are unchanged. The existing HUD panel styling, sizes, opacity,
 positions and F2 editing controls are retained.
 
+Current vehicle/stage flow and validation are documented in Vehicles.md and TrackCompleIntegration.md. Both South Loop and Track Comple Circuit are available. The continuous-run timer behavior below remains unchanged.
+
 ## Scenes and menu
 
 - Assets/Scenes/MainMenu.unity is the first enabled build scene.
@@ -18,8 +20,8 @@ show a small arrow/highlight, with a short color transition. No graphics assets
 were downloaded. UI and its Input System EventSystem are built at runtime,
 matching the existing prototype HUD approach.
 
-PLAY restores Time.timeScale=1 and pause state, locks/hides the cursor, and loads
-the stage with its enabled gameplay controller. SETTINGS opens the shared audio
+PLAY opens Car Select. CONTINUE opens Stage Select. START restores Time.timeScale=1
+and pause state, locks/hides the cursor and loads the selected stage with its selected vehicle. SETTINGS opens the shared audio
 panel. QUIT calls Application.Quit in builds; in the Editor it only exits Play Mode.
 Returning through Pause > Main Menu clears pause, restores time and cursor state,
 and loads the dedicated menu. The old placeholder is connected.

@@ -15,4 +15,5 @@ MonoBehaviour:
   defaultVehicle: {fileID: 11400000, guid: c695c3965b57c0d4c909dce2d6490d03, type: 2}
   vehicles:
   - {fileID: 11400000, guid: c695c3965b57c0d4c909dce2d6490d03, type: 2}
-  - {fileID: 11400000, guid: db5510d490a22be4d9ba973cf8fa19d3, type: 2}
+  - {fileID: 11400000, guid: 21a3fceabf662bb45b2ae48149406508, type: 2}
+  - {fileID: 11400000, guid: b7b05c43ed814aa41b30f9a9631b23bc, type: 2}

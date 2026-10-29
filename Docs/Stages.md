@@ -1,12 +1,12 @@
 # Maps, menu flow and records
 
-Main Menu now has PLAY, CAR SELECT, SETTINGS and QUIT. CAR SELECT keeps the rotating visual preview, saves a stable vehicle ID on SELECT and returns to Main Menu. PLAY opens SELECT MAP using that car; START saves the stable stage ID and loads the scene by its Build Settings index.
+Main Menu has PLAY, CAR SELECT, SETTINGS and QUIT. PLAY and CAR SELECT open the three-car browser with its rotating visual preview. CONTINUE saves the stable vehicle ID and opens STAGE SELECT; START saves the stable stage ID and loads its scene. Stage Back returns to Car Select; Car Back returns to Main Menu. See Vehicles.md for the current integration and validation report.
 
 ## Map content
 
-Assets/Stages/StageCatalog.asset lists SouthLoop.asset and Map02.asset. South Loop points to Assets/Scenes/SampleScene.unity. Map 02 is a browsable, disabled development placeholder with no scene; it never starts a fake duplicate of South Loop.
+StageCatalog lists SouthLoop.asset, TrackComple/TrackComple.asset and the disabled Map02.asset. South Loop uses SouthLoop.glb in SampleScene.unity. Track Comple Circuit uses the existing track comple.fbx in TrackCompleCircuit.unity, with four ordered checkpoints and independent records. Map 02 has no scene and cannot start. See TrackCompleIntegration.md for geometry, colliders, spawn, checkpoints, records and the six-car/stage matrix.
 
-StageDefinition retains its existing stage identity/style-credit fields and adds scene path, description, availability and expected checkpoint count for menu record lookup. No track, spawn, checkpoint, physics or HUD layout changes are needed for this menu pass.
+StageDefinition retains stage identity/style-credit fields, scene path, description, availability and expected checkpoint count, and now also supports optional preview and difficulty metadata. Stage Select shows the Style Credit cap and rate. No track, spawn, checkpoint, physics or HUD layout changes are needed for this menu pass.
 
 To add your next map:
 
@@ -21,9 +21,9 @@ The current map is remembered under Stagebound.SelectedStageId. Invalid/unavaila
 
 ## Navigation
 
-Car Select: focus starts on SELECT. Footer D-pad/arrow left/right move SELECT <-> BACK without changing the vehicle. Up focuses the Car Browser header, where left/right browse cars; down returns to the buttons. L1/R1 change cars independently without stealing footer focus. Enter/Cross confirms the focused control, Escape/Circle goes back. Clicking the on-screen arrows returns focus to the browser.
+Car Select: focus starts on CONTINUE. Left/Right and L1/R1 browse cars from the footer or browser. Up/Down navigate footer/browser controls. Enter/Cross confirms; Escape/Circle goes back. Mouse arrows and buttons use the same callbacks.
 
-Map Select: D-pad/arrows navigate map rows and START/BACK. Focusing a row updates its details and records without loading anything. Right moves from a row to START (or BACK for a disabled map). START/BACK have normal left/right navigation. The map list scrolls for additional entries. Clicking a playable map row or pressing Cross/Enter on it starts that map directly. The START button also remains available. Confirming a disabled placeholder goes to BACK and never loads a scene.
+Map Select: D-pad/arrows navigate map rows and START/BACK. Focusing a row updates its details and records without loading anything. Right moves from a row to START (or BACK for a disabled map). START/BACK have normal left/right navigation. The map list scrolls for additional entries. Clicking a playable map row or pressing Cross/Enter on it focuses START without loading the race. START loads the stage. Confirming a disabled placeholder goes to BACK and never loads a scene.
 
 Both panels use the existing EventSystem/InputSystemUIInputModule and preserve navigation focus after background clicks. The prior focus behavior is restored when a panel closes. No competing input module or EventSystem is added.
 
@@ -47,7 +47,7 @@ Per-car best adjusted times update only for better valid finishes; fastest raw t
 
 The development Reset Best Time action still resets only the active route's records. It now also removes that route's indexed per-car records and migration marker. The index lives at the overall key plus .cars.v1.index. Other maps, HUD positions, audio settings and selected IDs are preserved. PlayerPrefs.DeleteAll is never used.
 
-## Files and scope
+## Earlier stage-menu pass (historical scope and checks)
 
 Created: StageCatalog.cs, StageRecords.cs, StageSelectPanel.cs, StageSelectNavigation.cs, StageCatalog.asset, Map02.asset and this document, with their Unity metadata.
 
@@ -56,4 +56,3 @@ Modified: MainMenu.cs, CarSelectPanel.cs, CarSelectNavigation.cs, StageDefinitio
 No current car configuration, vehicle handling, suspension, race-scene layout, spawn/checkpoint placement or effect scripts are changed. No commits/pushes. Tests and screenshots are kept in ignored Library/StageMenuValidation, using a separate PlayerPrefs namespace.
 
 Validation passes for gamepad/keyboard focus, carousel/footer separation, shoulder shortcuts retaining focus, independent car selection, map placeholder gating, START/BACK navigation, selected scene/car loading, one EventSystem/CarRoot, overall and per-car finish records, historical AE86 migration, slower-run rejection, cross-map/car isolation, scoped reset, malformed records, pause/restart/menu return and updated record display. Both panels were rendered for visual inspection. Runtime/editor compilation passes with warnings treated as errors. Stop Play Mode and reopen MainMenu before testing the saved scene changes.
-

@@ -29,7 +29,7 @@ public class StageSelectPanel : MonoBehaviour
     }
     void Build()
     {
-        StageboundMenuUI.Text(transform,"SELECT MAP",38,new Vector2(40,-26),new Vector2(1200,65),Color.white);
+        StageboundMenuUI.Text(transform,"STAGE SELECT",38,new Vector2(40,-26),new Vector2(1200,65),Color.white);
         carLabel=StageboundMenuUI.Text(transform,"",20,new Vector2(40,-108),new Vector2(1250,40),StageboundMenuUI.Mint);
         var viewport=StageboundMenuUI.Panel(transform,"Maps",new Vector2(0,1),new Vector2(40,-190),new Vector2(530,490),new Color32(9,17,26,100));
         viewport.GetComponent<Image>().raycastTarget=true;viewport.gameObject.AddComponent<RectMask2D>();
@@ -42,17 +42,16 @@ public class StageSelectPanel : MonoBehaviour
             int rowIndex=i;var stage=catalog.stages[i];
             var button=StageboundMenuUI.Button(content,stage!=null?stage.stageName:"UNAVAILABLE",new Vector2(4,-i*104),new Vector2(510,88),()=>{
                 Highlight(rowIndex);
-                if(CanStart) Confirm();
-                else StageboundMenuUI.Select(back);
+                StageboundMenuUI.Select(CanStart?start:back);
             });
             rows.Add(button);var nav=button.gameObject.AddComponent<StageSelectNavigation>();nav.panel=this;nav.stageIndex=i;
-            StageboundMenuUI.Text(button.transform,stage!=null&&stage.IsPlayable?"TIME ATTACK":stage?.unavailableLabel??"UNAVAILABLE",
+            StageboundMenuUI.Text(button.transform,stage!=null&&stage.IsPlayable?"TIME ATTACK + STYLE":stage?.unavailableLabel??"UNAVAILABLE",
                 14,new Vector2(22,-51),new Vector2(475,27),StageboundMenuUI.Muted);
         }
         title=StageboundMenuUI.Text(transform,"",34,new Vector2(650,-195),new Vector2(660,60),Color.white);
         description=StageboundMenuUI.Text(transform,"",20,new Vector2(650,-270),new Vector2(660,90),StageboundMenuUI.Muted);
         description.textWrappingMode=TextWrappingModes.Normal;
-        records=StageboundMenuUI.Text(transform,"",22,new Vector2(650,-380),new Vector2(660,270),Color.white);
+        records=StageboundMenuUI.Text(transform,"",20,new Vector2(650,-380),new Vector2(660,270),Color.white);
         status=StageboundMenuUI.Text(transform,"",17,new Vector2(650,-664),new Vector2(660,50),StageboundMenuUI.Mint);
         start=StageboundMenuUI.Button(transform,"START",new Vector2(40,-736),new Vector2(320,60),Confirm);
         back=StageboundMenuUI.Button(transform,"BACK",new Vector2(390,-736),new Vector2(240,60),Back);
@@ -77,11 +76,13 @@ public class StageSelectPanel : MonoBehaviour
         title.text=stage.stageName.ToUpperInvariant();description.text=stage.description;
         var overall=StageRecords.Overall(stage,stage.checkpointCount);
         var car=StageRecords.ForVehicle(stage,stage.checkpointCount,vehicle!=null?vehicle.vehicleId:null);
-        records.text="SELECTED CAR\nBEST (STYLE)   "+Time(car.hasBest,car.bestAdjustedTime)+
-            "\nFASTEST RAW    "+Time(car.hasBest,car.bestRawTime)+"\nBEST DRIFT       "+(car.hasBest?Mathf.RoundToInt(car.bestDriftScore).ToString("N0"):"--")+
-            "\n\nALL CARS\nBEST (STYLE)   "+Time(overall.hasBest,overall.bestAdjustedTime)+
-            "\nFASTEST RAW    "+Time(overall.hasBest,overall.bestRawTime);
-        status.text=CanStart?"READY":!stage.selectable?stage.unavailableLabel:"MAP OR CAR UNAVAILABLE";
+        records.text="SELECTED CAR\nBEST FINAL     "+Time(car.hasBest,car.bestAdjustedTime)+
+            "\nBEST RAW       "+Time(car.hasBest,car.bestRawTime)+"\nBEST DRIFT       "+(car.hasBest?Mathf.RoundToInt(car.bestDriftScore).ToString("N0"):"--")+
+            "\n\nALL CARS\nBEST FINAL     "+Time(overall.hasBest,overall.bestAdjustedTime)+
+            "\nBEST RAW       "+Time(overall.hasBest,overall.bestRawTime);
+        records.text+=$"\nSTYLE CAP       -{stage.maxStyleCredit:0.0} s   /   {stage.pointsPerSecondCredit:0} pts/s";
+        status.text=CanStart?"READY  /  "+stage.checkpointCount+" CHECKPOINT"+(stage.checkpointCount==1?"":"S")+
+            (string.IsNullOrEmpty(stage.difficultyLabel)?"":"  /  "+stage.difficultyLabel):!stage.selectable?stage.unavailableLabel:"MAP OR CAR UNAVAILABLE";
         UpdateNavigation();
         float height=scroll.viewport.rect.height;
         scroll.content.anchoredPosition=new Vector2(0,Mathf.Clamp(index*104-height*.35f,0,Mathf.Max(0,scroll.content.sizeDelta.y-height)));

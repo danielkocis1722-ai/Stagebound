@@ -1,79 +1,141 @@
-# Vehicles and Car Select
+# Vehicles, Car Select and Stage Select
 
-## Architecture
+Current integration: 29 October 2026. Work was performed directly in `C:\Users\dandy\Documents\Projects\Stagebound`. Nothing was committed or pushed.
 
-There is still one physics CarRoot and one CarController in SampleScene. VehicleRigLoader runs at execution order -1000, resolves the selected VehicleDefinition, applies its VehicleConfig once, then binds its VehicleVisualSetup. It completes before grip caches, respawn, effects Awake and controller Start. It does not move CarRoot, create a second rig, or own race state.
+## Detected content
 
-- VehicleConfig: grouped engine, transmission, steering, differential, clutch, brakes/handbrake, rear-grip, front-recovery, yaw, visual-motion, chassis and individual-wheel tuning. Each wheel stores exact local pose/scale, center, radius, mass, spring/damper/travel/target, force point and both friction curves.
-- VehicleDefinition: stable ID, name/manufacturer, drivetrain label, description, availability, config, visual prefab, optional preview image/first engine-loop override and four display-only stats. The shared controller currently implements its existing RWD drivetrain; the label does not implement AWD/FWD.
-- VehicleCatalog: list of definitions and a playable default. IDs must be non-empty and unique.
-- VehicleVisualSetup: explicit body root, four wheel pivots, optional unsprung axle beams, optional brake-light renderers/material slots and a verified light-only material. There are no wheel-name searches.
-- VehicleSelection: saves only Stagebound.SelectedVehicleId in PlayerPrefs. Changing the catalog order does not change the selected car. Missing, incomplete or unavailable IDs fall back to the catalog's playable default.
+Cars already in the project:
 
-VehicleConfig copies arrays and animation curves into runtime fields. A car cannot alter the shared asset by changing its gears or curves while playing. Applying a config does not run every frame. Inspect VehicleRigLoader.CurrentDefinition / CurrentVisual to see the active entry.
+- `Assets/Models/Cars/ToyotaAE86.fbx`
+- `Assets/Models/Cars/ToyotaAE86-lights.fbx` (the existing playable baseline)
+- `Assets/Models/Cars/Skyline_R32.fbx`
+- `Assets/Models/Cars/RX7_FBX.fbx`
+- Existing RX7 images in `Assets/Models/Cars/texture`: `bridgestone_dueler_hp_sport.jpg`, `hand_poolL.jpg`, `LightBackRx7.jpg`, `rx_plate.jpg`.
 
-## AE86 baseline and assets
+Both `Assets/Models/Tracks/SouthLoop.glb` and `Assets/Models/Tracks/track comple.fbx` exist. South Loop uses the GLB in SampleScene; Track Comple Circuit uses the FBX in its own new scene. Both stages are available; Map 02 remains disabled. See TrackCompleIntegration.md for the current two-stage setup, 22-item report and six-combination validation. No external model, texture, track, font or plugin assets were downloaded. Existing user package, quality, player and version changes present before the second-track pass were preserved.
 
-- Assets/Vehicles/Configs/AE86_VehicleConfig.asset
-- Assets/Vehicles/Definitions/AE86_VehicleDefinition.asset (ID ae86)
-- Assets/Vehicles/Definitions/Vehicle02_VehicleDefinition.asset (ID vehicle02; disabled development entry)
-- Assets/Vehicles/VehicleCatalog.asset
-- Assets/Vehicles/Visuals/AE86_Visual.prefab
+## Shared architecture and baseline
 
-AE86 tuning was captured from the current saved SampleScene, including its latest 0.25 m travel, 2800/3600 dampers, 1.16 rear lateral stiffness, flat 1.0 rear asymptote and visual motion settings. No factory specifications or new handling values were substituted. Individual collider positions, visual offset/scale, torque curve, drivetrain and assist values are copied exactly.
+`VehicleRigLoader` still configures one existing CarRoot, Rigidbody, CarController, chassis collider and four WheelColliders before other systems cache their state. A selected visual prefab supplies body/wheel/light bindings. The original scene visual is retained for AE86 and deactivated when another visual is instantiated. No additional playable rigs are placed in the scene.
 
-The existing ToyotaAE86-lights scene instance is retained for AE86, with a VehicleVisualSetup added as a prefab-instance override. The visual-only prefab is a reusable copy of that same model and its current material/mesh references. It contains no CarController, colliders or Rigidbody. Future selections instantiate their own visual under the existing CarRoot and deactivate the original visual.
+The AE86 config, prefab, race scene, controller, camera, assists, effects, audio, timer, checkpoints, scoring and respawn scripts were retained. Only AE86's four display bars changed to the requested 5/8/7/5 values. Physics never reads those bars.
 
-SampleScene's loader references the catalog, AE86 definition, existing visual and chassis BoxCollider. MainMenu references the same catalog. All current assignments are supplied. The existing FollowCamera still follows CarRoot; no camera handling offsets were added.
+The authoritative initial/restart pose remains `Race Start-Finish/Start Respawn`, at `(6.4, 1, 4.8)`. South Loop still has one required checkpoint, an eight-second maximum Style Credit and 2000 points per credited second.
 
-## Menu and preview
+## Imported hierarchy mapping
 
-CAR SELECT is a separate Main Menu option below PLAY. Its SELECT button saves the stable vehicle ID and returns to the main buttons; BACK cancels browsing. PLAY opens the map list using the saved car. The map list's START button loads that map with the selected vehicle. See Stages.md for map metadata and overall/per-car records.
+The mappings were inspected in Unity after import, including renderer bounds and material slots. FBX collection names were not assumed.
 
-Mouse buttons, keyboard arrows/Enter/Escape and gamepad D-pad/left-stick, Cross/Circle use the existing InputSystemUIInputModule/EventSystem. Focus starts on SELECT; left/right on the footer move between SELECT and BACK without changing cars. Up focuses the Car Browser header, where left/right browse cars; down returns to the buttons. L1/R1 switch cars while retaining focus. The disabled Vehicle 02 entry can be browsed but cannot save a selection. Catalog or content errors are displayed as an unavailable selection.
+| Wheel | Skyline R32 source path | RX7 source path |
+|---|---|---|
+| FL | `Circle.014` | `group9/group3` |
+| FR | `Circle.020` | `group10/group3` |
+| RL | `Circle.017` | `group9/group8` |
+| RR | `Circle.023` | `group10/group8` |
 
-The preview renders only the visual prefab to a small texture with its own camera/light and slow rotation. It uses layer 30 inside MainMenu; reserve that layer for menu previews if adding other menu geometry. It has no AudioListener or running vehicle physics. A preview image can be used when a visual is not ready. Missing preview content shows a simple placeholder. Graphics-less builds/tests use that placeholder safely. Preview cameras/textures are disabled with the panel and destroyed on scene exit.
+R32's wheel meshes each include tire, rim and brake material slots. Its body is the collection of `Plane*` renderers; `Plane.011` contains window slots, `Plane.023` contains logos/trim and `Plane.024` contains dummy/interior/plastic/exhaust parts. Those renderers and their material-slot order remain present.
 
-Display stats are Inspector-editable bars only and never feed physics.
+Each RX7 wheel group has eleven renderers: `te`, the named Tire7 mesh, Cylinder020, Support3 and the smaller bolt/rim pieces. They move together under four newly aligned empty pivots. The authored 15-degree front-wheel steering pose was removed about each actual hub; source camber and mirrored geometry were retained. `group11` contains the body, windows, light clusters, trim and black interior/dummy (`pCube10`). Window pieces include `polySurface10`, `polySurface180`, `polySurface514` and `polySurface521`; rear-lamp glass is `polySurface576`.
 
-## Importing the next vehicle (no normal controller-code changes)
+All four wheel pivots have common controller axes, so the unchanged CarController writes WheelCollider world rotation/position to the pivots while the imported meshes retain their required child transforms.
 
-1. Import your model/FBX and prepare its materials.
-2. Create a visual-only prefab. Remove physics, controllers and gameplay scripts; the shared CarRoot supplies those.
-3. Add VehicleVisualSetup to the prefab root. Assign a body/visual root that contains all four wheel pivots.
-4. Assign FL, FR, BL and BR explicitly. If an imported wheel's pivot, spin axis or rotation is unsuitable, create an aligned empty wheel pivot, parent the mesh underneath it, and adjust the mesh's local position/rotation there. Assign the empty pivot. CarController writes collider world poses to these pivots; it does not search names or infer axes.
-5. Optional: bind separate axle-beam meshes to their wheel pairs through Unsprung Axles. Keep them outside the four rotating wheel pivots.
-6. Optional: assign brake-light-only renderers and material indices. Supply the dedicated light-only material used by those slots. The current BrakeLights component safely ignores invalid/missing slots and never enables whole-body emission. Use the same dedicated light material for separate left/right renderers, or bind one shared light slot once. Keep normal emission zero.
-7. Duplicate AE86_VehicleConfig (recommended) and rename it for the new car. Adjust grouped tuning, positive wheel radii and individual collider local positions to the new wheelbase/track. Configure chassis BoxCollider pose/size and positive scale. Keep the physics WheelColliders on CarRoot.
-8. Set Visual Position Offset, Visual Rotation Offset and Visual Scale on the new config. Align the visual with the rig's collider geometry; changing visual scale does not automatically scale physics.
-9. Create a VehicleDefinition via Assets > Create > Stagebound > Vehicles > Vehicle Definition. Give it a permanent unique ID, config and VehicleVisualSetup prefab reference. Set its name, description, stats and optional image/engine loop.
-10. Add the definition to VehicleCatalog.vehicles. Set selectable only when model/setup and tuning are complete. Leave the default AE86 entry in place as fallback.
-11. Test from MainMenu: CAR SELECT, browse/select, return to PLAY, choose a map and START. Then test driving, countersteer, handbrake, clutch/shifts, wheel poses, suspension, smoke/skidmarks, engine audio, brake lights, checkpoints, respawn and Restart Stage.
+The RX7 FBX repeats wheel mesh names. `RX7ImportPostprocessor.cs` gives its imported mesh objects unique hierarchy-derived names without moving or modifying the FBX. A forced reimport was tested against the prefab's mesh GUID/file ID/vertex-count signature. Unity still emits source duplicate-name import warnings before postprocessing; the tested final prefab references remain intact. If the FBX hierarchy itself is changed later, rebuild and revalidate the visual.
 
-The development action Stagebound > Vehicles > Capture Selected Rig as Config can save a copy of a selected rig's serialized settings while stopped. It creates a new asset and does not retune the scene. The one-time baseline migration is not an automatic import hook and refuses to overwrite an existing catalog.
+## Scale and alignment
 
-## Editing and limitations
+The existing world uses approximately 2.192083 Unity units per nominal metre, inferred from AE86's existing 5.261-unit wheelbase versus a 2.4 m reference. New models are normalized to reasonable nominal lengths within this established world convention. Their actual imported geometry determines scale, wheel hubs, radius and offsets. Their axle midpoint uses the shared rig's existing 0.6925 local Z reference. No AE86 visual offset was copied onto them.
 
-Edit the VehicleConfig asset for persistent vehicle tuning. The selected config is authoritative at race startup, so scene CarController/WheelCollider tuning fields are overwritten once at initialization. Stop Play Mode before changing assets and reload SampleScene if Unity already has an older scene instance open.
+| Vehicle | Imported bounds before scale (X/Y/Z) | Visual Scale (uniform) | Visual Position Offset | Rotation |
+|---|---|---|---|---|
+| AE86 | Existing prefab retained | 0.5 | `(0.115, -0.92, 0.7624253)` | `(0,0,0)` |
+| R32 | `(1.070412, 0.754126, 2.566965)` | 3.881245 | `(0, -0.851482, 0.670030)` | `(0,0,0)` |
+| RX7 | `(0.019811, 0.012811, 0.044305)` | 212.0095 | `(0, -0.853072, 0.521016)` | `(0,0,0)` |
 
-The current AE86 brake-light component is disabled/unassigned in the baseline; that state is preserved. There are no newly required manual assignments for AE86 or menu flow. Future models require their own wheel/light bindings and assets as above. Vehicle 02 deliberately has no fake AE86 model, physics config or downloaded asset.
+Resulting new-car bounds are about `(4.15453, 2.92695, 9.96302)` for R32 and `(4.20007, 2.71606, 9.39308)` for RX7, in this world's units. The RX7 scale is large because the imported model is only about 0.0443 units long.
 
-This task does not implement an unlock economy, new drivetrain architectures, or new car models. No race/HUD/scoring/pause/respawn/controller physics scripts were rewritten.
+## Individual WheelCollider geometry
 
-## Changed-file manifest
+Positions are local to each wheel's existing parent in the common rig; all new wheel rotations are identity, scales one and centers zero. Suspension and friction remain independently editable for every wheel.
 
-Created runtime scripts (under Assets/Scripts, with Unity metadata): VehicleConfig.cs, VehicleDefinition.cs, VehicleCatalog.cs, VehicleSelection.cs, VehicleVisualSetup.cs, VehicleRigLoader.cs, CarSelectPanel.cs, CarSelectNavigation.cs and VehiclePreview.cs.
+| Vehicle | FL | FR | RL | RR |
+|---|---|---|---|---|
+| AE86 | `(-1.605,-0.2,3.323)` | `(1.605,-0.2,3.323)` | `(-1.605,-0.25,-1.938)` | `(1.605,-0.25,-1.938)` |
+| R32 | `(-1.66303,-0.14807,3.57156)` | `(1.66303,-0.14807,3.57156)` | `(-1.66303,-0.14807,-2.18656)` | `(1.66303,-0.14807,-2.18656)` |
+| RX7 | `(-1.53354,-0.14036,3.36504)` | `(1.53354,-0.14036,3.36504)` | `(-1.53354,-0.14036,-1.98004)` | `(1.53354,-0.14036,-1.98004)` |
 
-Created editor script: Assets/Editor/VehicleSetupEditor.cs. Created the five vehicle assets listed above, their folders/metadata, and this document.
+| Vehicle | Radius FL/FR/RL/RR | Wheelbase | Front track | Rear track |
+|---|---|---|---|---|
+| AE86 | `0.65 / 0.65 / 0.65 / 0.65` | 5.261 | 3.21 | 3.21 |
+| R32 | `0.72693 / 0.72693 / 0.72693 / 0.72693` | 5.75812 | 3.32606 | 3.32606 |
+| RX7 | `0.73325 / 0.73576 / 0.73477 / 0.73477` | 5.34509 | 3.06708 | 3.06708 |
 
-Modified: Assets/Scripts/MainMenu.cs, Assets/Scenes/MainMenu.unity and Assets/Scenes/SampleScene.unity. CarController, physics/assist implementations, FollowCamera, effects, race, scoring, HUD, pause and respawn scripts are unchanged by this feature.
+New radii use measured wheel-assembly bounds, including retained camber. New chassis boxes are fitted to each sprung body and do not touch the road ahead of the tires. Four-wheel road contact is checked in Play Mode for every selection.
 
-## Validation
+## Editable initial tuning
 
-Compared the generated AE86 config against a fresh capture of the pre-migration scene: every serialized tuning, curve, geometry and alignment field matched. Matched isolated WheelCollider simulations for coasting, acceleration, handbrake and direction transitions produced zero trace difference in sampled position, velocity, yaw, RPM and rear-grip multiplier.
+These are Stagebound prototype values, not claims of factory specifications. R32 uses the shared RWD drivetrain as an explicitly labelled drift setup; no AWD system was invented.
 
-Additional checks cover an alternate in-memory definition applying different mass/torque/steering/geometry and swapping the visual without another rig, independent runtime curves/arrays, one-time initialization, invalid-ID/placeholder fallback and catalog reordering. The production placeholder is not a duplicate AE86.
+| Value | AE86 | R32 | RX7 |
+|---|---:|---:|---:|
+| Mass, kg | 1100 | 1450 | 1250 |
+| Maximum engine torque, Nm | 360 | 460 | 500 |
+| Steering speed, degrees/s | 95 | 82 | 105 |
+| Steering return speed | 150 | 130 | 155 |
+| Final drive | 5.3 | 4.1 | 4.3 |
+| Engine inertia | 0.35 | 0.44 | 0.34 |
+| LSD strength | 0.6 | 0.75 | 0.7 |
+| Angular damping | 0.225 | 0.28 | 0.24 |
+| Front/rear anti-roll | 2200/1700 | 3200/2400 | 2500/1900 |
+| Power-slip grip reduction | 0.08 | 0.07 | 0.10 |
+| Controlled-drift grip recovery | 0.6 | 0.5 | 0.55 |
+| Display bars: power/handling/drift/stability | 5/8/7/5 | 7/7/8/8 | 8/8/9/7 |
 
-Native Play Mode input tests cover pointer PLAY, keyboard navigation/Enter/Escape, gamepad shoulder/D-pad/Cross/Circle, disabled confirmation, selected-ID loading, one EventSystem, actual acceleration, wheel poses, configured audio and smoke/skidmarks, timer/checkpoint/split/results, DriftScore/Style Credit, checkpoint respawn, pause/Restart Stage, return to menu and selection restoration. A graphical run also renders and captures the model preview for visual inspection. These are automated Input System tests, not a physical DualSense road test.
+New spring/damper values scale with each car's mass relative to the captured baseline. Existing gear ratios, engine curve/redline, clutch/handbrake behavior, tire-curve shapes and assist architecture are reused. R32's longer geometry, mass/inertia, damping and slower steering give it a planted initial character; RX7 has faster steering and more torque/power breakaway. Final subjective handling tuning remains a driving task.
 
-Validation runs in an isolated project copy with a separate PlayerPrefs namespace. Test sources/results/screenshots stay under ignored Library/VehicleSelectionValidation; no test runner is added to the shipped Assets. No commit or push is made.
+## URP materials and brake lights
+
+Created 24 R32 and 33 RX7 URP Lit material assets under `Assets/Vehicles/Materials/SkylineR32` and `Assets/Vehicles/Materials/RX7`. Every renderer retains its original number and order of slots. See the file manifest for individual material names.
+
+R32 uses simple blue/teal paint, dark rubber/plastic/interior, metallic rims/brakes/chrome, tinted transparent glass, light lenses and retained logo slots. Two renderer-specific `RearLens_0/1` materials make the `Plane.016` outer covers transparent so the red lamps behind them remain visible. Blender procedural shading is approximated, not reproduced node for node.
+
+RX7 uses source Maya base colors, metalness, roughness and transmission where applicable; these were recovered from the existing FBX into `Docs/RX7SourceMaterials.json`. Its four supplied images are explicitly rebound to the original material relationships: tire_side1/tire-sidewall image, hand_door/hand_poolL, light_back/LightBackRx7 and aiStandardSurface55/rx_plate. Reflective window materials are approximated with tinted transparent glass. Complex carbon-fiber/procedural/refraction behavior is simplified to URP Lit.
+
+Brake-light assignments:
+
+- AE86: existing disabled/unassigned baseline state retained.
+- R32: `Plane.020`, slot 0, dedicated `rear lights` material. It covers both rear lamp banks; only one BrakeLights lamp binding is needed.
+- RX7: `group11/polySurface534`, slot 0, dedicated `aiStandardSurface12` material, verified as the upper red lamp circles. The textured lower `polySurface557` reflectors stay non-emissive.
+
+The existing BrakeLights system clones only the allowed lamp slot. Brake-pedal emission and all other material slots remaining dark are checked in Play Mode. No body-paint slot is allowed to emit.
+
+## Menu and records
+
+Flow: **Main Menu -> PLAY -> Car Select -> CONTINUE -> Stage Select -> START -> South Loop race**.
+
+The separate Main Menu CAR SELECT shortcut opens the same flow. Stage Back returns to Car Select; Car Back returns to Main Menu. Both screens restore focus and keep the existing dark/mint/TMP styling.
+
+Car Select has all three real vehicles, editable display bars, drivetrain, config mass/torque and the existing slowly rotating visual-only 3D preview. Mouse arrows/buttons, Left/Right, L1/R1, Enter/Cross and Escape/Circle are supported. Left/Right browse from the footer as well as the header. Up/Down move focus among Continue/Back/browser controls.
+
+Stage Select includes South Loop and Track Comple Circuit and reuses StageCatalog/StageDefinition. It shows description, selected-car and overall final/raw records, best drift, Style Credit cap/rate and checkpoint count. Optional preview and difficulty metadata are supported by StageDefinition. Selecting a row updates details/focus; START performs scene loading. The disabled Map 02 cannot start. South Loop's existing definition, route, records and Style Credit rules are reused.
+
+`Stagebound.SelectedVehicleId` and `Stagebound.SelectedStageId` store stable IDs, never array indices. IDs are `ae86`, `skyline-r32`, `rx7-fd` and stage IDs `south-loop` / `track-comple`. Race startup resolves the selected definition and applies all four collider geometries before the common controller/effects initialize. Existing overall/per-car record code is unchanged.
+
+## Validation and limits
+
+Tested with Unity **6000.6.7f1**, now also the project version at the start of the second-track pass. User settings/package/version changes already present were preserved. No standalone player build or physical DualSense test was performed.
+
+The explicit editor checks validate imported references, catalog uniqueness, actual South Loop checkpoint metadata, single rig, authoritative spawn and mesh-reference survival across a forced RX7 reimport. Play Mode checks cover each selected vehicle's config, four wheel positions/radii, suspension poses, four-wheel road contact, camera, acceleration/RPM, wheel rotation, steering, gearshift, handbrake and clutch. Controlled velocity on the real road produces actual WheelCollider slip and verifies telemetry, drift score/credit, smoke, screech gain and skidmark segments.
+
+Menu tests exercise pointer-button confirmation, synthetic gamepad shoulders/Cross/Circle, keyboard Enter/Escape, disabled-stage gating, Back navigation, stage loading, results/continued runs, pause/restart/menu return and saved selection. AE86's config is compared before/after the runs. Test result records and selected preferences are restored; user records are not deliberately overwritten. Screens and all three car renders are inspected separately from assertions.
+
+Detailed evidence lives in ignored `Library/VehicleIntegration`: `inspection.txt`, `setup.txt`, `playmode.txt`, menu/model/race/braking PNGs and Unity logs. The editor may log its Search indexing exception and source duplicate-mesh-name warnings; these are separate from the passing gameplay assertions. Audio gain/clip behavior is verified programmatically; no claim is made of an auditory listening test or final subjective handling quality.
+
+No Blender or Inspector assignment is required to try the saved setup. Open `Assets/Scenes/MainMenu.unity`, press Play and follow the flow. Optional later work is final handling tuning, more detailed shaders/interior presentation and a physical controller road test. The AE86's pre-existing disabled brake lights remain a known baseline limitation.
+
+## Files and repeatability
+
+Modified runtime scripts: `MainMenu.cs`, `CarSelectPanel.cs`, `CarSelectNavigation.cs`, `StageDefinition.cs`, `StageSelectPanel.cs`. Modified assets: `AE86_VehicleDefinition.asset` (display bars only) and `VehicleCatalog.asset`.
+
+Created: R32/RX7 visual prefabs, configs, definitions and 57 URP materials with Unity metadata. New editor utilities: `IntegrateVehicles.cs`, `RX7ImportPostprocessor.cs`, `ValidateVehicleFlow.cs`. Added source material metadata and updated this document, `Stages.md` and `MenuAndRaceFlow.md`. The exhaustive Git/file list is `Docs/VehicleIntegrationFiles.txt`.
+
+`IntegrateVehicles.Run` is an explicit one-time preparation/rebuild command. It does not run on normal imports, but deliberately rebuilding replaces the two generated configs with the recorded initial tuning. Do not run it over later manual tuning without saving those changes. `ValidateVehicleFlow.Run` is the explicit Play Mode verification entry point and exits its editor process when complete. It should be run in a dedicated editor process, not in an editor session with unsaved work.

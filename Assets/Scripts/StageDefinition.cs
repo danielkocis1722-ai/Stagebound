@@ -11,6 +11,8 @@ public class StageDefinition : ScriptableObject
     [Tooltip("Scene asset path, also enabled in Build Settings.")]
     public string scenePath;
     [TextArea(2,4)] public string description;
+    public Sprite previewImage;
+    public string difficultyLabel = "";
     public bool selectable = true;
     public string unavailableLabel = "COMING SOON / DEVELOPMENT";
     [Min(1)] public int checkpointCount = 1;

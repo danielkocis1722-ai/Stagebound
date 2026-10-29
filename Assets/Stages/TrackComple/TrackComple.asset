@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb50455aa79f4f299e56cc18a770f255, type: 3}
+  m_Name: TrackComple
+  m_EditorClassIdentifier: Assembly-CSharp::StageDefinition
+  stageId: track-comple
+  stageName: Track Comple Circuit
+  scenePath: Assets/Scenes/TrackCompleCircuit.unity
+  description: A compact technical circuit with flowing S-bends, tight hairpins and an elevated crossing.
+  previewImage: {fileID: 0}
+  difficultyLabel: TECHNICAL
+  selectable: 1
+  unavailableLabel: COMING SOON / DEVELOPMENT
+  checkpointCount: 4
+  recordVersion: 1
+  importLegacySceneBest: 0
+  pointsPerSecondCredit: 2000
+  maxStyleCredit: 8

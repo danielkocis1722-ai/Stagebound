@@ -46,16 +46,16 @@ public class MainMenu : MonoBehaviour
     }
     public void Play()
     {
-        menu.SetActive(false); cars.gameObject.SetActive(false); maps.Show(VehicleSelection.Resolve(vehicleCatalog));
+        ShowCarSelect();
     }
     public void ShowCarSelect() { menu.SetActive(false);maps.gameObject.SetActive(false);cars.Show(); }
     void ShowCarMenu() { menu.SetActive(true);StageboundMenuUI.Select(carButton); }
     void ChooseCar(VehicleDefinition vehicle)
     {
         if(!VehicleSelection.Save(vehicleCatalog,vehicle)) return;
-        cars.gameObject.SetActive(false);ShowCarMenu();
+        cars.gameObject.SetActive(false);maps.Show(vehicle);
     }
-    void ShowPlayMenu() { menu.SetActive(true); StageboundMenuUI.Select(play); }
+    void ShowPlayMenu() { ShowCarSelect(); }
     void StartStage(StageDefinition stage)
     {
         if(stage==null||!stage.IsPlayable) {maps.ShowError("MAP UNAVAILABLE");return;}

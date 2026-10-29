@@ -27,7 +27,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 2669357519052256417, guid: 22ded30d9b1b02347a62ddab14b129ae, type: 3}
   previewImage: {fileID: 0}
   engineLoop: {fileID: 0}
-  power: 0.55
+  power: 0.5
   handling: 0.8
-  drift: 0.9
-  stability: 0.6
+  drift: 0.7
+  stability: 0.5

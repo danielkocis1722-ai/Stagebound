@@ -1,0 +1,433 @@
+{
+  "materials": [
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_bolt",
+      "color": {
+        "r": 0.03246753290295601,
+        "g": 0.03246753290295601,
+        "b": 0.03246753290295601,
+        "a": 1
+      },
+      "metallic": 0.2467532455921173,
+      "smoothness": 0.779220774769783,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "tire_side1",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.5649350881576538,
+      "smoothness": 0.3246753215789795,
+      "transmission": 0.0,
+      "texture": "bridgestone_dueler_hp_sport.jpg"
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_tire",
+      "color": {
+        "r": 0.012987012974917889,
+        "g": 0.012987012974917889,
+        "b": 0.012987012974917889,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.5714285671710968,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "MAX",
+      "color": {
+        "r": 0.5389610528945923,
+        "g": 0.5389610528945923,
+        "b": 0.5389610528945923,
+        "a": 1
+      },
+      "metallic": 0.5454545617103577,
+      "smoothness": 0.3246753215789795,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "max_outline",
+      "color": {
+        "r": 0.6168830990791321,
+        "g": 0.6168830990791321,
+        "b": 0.6168830990791321,
+        "a": 1
+      },
+      "metallic": 0.8441558480262756,
+      "smoothness": 0.6298701167106628,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_max",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.4740259647369385,
+      "smoothness": 0.5844155848026276,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5",
+      "color": {
+        "r": 0.31700000166893005,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.22077922523021698,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9",
+      "color": {
+        "r": 0.07096774131059647,
+        "g": 0.07096774131059647,
+        "b": 0.07096774131059647,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7",
+      "color": {
+        "r": 0.07741935551166534,
+        "g": 0.07741935551166534,
+        "b": 0.07741935551166534,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8",
+      "color": {
+        "r": 0.04516129195690155,
+        "g": 0.04516129195690155,
+        "b": 0.04516129195690155,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4",
+      "color": {
+        "r": 0.12337662279605865,
+        "g": 0.12337662279605865,
+        "b": 0.12337662279605865,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "v_cross_hood_wheel_BBS_ad_size_disbreak",
+      "color": {
+        "r": 0.16883116960525513,
+        "g": 0.16883116960525513,
+        "b": 0.16883116960525513,
+        "a": 1
+      },
+      "metallic": 0.8311688303947449,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "choem",
+      "color": {
+        "r": 0.20779220759868622,
+        "g": 0.20779220759868622,
+        "b": 0.20779220759868622,
+        "a": 1
+      },
+      "metallic": 0.9220778942108154,
+      "smoothness": 0.7857142835855484,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "black_hold",
+      "color": {
+        "r": 0.0060240961611270905,
+        "g": 0.0060240961611270905,
+        "b": 0.0060240961611270905,
+        "a": 1
+      },
+      "metallic": 0,
+      "smoothness": 0.5,
+      "transmission": 0,
+      "texture": ""
+    },
+    {
+      "name": "body",
+      "color": {
+        "r": 0.6233766078948975,
+        "g": 0.6233766078948975,
+        "b": 0.6233766078948975,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.8636363595724106,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface18",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7142857015132904,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "chorm",
+      "color": {
+        "r": 0.2380952388048172,
+        "g": 0.2380952388048172,
+        "b": 0.2380952388048172,
+        "a": 1
+      },
+      "metallic": 0.8452380895614624,
+      "smoothness": 0.7261904776096344,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface19",
+      "color": {
+        "r": 0.875,
+        "g": 0.13461850583553314,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.8154761791229248,
+      "smoothness": 1.0,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "case_light",
+      "color": {
+        "r": 0.011904762126505375,
+        "g": 0.011904762126505375,
+        "b": 0.011904762126505375,
+        "a": 1
+      },
+      "metallic": 0.2738095223903656,
+      "smoothness": 0.5999999940395355,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface15",
+      "color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.8499999940395355,
+      "transmission": 1.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface2",
+      "color": {
+        "r": 0.2142857164144516,
+        "g": 0.08241786062717438,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.5129870176315308,
+      "smoothness": 0.6753246784210205,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "mirror",
+      "color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.9200000017881393,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "body_black_fiber",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.2976190447807312,
+      "smoothness": 0.7532467544078827,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "hand_door",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": "hand_poolL.jpg"
+    },
+    {
+      "name": "aiStandardSurface12",
+      "color": {
+        "r": 0.8379999995231628,
+        "g": 0.1289263218641281,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface14",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "mirror_reflex",
+      "color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface13",
+      "color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1
+      },
+      "metallic": 0.4404761791229248,
+      "smoothness": 0.869047611951828,
+      "transmission": 1.0,
+      "texture": ""
+    },
+    {
+      "name": "light_back",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.4350649416446686,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": "LightBackRx7.jpg"
+    },
+    {
+      "name": "inter_cooler",
+      "color": {
+        "r": 0.1428571492433548,
+        "g": 0.1428571492433548,
+        "b": 0.1428571492433548,
+        "a": 1
+      },
+      "metallic": 0.6168830990791321,
+      "smoothness": 0.8246753215789795,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "line",
+      "color": {
+        "r": 0.01807229220867157,
+        "g": 0.01807229220867157,
+        "b": 0.01807229220867157,
+        "a": 1
+      },
+      "metallic": 0.255952388048172,
+      "smoothness": 0.4583333134651184,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "plate2",
+      "color": {
+        "r": 0.008999999612569809,
+        "g": 0.008999999612569809,
+        "b": 0.008999999612569809,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.755952388048172,
+      "transmission": 0.0,
+      "texture": ""
+    },
+    {
+      "name": "aiStandardSurface55",
+      "color": {
+        "r": 0.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1
+      },
+      "metallic": 0.0,
+      "smoothness": 0.7999999970197678,
+      "transmission": 0.0,
+      "texture": "rx_plate.jpg"
+    }
+  ]
+}

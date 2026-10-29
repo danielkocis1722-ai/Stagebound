@@ -39,7 +39,7 @@ public class CarSelectPanel : MonoBehaviour
         browser=browserRect.gameObject.AddComponent<Button>();browser.targetGraphic=browserRect.GetComponent<Image>();
         browser.targetGraphic.raycastTarget=true;var colors=browser.colors;
         colors.normalColor=new Color32(10,18,29,0);colors.highlightedColor=colors.selectedColor=new Color32(30,58,65,150);browser.colors=colors;
-        browser.onClick.AddListener(()=>StageboundMenuUI.Select(browser));
+        browser.onClick.AddListener(Confirm);
         nameLabel=StageboundMenuUI.Text(browserRect,"",38,new Vector2(10,2),new Vector2(1080,66),Color.white);
         detail=StageboundMenuUI.Text(transform,"",20,new Vector2(40,-225),new Vector2(590,40),StageboundMenuUI.Mint);
         description=StageboundMenuUI.Text(transform,"",24,new Vector2(40,-280),new Vector2(590,110),StageboundMenuUI.Muted);
@@ -59,9 +59,9 @@ public class CarSelectPanel : MonoBehaviour
         preview=imageObject.AddComponent<VehiclePreview>(); preview.image=image;
         previewHint=StageboundMenuUI.Text(frame,"",18,new Vector2(24,-180),new Vector2(610,60),StageboundMenuUI.Muted);
         status=StageboundMenuUI.Text(transform,"",18,new Vector2(650,-658),new Vector2(660,42),StageboundMenuUI.Mint);
-        select=StageboundMenuUI.Button(transform,"SELECT",new Vector2(40,-716),new Vector2(300,60),Confirm);
+        select=StageboundMenuUI.Button(transform,"CONTINUE",new Vector2(40,-716),new Vector2(300,60),Confirm);
         back=StageboundMenuUI.Button(transform,"BACK",new Vector2(365,-716),new Vector2(240,60),Back);
-        StageboundMenuUI.Text(transform,"LEFT / RIGHT: BUTTONS    L1 / R1: CAR    UP: CAR BROWSER    ENTER / CROSS: CONFIRM    ESC / CIRCLE: BACK",
+        StageboundMenuUI.Text(transform,"LEFT / RIGHT / L1 / R1: CAR    ENTER / CROSS: CONTINUE    ESC / CIRCLE: BACK",
             16,new Vector2(40,-807),new Vector2(1260,30),StageboundMenuUI.Muted);
         foreach(var button in new[]{previous,next,browser,select,back}) {
             button.gameObject.AddComponent<CarSelectNavigation>().panel=this;
@@ -101,7 +101,9 @@ public class CarSelectPanel : MonoBehaviour
         var vehicle=DisplayedVehicle;
         if(vehicle==null) { select.interactable=false; return; }
         nameLabel.text=(string.IsNullOrWhiteSpace(vehicle.displayName)?vehicle.vehicleId:vehicle.displayName).ToUpperInvariant();
-        detail.text=vehicle.drivetrainLabel;
+        detail.text=vehicle.config!=null
+            ? $"{vehicle.drivetrainLabel}   /   {vehicle.config.chassis.mass:0} kg   /   {vehicle.config.engine.maxEngineTorque:0} Nm"
+            : vehicle.drivetrainLabel;
         description.text=vehicle.description;
         count.text=$"{index+1:00} / {catalog.vehicles.Length:00}";
         var values=new[]{vehicle.power,vehicle.handling,vehicle.drift,vehicle.stability};
@@ -115,9 +117,8 @@ public class CarSelectPanel : MonoBehaviour
     void UpdateNavigation()
     {
         browser.navigation=new Navigation {mode=Navigation.Mode.Explicit,selectOnDown=select.interactable?select:back,selectOnUp=back};
-        select.navigation=new Navigation {mode=Navigation.Mode.Explicit,selectOnLeft=back,selectOnRight=back,selectOnUp=browser,selectOnDown=back};
-        back.navigation=new Navigation {mode=Navigation.Mode.Explicit,selectOnLeft=select.interactable?select:browser,
-            selectOnRight=select.interactable?select:browser,selectOnUp=browser,selectOnDown=browser};
+        select.navigation=new Navigation {mode=Navigation.Mode.Explicit,selectOnUp=browser,selectOnDown=back};
+        back.navigation=new Navigation {mode=Navigation.Mode.Explicit,selectOnUp=select.interactable?select:browser,selectOnDown=browser};
     }
     public void Confirm() { if(CanSelect) onSelect?.Invoke(DisplayedVehicle); }
     public void Back() { gameObject.SetActive(false); onBack?.Invoke(); }
