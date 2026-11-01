@@ -14,5 +14,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TrackCompleCircuit.unity
     guid: 047e8638aae4aa04bbf7f65104628b27
+  - enabled: 1
+    path: Assets/Scenes/CherryMountain.unity
+    guid: 0c9dcf9208d39c8498ace4ad17374123
+  - enabled: 1
+    path: Assets/Scenes/DriftTracks.unity
+    guid: 454578a27f9247c44a624fc2aebb27e6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

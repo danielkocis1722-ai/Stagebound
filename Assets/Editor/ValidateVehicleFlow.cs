@@ -19,6 +19,8 @@ using UnityEngine.Rendering.Universal;
 // test component is added to the game. Invoked explicitly from the command line.
 public static class ValidateVehicleFlow
 {
+    private static bool tracksOnly;
+    public static void RunTracks() { tracksOnly = true; Run(); }
     private static IEnumerator steps;
     private static readonly StringBuilder log = new StringBuilder();
     private static readonly List<Action> restore = new List<Action>();
@@ -303,13 +305,15 @@ public static class ValidateVehicleFlow
         for (int i = 0; i < 8; i++)
             yield return null;
         var triggers = UnityEngine.Object.FindObjectsByType<RaceTrigger>();
-        var line = triggers.Single(t => t.triggerType == RaceTrigger.TriggerType.StartFinish);
-        var checkpoints = triggers.Where(t => t.triggerType != RaceTrigger.TriggerType.StartFinish).OrderBy(t => t.checkpointIndex).ToArray();
+        bool pointToPoint = timer.stageDefinition.stageType == StageDefinition.StageType.PointToPoint;
+        var line = triggers.Single(t => t.triggerType == (pointToPoint ? RaceTrigger.TriggerType.Start : RaceTrigger.TriggerType.StartFinish));
+        var finish = pointToPoint ? triggers.Single(t => t.triggerType == RaceTrigger.TriggerType.Finish) : line;
+        var checkpoints = triggers.Where(t => t.triggerType == RaceTrigger.TriggerType.Checkpoint1).OrderBy(t => t.checkpointIndex).ToArray();
         var crossing = CrossTrigger(car, line);
         while (crossing.MoveNext())
             yield return crossing.Current;
         Check(timer.raceRunning && timer.PassedCheckpoints == 0, "Physical start line starts timer: " + stageId + " / " + vehicleId);
-        crossing = CrossTrigger(car, line);
+        crossing = CrossTrigger(car, finish);
         while (crossing.MoveNext())
             yield return crossing.Current;
         Check(timer.raceRunning && timer.LastResult == null, "Physical finish rejected without checkpoints");
@@ -343,10 +347,10 @@ public static class ValidateVehicleFlow
             }
         }
 
-        crossing = CrossTrigger(car, line);
+        crossing = CrossTrigger(car, finish);
         while (crossing.MoveNext())
             yield return crossing.Current;
-        Check(timer.LastResult != null && timer.raceRunning && timer.PassedCheckpoints == 0, "Physical finish snapshots result and starts next run: " + stageId);
+        Check(timer.LastResult != null && timer.raceRunning != pointToPoint && timer.PassedCheckpoints == (pointToPoint ? checkpoints.Length : 0), "Physical finish follows stage type: " + stageId);
         Check(StageRecords.ForVehicle(timer.stageDefinition, timer.TotalCheckpoints, vehicleId).hasBest, "Finish saves isolated per-stage/per-car record");
         body.useGravity = gravity;
         car.enabled = enabled;
@@ -378,7 +382,7 @@ public static class ValidateVehicleFlow
     private static IEnumerator CheckTrackSurfaces(CarController car, RespawnManager respawn, VehicleDefinition definition)
     {
         var guide = GameObject.Find("Route Guide").transform;
-        Check(guide.childCount > 200, "Complete second-track surface guide");
+        Check(guide.childCount > 200, "Complete track surface guide");
         var wheelConfigs = new[]
         {
             definition.config.frontLeft,
@@ -440,7 +444,43 @@ public static class ValidateVehicleFlow
         respawn.RestartStage();
         for (int f = 0; f < 80; f++)
             yield return null;
-        var fence = GameObject.Find("fence.009 Box").GetComponent<BoxCollider>();
+        var fenceObject = GameObject.Find("fence.009 Box");
+        if (fenceObject == null)
+        {
+            RaycastHit barrier = default;
+            Transform station = null;
+            Vector3 push = Vector3.zero;
+            foreach (Transform point in guide)
+            {
+                foreach (float side in new[] { -1f, 1f })
+                {
+                    Vector3 direction = point.right * side;
+                    var hits = Physics.RaycastAll(point.position + Vector3.up * .8f, direction, 25, ~0, QueryTriggerInteraction.Ignore);
+                    foreach (var hit in hits.OrderBy(h => h.distance))
+                        if (hit.collider.attachedRigidbody == null && Mathf.Abs(hit.normal.y) < .5f && hit.distance > 2)
+                        { barrier = hit; station = point; push = direction; break; }
+                    if (station != null) break;
+                }
+                if (station != null) break;
+            }
+            Check(station != null, "Visible roadside solid has collision: " + definition.vehicleId);
+            rb.position = station.position + push * Mathf.Max(0, barrier.distance - 2.5f) + Vector3.up * 1.25f;
+            rb.rotation = station.rotation;
+            rb.linearVelocity = rb.angularVelocity = Vector3.zero;
+            Physics.SyncTransforms();
+            for (int f = 0; f < 40; f++) yield return null;
+            float beforeWall = Vector3.Dot(barrier.point - rb.position, push);
+            // An initial sideways impact tests the actual chassis/mesh contact.
+            // No ongoing velocity overwrite or production recovery force is used.
+            rb.linearVelocity = push * 12;
+            for (int f = 0; f < 75; f++) yield return null;
+            float afterWall = Vector3.Dot(barrier.point - rb.position, push);
+            Check(afterWall >= -.5f && afterWall < beforeWall - .2f, "Roadside solid stops physical chassis impact: " + definition.vehicleId);
+            car.enabled = enabled;
+            respawn.RestartStage();
+            yield break;
+        }
+        var fence = fenceObject.GetComponent<BoxCollider>();
         rb.position = new Vector3(fence.bounds.center.x + 6, respawn.startPoint.position.y, fence.bounds.center.z);
         rb.rotation = Quaternion.identity;
         rb.linearVelocity = Vector3.zero;
@@ -456,6 +496,70 @@ public static class ValidateVehicleFlow
         car.enabled = enabled;
         respawn.RestartStage();
         yield return null;
+    }
+
+    private static IEnumerator ReverseCases(CarController car, RespawnManager respawn, string vehicle)
+    {
+        // Isolated native-physics fixture: pose/velocity are seeded only at the
+        // beginning of each case; recovery itself uses the normal driving inputs.
+        var floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        floor.name = "Reverse test floor";
+        floor.transform.position = new Vector3(0, -1001, 0);
+        floor.transform.localScale = new Vector3(600, 2, 600);
+        var body = car.GetComponent<Rigidbody>();
+        var wheels = new[] { car.frontLeft, car.frontRight, car.backLeft, car.backRight };
+        for (int test = 0; test < 5; test++)
+        {
+            car.enabled = false;
+            GamepadState(default);
+            body.position = new Vector3(0, -998.75f, 0);
+            body.rotation = test == 4 ? Quaternion.Euler(0, 150, 0) : Quaternion.identity;
+            body.linearVelocity = body.angularVelocity = Vector3.zero;
+            foreach (var wheel in wheels) { wheel.motorTorque = 0; wheel.brakeTorque = 0; }
+            Physics.SyncTransforms();
+            for (int i = 0; i < 90; i++) yield return null;
+            car.currentGear = test == 0 || test == 4 ? 1 : 0;
+            car.enabled = true;
+            body.linearVelocity = test == 4 ? Vector3.forward * 12 : Vector3.back * (test == 0 ? 3 : test == 1 ? 8 : 12);
+            if (test == 4) body.angularVelocity = Vector3.up;
+            Quaternion initial = body.rotation;
+            var input = new GamepadState { rightTrigger = test == 0 || test == 4 ? 1 : 0, leftStick = test >= 1 && test <= 3 ? new Vector2(.85f, 0) : Vector2.zero };
+            if (test == 2) input = input.WithButton(GamepadButton.South);
+            GamepadState(input);
+            float peakDrive = 0, yaw = 0, minimumEngine = float.PositiveInfinity;
+            if (test == 3)
+            {
+                // A test driver turns first, then pulses the handbrake briefly.
+                // Sustained lock from rest-of-input in case C simply stops the car.
+                for (int i = 0; i < 360 && Quaternion.Angle(initial, body.rotation) < 140; i++) yield return null;
+                yaw = Quaternion.Angle(initial, body.rotation);
+                GamepadState(input.WithButton(GamepadButton.South));
+                for (int i = 0; i < 15; i++) yield return null;
+                car.currentGear = 1;
+                GamepadState(new GamepadState { rightTrigger = 1 });
+            }
+            for (int i = 0; i < (test == 0 || test >= 3 ? 360 : 180); i++)
+            {
+                yield return null;
+                peakDrive = Mathf.Max(peakDrive, car.DeliveredAxleTorque);
+                minimumEngine = Mathf.Min(minimumEngine, car.EngineRPM);
+                yaw = Mathf.Max(yaw, Quaternion.Angle(initial, body.rotation));
+                if (car.currentGear == 1) CheckMotorDirection(car);
+            }
+            string label = test == 0 ? "A backward-to-forward" : test == 1 ? "B reverse steering" : test == 2 ? "C reverse handbrake" : test == 3 ? "D reverse J-turn + powered recovery" : "E backward spin recovery";
+            log.AppendLine($"MEASURE {vehicle} {label}: forward={car.SignedLongitudinalSpeedKmh:F2} km/h, yaw={yaw:F2} deg, peak forward axle={peakDrive:F1} Nm, min engine={minimumEngine:F1} RPM");
+            Check(test == 0 || test >= 3 ? car.SignedLongitudinalSpeedKmh > 2 && peakDrive > 0 && minimumEngine > 0 && (test != 3 || yaw >= 120) : yaw > 3, vehicle + " " + label);
+        }
+        UnityEngine.Object.Destroy(floor);
+        GamepadState(default);
+        respawn.RestartStage();
+        for (int i = 0; i < 90; i++) yield return null;
+    }
+
+    private static void CheckMotorDirection(CarController car)
+    {
+        if (car.backLeft.motorTorque < -.01f || car.backRight.motorTorque < -.01f)
+            throw new Exception("First gear reversed motor torque while wheels were rotating backward.");
     }
 
     private static IEnumerator Tests()
@@ -499,10 +603,10 @@ public static class ValidateVehicleFlow
         var menu = Find<MainMenu>();
         var catalog = menu.vehicleCatalog;
         var availableStages = menu.stageCatalog.stages.Where(s => s != null && s.IsPlayable).ToArray();
-        Check(availableStages.Length == 2, "Both real stages are available");
-        Check(availableStages.Select(s => s.stageId).Distinct().Count() == 2, "Unique stable stage IDs");
-        Check(StageRecords.OverallKey(availableStages[0], availableStages[0].checkpointCount) != StageRecords.OverallKey(availableStages[1], availableStages[1].checkpointCount), "Separate overall stage record keys");
-        Check(StageRecords.VehicleKey(availableStages[0], availableStages[0].checkpointCount, "ae86") != StageRecords.VehicleKey(availableStages[1], availableStages[1].checkpointCount, "ae86"), "Separate per-car stage record keys");
+        Check(availableStages.Length == 4, "All four real stages are available");
+        Check(availableStages.Select(s => s.stageId).Distinct().Count() == availableStages.Length, "Unique stable stage IDs");
+        Check(availableStages.Select(s => StageRecords.OverallKey(s, s.checkpointCount)).Distinct().Count() == availableStages.Length, "Separate overall stage record keys");
+        Check(availableStages.Select(s => StageRecords.VehicleKey(s, s.checkpointCount, "ae86")).Distinct().Count() == availableStages.Length, "Separate per-car stage record keys");
         Check(catalog.vehicles.Length == 3 && catalog.vehicles.All(v => v.IsPlayable), "All three definitions have valid configs and visual references");
         Check(catalog.IsValid(out _), "Unique stable vehicle IDs");
         var configBefore = EditorJsonUtility.ToJson(catalog.defaultVehicle.config);
@@ -616,6 +720,7 @@ public static class ValidateVehicleFlow
             Check(UnityEngine.Object.FindObjectsByType<VehicleVisualSetup>().Length == 1, "Exactly one active vehicle visual");
             var config = definition.config;
             var rb = car.GetComponent<Rigidbody>();
+            log.AppendLine($"MEASURE {definition.vehicleId} inertia={rb.inertiaTensor:F3} tensorRotation={rb.inertiaTensorRotation.eulerAngles:F3} wheelbase={car.SteeringWheelbase:F3} frontTrack={car.SteeringFrontTrack:F3}");
             Check(Mathf.Approximately(rb.mass, config.chassis.mass) && Mathf.Approximately(car.maxEngineTorque, config.engine.maxEngineTorque), "Per-car mass and torque applied");
             var wheels = new[]
             {
@@ -759,12 +864,12 @@ public static class ValidateVehicleFlow
             timer.elapsedTime = 30;
             for (int cp = 1; cp <= timer.TotalCheckpoints; cp++)
                 timer.PassCheckpoint(cp);
-            Check(timer.CrossStartFinish() && timer.LastResult != null && timer.raceRunning, "Finish produces result and starts next run");
+            Check(timer.CrossStartFinish() && timer.LastResult != null && timer.raceRunning == (stage.stageType == StageDefinition.StageType.Circuit), "Finish follows configured circuit / point-to-point flow");
             Check(Mathf.Abs(timer.StyleCreditFor(16000) - 8) < .001f, "Style Credit uses existing eight-second cap");
             var triggerChecks = CheckPhysicalTriggers(car, timer, respawn, stage.stageId, definition.vehicleId);
             while (triggerChecks.MoveNext())
                 yield return triggerChecks.Current;
-            if (stage.stageId == "track-comple")
+            if (stage.stageId != "south-loop")
             {
                 var routeChecks = CheckTrackSurfaces(car, respawn, definition);
                 while (routeChecks.MoveNext())
@@ -772,6 +877,11 @@ public static class ValidateVehicleFlow
             }
 
             var pause = car.GetComponent<PauseMenu>();
+            if (!tracksOnly && stage.stageId == "south-loop")
+            {
+                var reverse = ReverseCases(car, respawn, definition.vehicleId);
+                while (reverse.MoveNext()) yield return reverse.Current;
+            }
             pause.Pause();
             Check(PauseMenu.IsPaused && Time.timeScale == 0, "Pause works");
             pause.RestartStage();
@@ -802,6 +912,6 @@ public static class ValidateVehicleFlow
         }
 
         Check(EditorJsonUtility.ToJson(catalog.defaultVehicle.config) == configBefore, "AE86 config unchanged by all runtime selections");
-        log.AppendLine("PASS: all six vehicle/stage combinations, physical triggers, route support and menu/race integration. Synthetic inputs, not a physical controller road test.");
+        log.AppendLine("PASS: all playable vehicle/stage combinations, physical triggers, route support and menu/race integration. Synthetic inputs, not a physical controller road test.");
     }
 }

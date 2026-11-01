@@ -44,6 +44,10 @@ public class FollowCamera : MonoBehaviour
     public float slowFOV = 62f;
     public float fastFOV = 73f;
     public float fovSharpness = 4f;
+    [Header("Low-speed proximity (fades out by 80 km/h)")]
+    [Min(0f)] public float lowSpeedDistanceReduction = .5f;
+    [Min(0f)] public float lowSpeedFOVReduction = 2f;
+    [Min(1f)] public float proximityFadeSpeed = 80f;
 
     [Header("Acceleration Effects")]
     public bool accelerationFeedbackEnabled = true;
@@ -81,6 +85,7 @@ public class FollowCamera : MonoBehaviour
     private Vector3 smoothedForward;
     private Vector3 smoothedPosition;
     private float speedFOV;
+    private float brakingOffset;
     private CarController car;
     private readonly AccelerationCameraFeedback feedback = new AccelerationCameraFeedback();
 
@@ -95,14 +100,14 @@ public class FollowCamera : MonoBehaviour
         smoothedForward = carForward;
         float speedKmh = carRigidbody.linearVelocity.magnitude * 3.6f;
         float speedFactor = Mathf.Clamp01(speedKmh / maxEffectSpeed);
-        float distance = Mathf.Lerp(slowDistance, fastDistance, speedFactor);
+        float distance = Mathf.Lerp(slowDistance, fastDistance, speedFactor) - lowSpeedDistanceReduction * Proximity(speedKmh);
         float height = Mathf.Lerp(slowHeight, fastHeight, speedFactor);
         // Kamera sa hneď spawnne na správnom mieste.
         smoothedPosition = target.position - carForward * distance + Vector3.up * height;
         transform.position = smoothedPosition;
         Vector3 lookTarget = target.position + carForward * lookAheadSlow + Vector3.up * lookHeight;
         transform.rotation = Quaternion.LookRotation(lookTarget - transform.position, Vector3.up);
-        speedFOV = cam.fieldOfView = slowFOV;
+        speedFOV = cam.fieldOfView = Mathf.Lerp(slowFOV, fastFOV, speedFactor) - lowSpeedFOVReduction * Proximity(speedKmh);
     }
 
     private void FixedUpdate()
@@ -112,10 +117,13 @@ public class FollowCamera : MonoBehaviour
         if (!car.isActiveAndEnabled || !accelerationFeedbackEnabled)
         {
             feedback.Reset(car.DeliveredAxleTorque, car.ThrottleInput, car.ClutchEngagement);
+            brakingOffset = 0f;
             return;
         }
 
-        feedback.Step(car.LongitudinalAcceleration, car.DeliveredAxleTorque, car.ThrottleInput, car.ClutchEngagement, car.DynamicsSampleValid, car.currentGear > 0 && car.BrakeInput <= .02f && car.HandbrakeInput <= .05f, Time.fixedDeltaTime, fullFeedbackAcceleration, accelerationResponse, accelerationRecovery, torqueKickThreshold, torqueKickDuration, torqueKickCooldown);
+        feedback.Step(car.LongitudinalAcceleration, car.DeliveredAxleTorque, car.ThrottleInput, car.ClutchEngagement, car.DynamicsSampleValid, car.LongitudinalAcceleration > .3f && car.currentGear > 0 && car.BrakeInput <= .02f && car.HandbrakeInput <= .05f, Time.fixedDeltaTime, fullFeedbackAcceleration, accelerationResponse, accelerationRecovery, torqueKickThreshold, torqueKickDuration, torqueKickCooldown);
+        float brakingTarget = car.DynamicsSampleValid ? Mathf.Clamp(car.LongitudinalAcceleration * .025f, -brakingPush, 0f) : 0f;
+        brakingOffset = Mathf.Lerp(brakingOffset, brakingTarget, 1f - Mathf.Exp(-accelerationRecovery * Time.fixedDeltaTime));
     }
 
     private void LateUpdate()
@@ -175,12 +183,11 @@ public class FollowCamera : MonoBehaviour
         // ====================================================
         // CAMERA DISTANCE + HEIGHT
         // ====================================================
-        float distance = Mathf.Lerp(slowDistance, fastDistance, speedFactor);
+        float distance = Mathf.Lerp(slowDistance, fastDistance, speedFactor) - lowSpeedDistanceReduction * Proximity(speedKmh);
         float height = Mathf.Lerp(slowHeight, fastHeight, speedFactor);
         // ====================================================
         // ACCELERATION / BRAKING
         // ====================================================
-        float brakingOffset = car != null ? Mathf.Clamp(car.LongitudinalAcceleration * .025f, -brakingPush, 0f) : 0f;
         distance += brakingOffset + accelerationPullback * feedback.AccelerationAmount + torqueKickPullback * feedback.KickAmount;
         height -= accelerationLowering * feedback.AccelerationAmount;
         // ====================================================
@@ -206,9 +213,11 @@ public class FollowCamera : MonoBehaviour
         // ====================================================
         // FOV
         // ====================================================
-        float desiredFOV = Mathf.Lerp(slowFOV, fastFOV, speedFactor);
+        float desiredFOV = Mathf.Lerp(slowFOV, fastFOV, speedFactor) - lowSpeedFOVReduction * Proximity(speedKmh);
         float fovLerp = 1f - Mathf.Exp(-fovSharpness * Time.deltaTime);
         speedFOV = Mathf.Lerp(speedFOV, desiredFOV, fovLerp);
         cam.fieldOfView = speedFOV + accelerationFOVBonus * feedback.AccelerationAmount + torqueKickFOVBonus * feedback.KickAmount;
     }
+
+    private float Proximity(float speedKmh) => 1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(speedKmh / proximityFadeSpeed));
 }

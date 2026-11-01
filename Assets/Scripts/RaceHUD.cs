@@ -127,7 +127,7 @@ public class RaceHUD : MonoBehaviour
         checkpoints.text = $"{race.PassedCheckpoints} / {race.TotalCheckpoints}";
         delta.text = "SPLIT  " + (race.Delta.HasValue ? DeltaText(race.Delta) : race.LatestSplit.HasValue ? RaceTimer.FormatTime(race.LatestSplit.Value) : "--");
         delta.color = !race.Delta.HasValue ? Muted : race.Delta.Value <= 0 ? Mint : Red;
-        status.text = !race.TrackReady ? "SETUP REQUIRED: START + CHECKPOINTS" : race.raceRunning ? "STAGE IN PROGRESS" : "CROSS START TO BEGIN";
+        status.text = !race.TrackReady ? "SETUP REQUIRED: START + CHECKPOINTS" : race.raceRunning ? "STAGE IN PROGRESS" : race.LastResult != null ? "STAGE COMPLETE / RESTART TO RUN AGAIN" : "CROSS START TO BEGIN";
         UpdateResults(Time.unscaledTime);
     }
 
@@ -137,7 +137,7 @@ public class RaceHUD : MonoBehaviour
         bool visible = completed != null && now - completed.CompletedAt < Mathf.Max(0f, resultDisplayDuration);
         results.SetActive(visible);
         if (visible)
-            result.text = $"<size=23>RAW TIME    {RaceTimer.FormatTime(completed.RawTime)}\nDRIFT SCORE    {completed.DriftScore:N0}\nSTYLE CREDIT    -{completed.StyleCredit:00.000} s</size>\n<size=34>FINAL TIME    {RaceTimer.FormatTime(completed.FinalAdjustedTime)}</size>\n<size=23>BEST    {RaceTimer.FormatTime(completed.Best)}</size>\n<size=20><color=#5BFFBF>{(completed.IsNewBest ? "NEW BEST" : "NEXT RUN IN PROGRESS")}</color></size>";
+            result.text = $"<size=23>RAW TIME    {RaceTimer.FormatTime(completed.RawTime)}\nDRIFT SCORE    {completed.DriftScore:N0}\nSTYLE CREDIT    -{completed.StyleCredit:00.000} s</size>\n<size=34>FINAL TIME    {RaceTimer.FormatTime(completed.FinalAdjustedTime)}</size>\n<size=23>BEST    {RaceTimer.FormatTime(completed.Best)}</size>\n<size=20><color=#5BFFBF>{(completed.IsNewBest ? "NEW BEST" : race.raceRunning ? "NEXT RUN IN PROGRESS" : "STAGE COMPLETE")}</color></size>";
     }
 
     private void UpdateHUDEditor()

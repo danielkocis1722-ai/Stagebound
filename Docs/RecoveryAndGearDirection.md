@@ -1,5 +1,8 @@
 # Deliberate drift recovery and drivetrain direction
 
+Historical test report. The stricter short-handbrake reverse recovery reproduction
+and its remaining limitations are documented in [FocusedPolish.md](FocusedPolish.md).
+
 This pass fixes torque direction while moving against the selected gear and adds bounded support for deliberate lift-and-countersteer recovery. Current suspension, COM, anti-roll, wheel settings, visual body roll, tire curves, normal powered-drift settings, engine torque curve, gearbox ratios and input bindings are preserved. Race, score, credit, HUD/menu and effects scripts are unchanged.
 
 ## Why first gear drove backward

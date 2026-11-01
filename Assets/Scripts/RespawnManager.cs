@@ -50,7 +50,7 @@ public class RespawnManager : MonoBehaviour
         // An optional designer-authored pose overrides the safe crossing position.
         // Otherwise retain the road position and heading actually used by the car.
         var point = checkpoint.respawnPoint;
-        checkpointPose = UprightPose(point != null ? point.position : body.position, point != null ? point.rotation : body.rotation);
+        checkpointPose = point != null ? new Pose(point.position, point.rotation) : UprightPose(body.position, body.rotation);
         hasCheckpoint = true;
     }
 

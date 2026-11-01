@@ -35,6 +35,9 @@ public class VehicleConfig : ScriptableObject
     public class Steering
     {
         public float maxSteerAngle;
+        public float highSpeedMaxSteerAngle = 30f;
+        public float fullLowSpeedLockKmh = 30f;
+        public float highSpeedLockKmh = 80f;
         public bool useAckermannSteering;
         public float steeringSpeed;
         public float steeringReturnSpeed;
@@ -81,6 +84,7 @@ public class VehicleConfig : ScriptableObject
     public class Handbrake
     {
         public float brakeTorque;
+        [Range(.3f, .8f)] public float frontBrakeBias = .5f;
         public float handbrakeTorque;
         public float handbrakeRearGrip;
         public float handbrakeGripDropSpeed;
@@ -331,6 +335,9 @@ public class VehicleConfig : ScriptableObject
         car.drivetrainEfficiency = transmission.drivetrainEfficiency;
         car.shiftDuration = transmission.shiftDuration;
         car.maxSteerAngle = steering.maxSteerAngle;
+        car.highSpeedMaxSteerAngle = steering.highSpeedMaxSteerAngle;
+        car.fullLowSpeedLockKmh = steering.fullLowSpeedLockKmh;
+        car.highSpeedLockKmh = steering.highSpeedLockKmh;
         car.useAckermannSteering = steering.useAckermannSteering;
         car.steeringSpeed = steering.steeringSpeed;
         car.steeringReturnSpeed = steering.steeringReturnSpeed;
@@ -356,6 +363,7 @@ public class VehicleConfig : ScriptableObject
         car.clutchKickStrength = clutch.clutchKickStrength;
         car.engineInertia = clutch.engineInertia;
         car.brakeTorque = handbrake.brakeTorque;
+        car.frontBrakeBias = handbrake.frontBrakeBias;
         car.handbrakeTorque = handbrake.handbrakeTorque;
         car.handbrakeRearGrip = handbrake.handbrakeRearGrip;
         car.handbrakeGripDropSpeed = handbrake.handbrakeGripDropSpeed;
@@ -475,6 +483,9 @@ public class VehicleConfig : ScriptableObject
         transmission.drivetrainEfficiency = car.drivetrainEfficiency;
         transmission.shiftDuration = car.shiftDuration;
         steering.maxSteerAngle = car.maxSteerAngle;
+        steering.highSpeedMaxSteerAngle = car.highSpeedMaxSteerAngle;
+        steering.fullLowSpeedLockKmh = car.fullLowSpeedLockKmh;
+        steering.highSpeedLockKmh = car.highSpeedLockKmh;
         steering.useAckermannSteering = car.useAckermannSteering;
         steering.steeringSpeed = car.steeringSpeed;
         steering.steeringReturnSpeed = car.steeringReturnSpeed;
@@ -500,6 +511,7 @@ public class VehicleConfig : ScriptableObject
         clutch.clutchKickStrength = car.clutchKickStrength;
         clutch.engineInertia = car.engineInertia;
         handbrake.brakeTorque = car.brakeTorque;
+        handbrake.frontBrakeBias = car.frontBrakeBias;
         handbrake.handbrakeTorque = car.handbrakeTorque;
         handbrake.handbrakeRearGrip = car.handbrakeRearGrip;
         handbrake.handbrakeGripDropSpeed = car.handbrakeGripDropSpeed;

@@ -99,6 +99,9 @@ public class CarController : MonoBehaviour
     // BRAKES
     [Header("Brakes")]
     public float brakeTorque = 8000f;
+    [Tooltip("Front axle share of service braking. Handbrake and engine braking stay separate.")]
+    [Range(0.3f, 0.8f)]
+    public float frontBrakeBias = .5f;
 
     // Zadná ručná brzda
     public float handbrakeTorque = 15000f;
@@ -174,8 +177,12 @@ public class CarController : MonoBehaviour
 
     // STEERING
     [Header("Steering")]
-    [Tooltip("Maximum inside-front-wheel angle. Full input retains this lock at every speed.")]
+    [Tooltip("Low-speed maximum inside-front-wheel angle.")]
     public float maxSteerAngle = 30f;
+    [Tooltip("Inside-front-wheel limit above the steering lock fade speed.")]
+    public float highSpeedMaxSteerAngle = 30f;
+    public float fullLowSpeedLockKmh = 30f;
+    public float highSpeedLockKmh = 80f;
     public bool useAckermannSteering = true;
 
     public float SteeringWheelbase { get; private set; }
@@ -681,7 +688,9 @@ public class CarController : MonoBehaviour
     // STEERING
     private void HandleSteering()
     {
-        float targetSteerAngle = SteeringInput * maxSteerAngle;
+        float lockBlend = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(fullLowSpeedLockKmh, Mathf.Max(fullLowSpeedLockKmh + 1f, highSpeedLockKmh), SpeedKmh));
+        float steeringLimit = Mathf.Lerp(maxSteerAngle, highSpeedMaxSteerAngle, lockBlend);
+        float targetSteerAngle = SteeringInput * steeringLimit;
         float rate = Mathf.Abs(SteeringInput) > 0.01f && SteeringInput * currentSteerAngle >= 0f ? steeringSpeed : steeringReturnSpeed;
         // Opposite input crosses center at the configured return rate.
         currentSteerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, rate * Time.fixedDeltaTime);
@@ -705,14 +714,17 @@ public class CarController : MonoBehaviour
     // BRAKES + HANDBRAKE
     private void HandleBrakes()
     {
-        float normalBrake = BrakeInput * brakeTorque;
+        float normalBrake = Mathf.Clamp01(BrakeInput) * brakeTorque;
+        // Preserve brakeTorque's historical per-wheel meaning at a 50/50 split.
+        float frontServiceBrake = normalBrake * (2f * frontBrakeBias);
+        float rearServiceBrake = normalBrake * (2f * (1f - frontBrakeBias));
         float rearHandbrake = HandbrakeInput * handbrakeTorque;
         // NORMAL BRAKE
-        frontLeft.brakeTorque = normalBrake;
-        frontRight.brakeTorque = normalBrake;
+        frontLeft.brakeTorque = frontServiceBrake;
+        frontRight.brakeTorque = frontServiceBrake;
         // REAR + HANDBRAKE
-        backLeft.brakeTorque = normalBrake + rearHandbrake + EngineBrakeTorque(backLeft, rearLeftTorqueShare);
-        backRight.brakeTorque = normalBrake + rearHandbrake + EngineBrakeTorque(backRight, 1f - rearLeftTorqueShare);
+        backLeft.brakeTorque = rearServiceBrake + rearHandbrake + EngineBrakeTorque(backLeft, rearLeftTorqueShare);
+        backRight.brakeTorque = rearServiceBrake + rearHandbrake + EngineBrakeTorque(backRight, 1f - rearLeftTorqueShare);
         // HANDBRAKE REAR GRIP
         UpdateSlipAngle();
         UpdateDriftGripState();

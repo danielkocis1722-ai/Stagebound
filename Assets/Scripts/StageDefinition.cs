@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 [CreateAssetMenu(menuName = "Stagebound/Stage Definition")]
 public class StageDefinition : ScriptableObject
 {
+    public enum StageType { Circuit, PointToPoint }
+    public StageType stageType;
+    public string TypeLabel => stageType == StageType.PointToPoint ? "POINT TO POINT" : "CIRCUIT";
     [Tooltip("Stable record identity. Use a new ID for a different route.")]
     public string stageId = "new-stage";
     public string stageName = "New Stage";

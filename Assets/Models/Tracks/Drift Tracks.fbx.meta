@@ -3,7 +3,77 @@ guid: ec0e603656d9ab440a15ff86e579e311
 ModelImporter:
   serializedVersion: 24600
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: All Props
+    second: {fileID: 2100000, guid: e2065b1f4af730b4fb1872f7c4444ff1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Centre Ground
+    second: {fileID: 2100000, guid: 718f336f0e599514586c01bc573b8af7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Check Points
+    second: {fileID: 2100000, guid: 74f5c2edd08793343aca6c4f452b8f22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Check Points.001
+    second: {fileID: 2100000, guid: 2ed00ad1614f9f840a9a356afa0fa2f2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Concrete
+    second: {fileID: 2100000, guid: 9ee62ef70a2f9034288e9569aa3bde51, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DockyardProps.002
+    second: {fileID: 2100000, guid: fd0797ce22c31164eb8f4b4b4c8fc2e3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Drift_Track_Albedo
+    second: {fileID: 2100000, guid: 9835ac0d1715b404bbe56a7c14703779, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fence
+    second: {fileID: 2100000, guid: 6d82bbdf946218d48b0ddc336a69feaa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grass Ground
+    second: {fileID: 2100000, guid: 1425149a21fa234419d9d4fe5904b707, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grass edge
+    second: {fileID: 2100000, guid: 1dba94d392458ac4da0d7cc37f9cac80, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Kerb
+    second: {fileID: 2100000, guid: 035ff97508f4cf34399e336c901faf6e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Start
+    second: {fileID: 2100000, guid: 98e26924f63b3634eb1d3f282b7b3d12, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tree wall
+    second: {fileID: 2100000, guid: 1930b42ca4dd42c46afaba2f78c1cd32, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pond
+    second: {fileID: 2100000, guid: 77e6b67db5b709c42a00a5242444b07d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

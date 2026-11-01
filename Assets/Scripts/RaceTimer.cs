@@ -55,7 +55,7 @@ public class RaceTimer : MonoBehaviour
     private void Start()
     {
         var checkpoints = new SortedSet<int>();
-        bool start = false;
+        bool start = false, finish = false;
         foreach (var trigger in FindObjectsByType<RaceTrigger>())
         {
             if (trigger.gameObject.scene != gameObject.scene)
@@ -63,14 +63,17 @@ public class RaceTimer : MonoBehaviour
             if (trigger.raceTimer != null && trigger.raceTimer != this)
                 continue;
             trigger.raceTimer = this;
-            if (trigger.triggerType == RaceTrigger.TriggerType.StartFinish)
-                start = true;
-            else
+            if (trigger.triggerType == RaceTrigger.TriggerType.Checkpoint1)
                 checkpoints.Add(trigger.checkpointIndex);
+            else
+            {
+                start |= trigger.triggerType == RaceTrigger.TriggerType.StartFinish || trigger.triggerType == RaceTrigger.TriggerType.Start;
+                finish |= trigger.triggerType == RaceTrigger.TriggerType.StartFinish || trigger.triggerType == RaceTrigger.TriggerType.Finish;
+            }
         }
 
         TotalCheckpoints = checkpoints.Count;
-        TrackReady = start && TotalCheckpoints > 0;
+        TrackReady = start && finish && TotalCheckpoints > 0;
         int expected = 1;
         foreach (int index in checkpoints)
             if (index != expected++)
@@ -140,6 +143,8 @@ public class RaceTimer : MonoBehaviour
         PlayerPrefs.SetString(key, JsonUtility.ToJson(new StageRecords.Record { hasBest = hasBest, bestAdjustedTime = BestTime, bestRawTime = BestRawTime, bestDriftScore = BestDriftScore, rawSplitsOfBestAdjusted = bestSplits }));
         PlayerPrefs.Save();
         LastResult = new RunResult(elapsedTime, score, credit, BestTime, Delta, NewBest, Time.unscaledTime);
+        if (stageDefinition != null && stageDefinition.stageType == StageDefinition.StageType.PointToPoint)
+            return;
         // The same line crossing begins the next timed run; result data is independent.
         ResetRunState();
         raceRunning = true;
@@ -184,7 +189,7 @@ public class RaceTimer : MonoBehaviour
     {
         var indices = new HashSet<int>();
         foreach (var trigger in FindObjectsByType<RaceTrigger>())
-            if (trigger.gameObject.scene == gameObject.scene && (trigger.raceTimer == null || trigger.raceTimer == this) && trigger.triggerType != RaceTrigger.TriggerType.StartFinish)
+            if (trigger.gameObject.scene == gameObject.scene && (trigger.raceTimer == null || trigger.raceTimer == this) && trigger.triggerType == RaceTrigger.TriggerType.Checkpoint1)
                 indices.Add(trigger.checkpointIndex);
         return indices.Count;
     }

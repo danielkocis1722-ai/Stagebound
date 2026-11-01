@@ -81,6 +81,9 @@ These are Stagebound prototype values, not claims of factory specifications. R32
 | Maximum engine torque, Nm | 360 | 460 | 500 |
 | Steering speed, degrees/s | 95 | 82 | 105 |
 | Steering return speed | 150 | 130 | 155 |
+| Steering lock at 0–30 km/h / above 80 km/h, degrees | 40 / 30 | 40 / 30 | 40 / 30 |
+| Service brake base torque per wheel, Nm | 1600 | 2250 | 2000 |
+| Front service brake share | 52% | 55% | 55% |
 | Final drive | 5.3 | 4.1 | 4.3 |
 | Engine inertia | 0.35 | 0.44 | 0.34 |
 | LSD strength | 0.6 | 0.75 | 0.7 |
@@ -91,6 +94,11 @@ These are Stagebound prototype values, not claims of factory specifications. R32
 | Display bars: power/handling/drift/stability | 5/8/7/5 | 7/7/8/8 | 8/8/9/7 |
 
 New spring/damper values scale with each car's mass relative to the captured baseline. Existing gear ratios, engine curve/redline, clutch/handbrake behavior, tire-curve shapes and assist architecture are reused. R32's longer geometry, mass/inertia, damping and slower steering give it a planted initial character; RX7 has faster steering and more torque/power breakaway. Final subjective handling tuning remains a driving task.
+
+The focused polish pass adds a smooth 30–80 km/h lock reduction while retaining
+the old stick exponent and steering rates. Brake bias changes only service torque;
+handbrake torque and friction curves are unchanged. See [FocusedPolish.md](FocusedPolish.md)
+for the measured braking comparison and reverse recovery limitations.
 
 ## URP materials and brake lights
 

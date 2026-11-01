@@ -127,7 +127,7 @@ public class StageSelectPanel : MonoBehaviour
         }
 
         title.text = stage.stageName.ToUpperInvariant();
-        description.text = stage.description;
+        description.text = stage.TypeLabel + "  /  " + stage.description;
         var overall = StageRecords.Overall(stage, stage.checkpointCount);
         var car = StageRecords.ForVehicle(stage, stage.checkpointCount, vehicle != null ? vehicle.vehicleId : null);
         records.text = "SELECTED CAR\nBEST FINAL     " + Time(car.hasBest, car.bestAdjustedTime) + "\nBEST RAW       " + Time(car.hasBest, car.bestRawTime) + "\nBEST DRIFT       " + (car.hasBest ? Mathf.RoundToInt(car.bestDriftScore).ToString("N0") : "--") + "\n\nALL CARS\nBEST FINAL     " + Time(overall.hasBest, overall.bestAdjustedTime) + "\nBEST RAW       " + Time(overall.hasBest, overall.bestRawTime);

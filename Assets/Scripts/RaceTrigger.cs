@@ -7,7 +7,9 @@ public class RaceTrigger : MonoBehaviour
     public enum TriggerType
     {
         StartFinish,
-        Checkpoint1
+        Checkpoint1,
+        Start,
+        Finish
     }
 
     public TriggerType triggerType;
@@ -52,6 +54,15 @@ public class RaceTrigger : MonoBehaviour
             if (raceTimer.CrossStartFinish() && respawn != null)
                 respawn.BeginStage(raceTimer);
         }
+        else if (triggerType == TriggerType.Start)
+        {
+            bool running = raceTimer.raceRunning;
+            raceTimer.StartRace();
+            if (!running && raceTimer.raceRunning && respawn != null)
+                respawn.BeginStage(raceTimer);
+        }
+        else if (triggerType == TriggerType.Finish)
+            raceTimer.FinishRace();
         else
         {
             int passed = raceTimer.PassedCheckpoints;
@@ -92,7 +103,7 @@ public class RaceTrigger : MonoBehaviour
         Gizmos.matrix = previousMatrix;
         Gizmos.color = previousColor;
 #if UNITY_EDITOR
-        UnityEditor.Handles.Label(transform.TransformPoint(box.center + Vector3.up * (box.size.y * .5f)), triggerType == TriggerType.StartFinish ? "START / FINISH" : "CHECKPOINT " + checkpointIndex);
+        UnityEditor.Handles.Label(transform.TransformPoint(box.center + Vector3.up * (box.size.y * .5f)), triggerType == TriggerType.Checkpoint1 ? "CHECKPOINT " + checkpointIndex : triggerType.ToString());
 #endif
     }
 }

@@ -100,7 +100,10 @@ MonoBehaviour:
     drivetrainEfficiency: 0.9
     shiftDuration: 0.2
   steering:
-    maxSteerAngle: 30
+    maxSteerAngle: 40
+    highSpeedMaxSteerAngle: 30
+    fullLowSpeedLockKmh: 30
+    highSpeedLockKmh: 80
     useAckermannSteering: 1
     steeringSpeed: 82
     steeringReturnSpeed: 130
@@ -128,7 +131,8 @@ MonoBehaviour:
     clutchKickStrength: 1
     engineInertia: 0.44
   handbrake:
-    brakeTorque: 8000
+    brakeTorque: 2250
+    frontBrakeBias: 0.55
     handbrakeTorque: 15000
     handbrakeRearGrip: 0.8
     handbrakeGripDropSpeed: 0.65
