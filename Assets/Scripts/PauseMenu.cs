@@ -1,8 +1,6 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -119,7 +117,7 @@ public class PauseMenu : MonoBehaviour
         settings.gameObject.SetActive(false);
         menu.SetActive(true);
         notice.text = "";
-        Select(resumeButton);
+        StageboundMenuUI.Select(resumeButton);
     }
 
     public void QuitToMainMenu()
@@ -140,17 +138,7 @@ public class PauseMenu : MonoBehaviour
 
     private void BuildMenu()
     {
-        var events = EventSystem.current;
-        if (events == null)
-            events = FindAnyObjectByType<EventSystem>();
-        if (events == null)
-            events = new GameObject("Pause EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule)).GetComponent<EventSystem>();
-        if (events.GetComponent<InputSystemUIInputModule>() == null)
-        {
-            foreach (var module in events.GetComponents<BaseInputModule>())
-                module.enabled = false;
-            events.gameObject.AddComponent<InputSystemUIInputModule>();
-        }
+        StageboundMenuUI.EnsureEventSystem(false);
 
         canvasRoot = new GameObject("Stagebound Pause Menu", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
         var canvas = canvasRoot.GetComponent<Canvas>();
@@ -217,12 +205,6 @@ public class PauseMenu : MonoBehaviour
         Label(rect, title, 22, 0);
         button.onClick.AddListener(action);
         return button;
-    }
-
-    private static void Select(Button button)
-    {
-        if (EventSystem.current != null)
-            EventSystem.current.SetSelectedGameObject(button.gameObject);
     }
 
     private void OnDisable()

@@ -46,7 +46,6 @@ public class FrontAxleRecovery : MonoBehaviour
     private float deliberateRecoveryWeight;
 
     public float DeliberateRecoveryWeight => deliberateRecoveryWeight;
-    public bool RecoveryAttemptActive { get; private set; }
 
     [Header("Shared drift risk (front, rear recovery and yaw assist)")]
     [SerializeField]
@@ -55,26 +54,13 @@ public class FrontAxleRecovery : MonoBehaviour
     private float overRotationWeight, openingAngleRate, outwardYawAcceleration;
 
     public bool IsControlledDrift => controlledDrift;
-    public float OverRotationWeight => overRotationWeight;
-    public float OpeningAngleRate => openingAngleRate;
-    public float OutwardYawAcceleration => outwardYawAcceleration;
 
     // Body heading relative to travel: positive means recovery steering is left.
     // Existing CarController/DriftTelemetry use the opposite signed convention;
     // those APIs and their scoring meaning are deliberately unchanged.
     public float VehicleSlipAngle { get; private set; }
-    public float PlayerSteeringInput => car != null ? car.SteeringInput : 0f;
     public float FrontLateralMultiplier { get; private set; } = 1f;
-    public bool CountersteerRecoveryActive { get; private set; }
-    public float FLSteerAngle => car != null ? car.frontLeft.steerAngle : 0f;
-    public float FRSteerAngle => car != null ? car.frontRight.steerAngle : 0f;
-    public float FLSidewaysSlip { get; private set; }
-    public float FRSidewaysSlip { get; private set; }
     public float YawRate => body != null ? body.angularVelocity.y * Mathf.Rad2Deg : 0f;
-
-    // Kept for existing telemetry: wheel response now comes only from player
-    // steering/cross-center rates, with no recovery-dependent multiplier.
-    public float SteeringResponseMultiplier => 1f;
 
     private CarController car;
     private Rigidbody body;
@@ -163,11 +149,10 @@ public class FrontAxleRecovery : MonoBehaviour
             recoveryTarget = overRotationWeight * (1f - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(.05f, recoveryThrottleCeiling, car.ThrottleInput))) * (1f - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(60f, 75f, Mathf.Abs(VehicleSlipAngle))));
         }
 
-        RecoveryAttemptActive = recoveryTarget > .001f;
         deliberateRecoveryWeight = Mathf.Lerp(deliberateRecoveryWeight, recoveryTarget, 1f - Mathf.Exp(-recoveryBlendResponse * Time.fixedDeltaTime));
         // Do not strengthen the old turning direction while the wheel interpolation
         // is still crossing zero to reach the player's countersteer request.
-        float actualSteer = (FLSteerAngle + FRSteerAngle) * .5f;
+        float actualSteer = (car.frontLeft.steerAngle + car.frontRight.steerAngle) * .5f;
         if (actualSteer * VehicleSlipAngle >= 0f)
             weight = 0f;
         bool leftHit = car.frontLeft.GetGroundHit(out WheelHit fl);
@@ -186,11 +171,8 @@ public class FrontAxleRecovery : MonoBehaviour
         if (actualSteer * VehicleSlipAngle < 0f && leftHit && rightHit && (trajectoryRecovering || loadedSlip * VehicleSlipAngle > 0f))
             target = Mathf.Max(target, Mathf.Lerp(1f, Mathf.Clamp(deliberateRecoveryMultiplier, 1f, 1.18f), deliberateRecoveryWeight));
         FrontLateralMultiplier = Mathf.Lerp(FrontLateralMultiplier, target, 1f - Mathf.Exp(-blendResponse * Time.fixedDeltaTime));
-        CountersteerRecoveryActive = target > 1.001f && (weight > 0f || deliberateRecoveryWeight > .001f);
         SetStiffness(car.frontLeft, leftBaseStiffness * FrontLateralMultiplier);
         SetStiffness(car.frontRight, rightBaseStiffness * FrontLateralMultiplier);
-        FLSidewaysSlip = leftHit ? fl.sidewaysSlip : 0f;
-        FRSidewaysSlip = rightHit ? fr.sidewaysSlip : 0f;
     }
 
     private static void SetStiffness(WheelCollider wheel, float value)
@@ -211,10 +193,8 @@ public class FrontAxleRecovery : MonoBehaviour
         SetStiffness(car.frontLeft, leftBaseStiffness);
         SetStiffness(car.frontRight, rightBaseStiffness);
         FrontLateralMultiplier = 1f;
-        CountersteerRecoveryActive = false;
         hasAngleSample = false;
         deliberateRecoveryWeight = 0f;
-        RecoveryAttemptActive = false;
         controlledDrift = false;
         overRotationWeight = openingAngleRate = outwardYawAcceleration = 0f;
     }

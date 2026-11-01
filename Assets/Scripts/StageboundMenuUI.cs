@@ -25,7 +25,7 @@ public static class StageboundMenuUI
         return canvas;
     }
 
-    public static void EnsureEventSystem()
+    public static void EnsureEventSystem(bool assignDefaultActions = true)
     {
         var events = EventSystem.current;
         if (events == null)
@@ -40,7 +40,7 @@ public static class StageboundMenuUI
             input = events.gameObject.AddComponent<InputSystemUIInputModule>();
         }
 
-        if (input.actionsAsset == null)
+        if (assignDefaultActions && input.actionsAsset == null)
             input.AssignDefaultActions();
     }
 

@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1638371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1267,8 +1267,6 @@ GameObject:
   - component: {fileID: 1369976805}
   - component: {fileID: 1369976807}
   - component: {fileID: 1369976806}
-  - component: {fileID: 1369976820}
-  - component: {fileID: 1369976808}
   - component: {fileID: 1369976809}
   - component: {fileID: 1369976810}
   - component: {fileID: 1369976811}
@@ -1468,13 +1466,9 @@ MonoBehaviour:
   finalClutchEngagement: 0
   ClutchInput: 0
   HandbrakeInput: 0
-  RearWheelRPM: 0
-  RearForwardSlip: 0
   SteeringInput: 0
   ThrottleInput: 0
   BrakeInput: 0
-  SteeringAngle: 0
-  IsBraking: 0
 --- !u!54 &1369976807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1502,33 +1496,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &1369976808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369976804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28094b742c99b164a89285e2bf120060, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DriftStability
-  rb: {fileID: 1369976807}
-  rearLeft: {fileID: 426007252}
-  rearRight: {fileID: 1070773121}
-  minimumDriftSpeed: 20
-  driftStartAngle: 8
-  fullDriftAngle: 30
-  normalRearStiffness: 1.2
-  driftRearStiffness: 1.05
-  gripReleaseSpeed: 2.5
-  gripRecoverySpeed: 0.8
-  maxDriftYawRate: 80
-  yawDamping: 3
-  slipAngle: 0
-  yawRate: 0
-  driftAmount: 0
 --- !u!114 &1369976809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1791,69 +1758,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1369976820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369976804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df6b1c260c20450298e9009765ea5eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DrivetrainDebug
-  captureTelemetry: 0
-  logToConsole: 0
-  logInterval: 0.5
-  frontReferenceStiffness: 1.2
-  speedKmh: 0
-  throttle: 0
-  engineRPM: 0
-  gear: 0
-  blMotorTorque: 0
-  brMotorTorque: 0
-  deliveredAxleTorque: 0
-  leftTorqueShare: 0
-  blGrounded: 0
-  brGrounded: 0
-  blForwardSlip: 0
-  brForwardSlip: 0
-  blSidewaysSlip: 0
-  brSidewaysSlip: 0
-  blContactLoad: 0
-  brContactLoad: 0
-  flSidewaysSlip: 0
-  frSidewaysSlip: 0
-  flContactLoad: 0
-  frContactLoad: 0
-  flGrounded: 0
-  frGrounded: 0
-  flNormalUpDot: 0
-  frNormalUpDot: 0
-  frontLateralStiffnessMultiplier: 0
-  blCombinedSlipMultiplier: 0
-  brCombinedSlipMultiplier: 0
-  combinedSlipEntryWeight: 0
-  steeringInput: 0
-  yawRate: 0
-  vehicleSlipAngle: 0
-  travelTurnRate: 0
-  turnRadiusMeters: 0
-  blRearFrictionMultiplier: 0
-  brRearFrictionMultiplier: 0
-  handbrakeInput: 0
-  handbrakeGripMultiplier: 0
-  clutchEngagement: 0
-  limiterFactor: 0
-  clutchInput: 0
-  automaticClutchEngagement: 0
-  manualClutchEngagement: 0
-  drivetrainRPM: 0
-  clutchRPMDifference: 0
-  clutchKickTorque: 0
-  clutchKickActive: 0
-  shifting: 0
 --- !u!1 &1482896443
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,7 +1924,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1669989339
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2153,7 +2057,6 @@ GameObject:
   - component: {fileID: 1757183756}
   - component: {fileID: 1757183755}
   - component: {fileID: 1757183759}
-  - component: {fileID: 1757183760}
   - component: {fileID: 1757183761}
   - component: {fileID: 1757183762}
   m_Layer: 5
@@ -2257,29 +2160,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1757183754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1863392212027649adfe095fa6c235c, type: 3}
+  m_Script: {fileID: 11500000, guid: 617b90fcbdcb4d15b13451f8712c165e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Speedometer
+  m_EditorClassIdentifier: Assembly-CSharp::RaceHUD
   car: {fileID: 1369976806}
-  speedText: {fileID: 1669989340}
---- !u!114 &1757183760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1757183754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 965ab97c61df7f04f9951d410708d8b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CarTelemetry
-  rb: {fileID: 1369976807}
-  frontLeft: {fileID: 691271475}
-  frontRight: {fileID: 1975938481}
-  rearLeft: {fileID: 426007252}
-  rearRight: {fileID: 1070773121}
-  telemetryText: {fileID: 1638371}
 --- !u!114 &1757183761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2294,11 +2178,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RaceTimer
   stageDefinition: {fileID: 11400000, guid: 8e5f4a8da2e14ab5b813093c13257d7d, type: 2}
   driftScore: {fileID: 1369976818}
-  timerText: {fileID: 0}
   elapsedTime: 0
   raceRunning: 0
-  raceFinished: 0
-  checkpoint1Passed: 0
 --- !u!114 &1757183762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2752,10 +2633,3 @@ MonoBehaviour:
   startAngleGrowth: 10
   fullAngleGrowth: 35
   maximumDampingRate: 6
-  slipAngle: 0
-  yawRate: 0
-  angleGrowth: 0
-  yawAcceleration: 0
-  appliedDampingRate: 0
-  removedYawRate: 0
-  countersteering: 0

@@ -93,10 +93,6 @@ public class CarController : MonoBehaviour
     public float engineInertia = 0.35f;
 
     public float EngineThrottle { get; private set; }
-    public float NormalizedEngineRPM => Mathf.InverseLerp(idleRPM, redlineRPM, EngineRPM);
-    public float TorqueCurveMultiplier { get; private set; }
-    public float CalculatedEngineTorque { get; private set; }
-    public float TransmittedEngineTorque { get; private set; }
     public float LongitudinalAcceleration { get; private set; }
     public bool DynamicsSampleValid { get; private set; }
 
@@ -142,11 +138,8 @@ public class CarController : MonoBehaviour
     public float driftGripExitAngle = 7f;
     [SerializeField]
     private bool driftGripHeld;
-    [SerializeField]
-    private float currentRearGripRecovery;
 
     public bool DriftGripHeld => driftGripHeld;
-    public float CurrentRearGripRecovery => currentRearGripRecovery;
     public bool DriftReleaseRecoveryActive => driftReleaseRecovery;
 
     [Header("Transient Powered Breakaway")]
@@ -249,16 +242,12 @@ public class CarController : MonoBehaviour
 
     [Range(0f, 1f)]
     public float HandbrakeInput;
-    public float RearWheelRPM;
-    public float RearForwardSlip;
     [Range(-1f, 1f)]
     public float SteeringInput;
     [Range(0f, 1f)]
     public float ThrottleInput;
     [Range(0f, 1f)]
     public float BrakeInput;
-    public float SteeringAngle;
-    public bool IsBraking;
 
     // GEAR TEXT
     public string CurrentGearText
@@ -336,13 +325,12 @@ public class CarController : MonoBehaviour
         ReadInput();
         UpdateEngineThrottle();
         UpdateLongitudinalAcceleration();
-        UpdateSpeed();
+        SpeedKmh = rb.linearVelocity.magnitude * 3.6f;
         UpdateClutch();
         UpdateEngineRPM();
         HandleSteering();
         HandleMotor();
         HandleBrakes();
-        UpdateWheelTelemetry();
         UpdateVisualWheels();
         if (shiftTimer > 0f)
         {
@@ -367,7 +355,6 @@ public class CarController : MonoBehaviour
             BrakeInput = gamepad.leftTrigger.ReadValue();
             // X / Cross = handbrake
             HandbrakeInput = gamepad.buttonSouth.isPressed ? 1f : 0f;
-            IsBraking = BrakeInput > 0.01f;
             return;
         }
 
@@ -392,7 +379,6 @@ public class CarController : MonoBehaviour
         BrakeInput = keyboard != null && keyboard.sKey.isPressed ? 1f : 0f;
         // SPACE = handbrake
         HandbrakeInput = keyboard != null && keyboard.spaceKey.isPressed ? 1f : 0f;
-        IsBraking = BrakeInput > 0.01f;
     }
 
     // CONTROLLER STEERING CURVE
@@ -453,57 +439,18 @@ public class CarController : MonoBehaviour
 
     private void ShiftUp()
     {
-        if (currentGear == -1)
-        {
-            currentGear = 0;
-        }
-        else if (currentGear == 0)
-        {
-            currentGear = 1;
-        }
-        else if (currentGear < gearRatios.Length)
-        {
-            currentGear++;
-        }
-        else
-        {
+        if (currentGear >= gearRatios.Length)
             return;
-        }
-
-        StartShift();
+        currentGear++;
+        shiftTimer = shiftDuration;
     }
 
     private void ShiftDown()
     {
-        if (currentGear > 1)
-        {
-            currentGear--;
-        }
-        else if (currentGear == 1)
-        {
-            currentGear = 0;
-        }
-        else if (currentGear == 0)
-        {
-            currentGear = -1;
-        }
-        else
-        {
+        if (currentGear < 0)
             return;
-        }
-
-        StartShift();
-    }
-
-    private void StartShift()
-    {
+        currentGear--;
         shiftTimer = shiftDuration;
-    }
-
-    // SPEED
-    private void UpdateSpeed()
-    {
-        SpeedKmh = rb.linearVelocity.magnitude * 3.6f;
     }
 
     private void UpdateLongitudinalAcceleration()
@@ -575,7 +522,6 @@ public class CarController : MonoBehaviour
     // ENGINE RPM
     private void UpdateEngineRPM()
     {
-        RearWheelRPM = (Mathf.Abs(backLeft.rpm) + Mathf.Abs(backRight.rpm)) * 0.5f;
         float effectiveThrottle = shiftTimer > 0f && ClutchInput <= 0.05f ? 0f : ThrottleInput;
         float freeRevTarget = Mathf.Lerp(idleRPM, redlineRPM, effectiveThrottle);
         SignedDrivetrainRPM = SignedRearWheelRPM * GearDirection * Mathf.Abs(GetCurrentGearRatio()) * finalDrive;
@@ -601,8 +547,7 @@ public class CarController : MonoBehaviour
         LimiterFactor = 1f;
         ClutchKickTorque = 0f;
         ClutchCouplingTorque = 0f;
-        TorqueCurveMultiplier = Mathf.Max(0f, torqueCurve.Evaluate(EngineRPM));
-        CalculatedEngineTorque = TransmittedEngineTorque = 0f;
+        float torqueMultiplier = Mathf.Max(0f, torqueCurve.Evaluate(EngineRPM));
         EngineBrakeAxleTorque = 0f;
         // Neutral / shifting
         if (currentGear == 0 || shiftTimer > 0f)
@@ -626,7 +571,6 @@ public class CarController : MonoBehaviour
         }
 
         float gearRatio = GetCurrentGearRatio();
-        float torqueMultiplier = TorqueCurveMultiplier;
         float engineTorque = maxEngineTorque * torqueMultiplier * EngineThrottle;
         // SOFT LIMITER
         float limiterStart = redlineRPM - 400f;
@@ -638,7 +582,6 @@ public class CarController : MonoBehaviour
 
         engineTorque *= limiterFactor;
         LimiterFactor = limiterFactor;
-        CalculatedEngineTorque = engineTorque;
         if (!CanClutchKick() || currentGear != clutchKickGear || ClutchInput > 0.5f)
             clutchKick.Cancel();
         // Preserve the normal idle floor, but never turn an opposing shaft into
@@ -649,7 +592,7 @@ public class CarController : MonoBehaviour
         previousDriveTorque = transmitted;
         previousDriveRatio = gearRatio * GearDirection;
         hasDriveSample = true;
-        ClutchCouplingTorque = TransmittedEngineTorque = transmitted;
+        ClutchCouplingTorque = transmitted;
         ClutchKickTorque = clutchKick.Active ? Mathf.Max(0f, clutchKick.SynchronizingTorque) : 0f;
         if (ClutchEngagement > .001f)
         {
@@ -748,7 +691,6 @@ public class CarController : MonoBehaviour
             AckermannSteering.Calculate(currentSteerAngle, SteeringWheelbase, SteeringFrontTrack, out leftAngle, out rightAngle);
         frontLeft.steerAngle = leftAngle;
         frontRight.steerAngle = rightAngle;
-        SteeringAngle = currentSteerAngle;
     }
 
     private void UpdateSteeringGeometry()
@@ -809,10 +751,8 @@ public class CarController : MonoBehaviour
             rightRecoveredGrip = rightTarget;
         }
 
-        float oldAverage = (leftRecoveredGrip + rightRecoveredGrip) * .5f;
         leftRecoveredGrip = RecoverRearGrip(leftRecoveredGrip, leftTarget, normalGrip);
         rightRecoveredGrip = RecoverRearGrip(rightRecoveredGrip, rightTarget, normalGrip);
-        currentRearGripRecovery = normalGrip ? Mathf.Max(0f, ((leftRecoveredGrip + rightRecoveredGrip) * .5f - oldAverage) / Time.fixedDeltaTime) : 0f;
         RearLeftGripMultiplier = leftRecoveredGrip;
         RearRightGripMultiplier = rightRecoveredGrip;
         SetSidewaysStiffness(backLeft, rearLeftNormalStiffness * RearLeftGripMultiplier);
@@ -870,26 +810,6 @@ public class CarController : MonoBehaviour
         WheelFrictionCurve friction = wheel.sidewaysFriction;
         friction.stiffness = stiffness;
         wheel.sidewaysFriction = friction;
-    }
-
-    // WHEEL SLIP TELEMETRY
-    private void UpdateWheelTelemetry()
-    {
-        float leftSlip = GetForwardSlip(backLeft);
-        float rightSlip = GetForwardSlip(backRight);
-        RearForwardSlip = (Mathf.Abs(leftSlip) + Mathf.Abs(rightSlip)) * 0.5f;
-    }
-
-    private float GetForwardSlip(WheelCollider wheel)
-    {
-        if (wheel == null)
-            return 0f;
-        if (wheel.GetGroundHit(out WheelHit hit))
-        {
-            return hit.forwardSlip;
-        }
-
-        return 0f;
     }
 
     // VISUAL WHEELS

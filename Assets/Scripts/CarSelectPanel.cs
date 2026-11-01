@@ -219,11 +219,6 @@ public class CarSelectPanel : MonoBehaviour
         onBack?.Invoke();
     }
 
-    public void ShowError(string message)
-    {
-        status.text = message;
-    }
-
     private void OnDisable()
     {
         if (ownsNavigationFocus && inputModule != null)

@@ -1,11 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// Installed by the existing Speedometer component; no manual Canvas wiring needed.
 public class RaceHUD : MonoBehaviour
 {
     public CarController car;
@@ -33,11 +30,6 @@ public class RaceHUD : MonoBehaviour
     private static readonly Color Red = new Color32(255, 102, 111, 255);
     private static readonly Color Muted = new Color32(157, 174, 193, 255);
 
-    private void Start()
-    {
-        EnsureHUD();
-    }
-
     private void EnsureHUD()
     {
         if (hudRoot != null)
@@ -51,12 +43,12 @@ public class RaceHUD : MonoBehaviour
         if (race == null)
             race = gameObject.AddComponent<RaceTimer>();
         var root = new GameObject("Stagebound Race HUD", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-        // Speedometer lives on an existing Canvas. A nested Canvas defaults to
+        // The owner lives on an existing Canvas. A nested Canvas defaults to
         // a 100x100 rect, which clamps both panels in place. Use a full-screen root.
         hudRoot = root;
         root.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         root.GetComponent<Canvas>().sortingOrder = 20;
-        EnsureEventSystem();
+        StageboundMenuUI.EnsureEventSystem(false);
         var scaler = root.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
@@ -130,12 +122,12 @@ public class RaceHUD : MonoBehaviour
             revFill.color = rev > .88f ? Red : Mint;
         }
 
-        clock.text = race.GetFormattedTime();
+        clock.text = RaceTimer.FormatTime(race.elapsedTime);
         best.text = "BEST  " + (race.HasBest ? RaceTimer.FormatTime(race.BestTime) : "--:--.---");
         checkpoints.text = $"{race.PassedCheckpoints} / {race.TotalCheckpoints}";
         delta.text = "SPLIT  " + (race.Delta.HasValue ? DeltaText(race.Delta) : race.LatestSplit.HasValue ? RaceTimer.FormatTime(race.LatestSplit.Value) : "--");
         delta.color = !race.Delta.HasValue ? Muted : race.Delta.Value <= 0 ? Mint : Red;
-        status.text = !race.TrackReady ? "SETUP REQUIRED: START + CHECKPOINTS" : race.raceFinished ? "FINISHED" : race.raceRunning ? "STAGE IN PROGRESS" : "CROSS START TO BEGIN";
+        status.text = !race.TrackReady ? "SETUP REQUIRED: START + CHECKPOINTS" : race.raceRunning ? "STAGE IN PROGRESS" : "CROSS START TO BEGIN";
         UpdateResults(Time.unscaledTime);
     }
 
@@ -181,21 +173,6 @@ public class RaceHUD : MonoBehaviour
             if (driftHUD != null)
                 driftHUD.Panel.SetBackgroundTransparent(transparent);
             PlayerPrefs.Save();
-        }
-    }
-
-    private static void EnsureEventSystem()
-    {
-        var events = EventSystem.current;
-        if (events == null)
-            events = FindAnyObjectByType<EventSystem>();
-        if (events == null)
-            events = new GameObject("HUD EventSystem", typeof(EventSystem)).GetComponent<EventSystem>();
-        if (events.GetComponent<InputSystemUIInputModule>() == null)
-        {
-            foreach (var module in events.GetComponents<BaseInputModule>())
-                module.enabled = false;
-            events.gameObject.AddComponent<InputSystemUIInputModule>();
         }
     }
 
@@ -257,34 +234,12 @@ public class RaceHUD : MonoBehaviour
 
     private static string DeltaText(float? value) => value.HasValue ? (value.Value <= 0 ? "-" : "+") + Mathf.Abs(value.Value).ToString("0.000", System.Globalization.CultureInfo.InvariantCulture) + " s" : "--";
 
-    private static RectTransform Panel(Transform parent, string name, Vector2 anchor, Vector2 position, Vector2 size)
-    {
-        var obj = new GameObject(name, typeof(RectTransform), typeof(Image));
-        var rect = obj.GetComponent<RectTransform>();
-        rect.SetParent(parent, false);
-        rect.anchorMin = rect.anchorMax = anchor;
-        rect.pivot = anchor;
-        rect.anchoredPosition = position;
-        rect.sizeDelta = size;
-        obj.GetComponent<Image>().color = new Color32(10, 18, 29, 235);
-        obj.GetComponent<Image>().raycastTarget = false;
-        return rect;
-    }
+    private static RectTransform Panel(Transform parent, string name, Vector2 anchor, Vector2 position, Vector2 size) =>
+        StageboundMenuUI.Panel(parent, name, anchor, position, size, new Color32(10, 18, 29, 235));
 
     private static TMP_Text Text(Transform parent, string content, float size, Vector2 position, Color color)
     {
-        var obj = new GameObject(content, typeof(RectTransform), typeof(TextMeshProUGUI));
-        var text = obj.GetComponent<TextMeshProUGUI>();
-        text.rectTransform.SetParent(parent, false);
-        text.rectTransform.anchorMin = text.rectTransform.anchorMax = new Vector2(0, 1);
-        text.rectTransform.pivot = new Vector2(0, 1);
-        text.rectTransform.anchoredPosition = position;
-        text.rectTransform.sizeDelta = new Vector2(530 - position.x, 110);
-        text.text = content;
-        text.fontSize = size;
-        text.color = color;
-        text.raycastTarget = false;
-        text.textWrappingMode = TextWrappingModes.NoWrap;
+        var text = StageboundMenuUI.Text(parent, content, size, position, new Vector2(530 - position.x, 110), color);
         // Keep glyphs readable against the road even when the panel is invisible.
         text.outlineColor = new Color32(5, 10, 16, 230);
         text.outlineWidth = .12f;

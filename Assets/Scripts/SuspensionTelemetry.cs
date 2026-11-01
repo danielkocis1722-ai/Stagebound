@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [DefaultExecutionOrder(60)]
@@ -6,63 +5,34 @@ using UnityEngine;
 [RequireComponent(typeof(CarController), typeof(Rigidbody))]
 public class SuspensionTelemetry : MonoBehaviour
 {
-    [Serializable]
-    public struct WheelState
-    {
-        public bool grounded;
-        [Range(0f, 1f)]
-        public float compression;
-        [Tooltip("Extension from fully compressed, in metres.")]
-        public float travelPositionMetres;
-        public float load, supportedMass;
-        public int groundedSamples, airborneSamples, topOutSamples, bottomOutSamples;
-        public float airborneSeconds, topOutSeconds, bottomOutSeconds;
-        public float currentTopOutSeconds, longestTopOutSeconds, currentBottomOutSeconds, longestBottomOutSeconds;
-    }
-
     [Min(.1f)]
     public float accelerationResponse = 12f;
 
-    [Header("Live physical telemetry (m/s², normalized compression, degrees)")]
+    [Header("Body motion (m/s², degrees)")]
     [SerializeField]
     private float localLateralAcceleration, localLongitudinalAcceleration;
-    [SerializeField]
-    private float flCompression, frCompression, blCompression, brCompression;
-    [SerializeField]
-    private float flLoad, frLoad, blLoad, brLoad;
     [SerializeField]
     private float physicalBodyRoll, physicalBodyPitch;
     [SerializeField]
     private int groundedWheels;
 
-    [Header("Per-wheel travel and limit statistics (2% threshold, grounded only)")]
-    [SerializeField]
-    private WheelState frontLeftState, frontRightState, backLeftState, backRightState;
-
-    public WheelState FrontLeftState => frontLeftState;
-    public WheelState FrontRightState => frontRightState;
-    public WheelState BackLeftState => backLeftState;
-    public WheelState BackRightState => backRightState;
     public float LocalLateralAcceleration => localLateralAcceleration;
     public float LocalLongitudinalAcceleration => localLongitudinalAcceleration;
-    public float FLCompression => flCompression;
-    public float FRCompression => frCompression;
-    public float BLCompression => blCompression;
-    public float BRCompression => brCompression;
     public float PhysicalBodyRoll => physicalBodyRoll;
     public float PhysicalBodyPitch => physicalBodyPitch;
     public int GroundedWheels => groundedWheels;
     public bool SampleValid { get; private set; }
     public int ResetVersion { get; private set; }
 
-    private CarController car;
+    private WheelCollider[] wheels;
     private Rigidbody body;
     private Vector3 previousVelocity, previousPosition;
     private bool hasSample;
 
     private void Awake()
     {
-        car = GetComponent<CarController>();
+        var car = GetComponent<CarController>();
+        wheels = new[] { car.frontLeft, car.frontRight, car.backLeft, car.backRight };
         body = GetComponent<Rigidbody>();
     }
 
@@ -95,71 +65,13 @@ public class SuspensionTelemetry : MonoBehaviour
         previousPosition = position;
         hasSample = true;
         groundedWheels = 0;
-        flCompression = ReadWheel(car.frontLeft, out flLoad, ref frontLeftState);
-        frCompression = ReadWheel(car.frontRight, out frLoad, ref frontRightState);
-        blCompression = ReadWheel(car.backLeft, out blLoad, ref backLeftState);
-        brCompression = ReadWheel(car.backRight, out brLoad, ref backRightState);
+        foreach (var wheel in wheels)
+            if (wheel != null && wheel.GetGroundHit(out _))
+                groundedWheels++;
         Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
         Vector3 right = Vector3.Cross(Vector3.up, forward);
         physicalBodyRoll = Mathf.Atan2(Vector3.Dot(transform.up, right), Vector3.Dot(transform.up, Vector3.up)) * Mathf.Rad2Deg;
         physicalBodyPitch = -Mathf.Asin(Mathf.Clamp(transform.forward.y, -1f, 1f)) * Mathf.Rad2Deg;
-    }
-
-    private float ReadWheel(WheelCollider wheel, out float load, ref WheelState state)
-    {
-        load = 0f;
-        state.grounded = false;
-        if (wheel == null)
-        {
-            state.compression = state.load = state.supportedMass = state.travelPositionMetres = 0f;
-            return 0f;
-        }
-
-        state.supportedMass = wheel.sprungMass;
-        if (!wheel.GetGroundHit(out WheelHit hit))
-        {
-            state.compression = state.load = 0f;
-            state.travelPositionMetres = wheel.suspensionDistance;
-            state.airborneSamples++;
-            state.airborneSeconds += Time.fixedDeltaTime;
-            state.currentTopOutSeconds = state.currentBottomOutSeconds = 0f;
-            return 0f;
-        }
-
-        state.grounded = true;
-        groundedWheels++;
-        load = hit.force;
-        Vector3 local = wheel.transform.InverseTransformPoint(hit.point) - wheel.center;
-        float compression = 1f - Mathf.Clamp01((-local.y - wheel.radius) / Mathf.Max(.001f, wheel.suspensionDistance));
-        state.compression = compression;
-        state.load = load;
-        state.travelPositionMetres = (1f - compression) * wheel.suspensionDistance;
-        state.groundedSamples++;
-        if (compression <= .02f)
-        {
-            state.topOutSamples++;
-            state.topOutSeconds += Time.fixedDeltaTime;
-            state.currentTopOutSeconds += Time.fixedDeltaTime;
-        }
-        else
-            state.currentTopOutSeconds = 0f;
-        if (compression >= .98f)
-        {
-            state.bottomOutSamples++;
-            state.bottomOutSeconds += Time.fixedDeltaTime;
-            state.currentBottomOutSeconds += Time.fixedDeltaTime;
-        }
-        else
-            state.currentBottomOutSeconds = 0f;
-        state.longestTopOutSeconds = Mathf.Max(state.longestTopOutSeconds, state.currentTopOutSeconds);
-        state.longestBottomOutSeconds = Mathf.Max(state.longestBottomOutSeconds, state.currentBottomOutSeconds);
-        return compression;
-    }
-
-    [ContextMenu("Reset Suspension Statistics")]
-    public void ResetStatistics()
-    {
-        frontLeftState = frontRightState = backLeftState = backRightState = default;
     }
 
     private void OnEnable()

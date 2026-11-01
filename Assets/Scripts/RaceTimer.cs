@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class RaceTimer : MonoBehaviour
 {
     public StageDefinition stageDefinition;
     public DriftScoreSystem driftScore;
-    public TMP_Text timerText;
     public float elapsedTime;
-    public bool raceRunning, raceFinished, checkpoint1Passed;
+    public bool raceRunning;
 
     public int PassedCheckpoints { get; private set; }
     public int TotalCheckpoints { get; private set; }
@@ -45,7 +43,7 @@ public class RaceTimer : MonoBehaviour
     public RunResult LastResult { get; private set; }
     public float? LatestSplit => splits.Count > 0 ? splits[splits.Count - 1] : (float?)null;
     public string BestTimeKey => BuildBestTimeKey(gameObject.scene.path, CountCheckpoints());
-    public string StageRecordKey => stageDefinition != null ? "Stagebound.Stage." + stageDefinition.stageId + "." + CountCheckpoints() + ".v" + stageDefinition.recordVersion + ".style2" : BestTimeKey + ".style2";
+    public string StageRecordKey => stageDefinition != null ? StageRecords.OverallKey(stageDefinition, CountCheckpoints()) : BestTimeKey + ".style2";
 
     public float StyleCreditFor(float score) => stageDefinition != null ? stageDefinition.CreditFor(score) : Mathf.Clamp(score / 2000f, 0f, 8f);
 
@@ -53,22 +51,6 @@ public class RaceTimer : MonoBehaviour
     private float[] bestSplits = Array.Empty<float>();
     private string key;
     private bool hasBest;
-
-    [Serializable]
-    class Record
-    {
-        public float time;
-        public float[] splits;
-    }
-
-    [Serializable]
-    class StyleRecord
-    {
-        public int version = 2;
-        public bool hasBest;
-        public float bestAdjustedTime, bestRawTime, bestDriftScore;
-        public float[] rawSplitsOfBestAdjusted;
-    }
 
     private void Start()
     {
@@ -102,45 +84,13 @@ public class RaceTimer : MonoBehaviour
 
     private void LoadRecords()
     {
-        BestTime = BestRawTime = BestDriftScore = 0f;
-        hasBest = false;
-        bestSplits = Array.Empty<float>();
-        try
-        {
-            var saved = JsonUtility.FromJson<StyleRecord>(PlayerPrefs.GetString(key, "{}"));
-            if (saved != null && saved.version == 2 && saved.hasBest && Finite(saved.bestAdjustedTime) && Finite(saved.bestRawTime) && saved.bestRawTime > 0f && saved.bestAdjustedTime >= 0f && saved.rawSplitsOfBestAdjusted != null && saved.rawSplitsOfBestAdjusted.Length == TotalCheckpoints)
-            {
-                BestTime = saved.bestAdjustedTime;
-                BestRawTime = saved.bestRawTime;
-                BestDriftScore = Finite(saved.bestDriftScore) ? Mathf.Max(0f, saved.bestDriftScore) : 0f;
-                bestSplits = saved.rawSplitsOfBestAdjusted;
-                hasBest = true;
-                return;
-            }
-        }
-        catch (ArgumentException)
-        {
-        }
-
-        // Legacy raw records remain intact. Treat them as zero-credit runs until beaten.
-        if (stageDefinition != null && !stageDefinition.importLegacySceneBest)
-            return;
-        try
-        {
-            var old = JsonUtility.FromJson<Record>(PlayerPrefs.GetString(BestTimeKey, "{}"));
-            if (old != null && Finite(old.time) && old.time > 0f && old.splits != null && old.splits.Length == TotalCheckpoints)
-            {
-                BestTime = BestRawTime = old.time;
-                bestSplits = old.splits;
-                hasBest = true;
-            }
-        }
-        catch (ArgumentException)
-        {
-        }
+        var saved = StageRecords.Overall(stageDefinition, TotalCheckpoints, gameObject.scene.path);
+        BestTime = saved.bestAdjustedTime;
+        BestRawTime = saved.bestRawTime;
+        BestDriftScore = saved.bestDriftScore;
+        hasBest = saved.hasBest;
+        bestSplits = saved.rawSplitsOfBestAdjusted;
     }
-
-    private static bool Finite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 
     public bool HasBest => hasBest;
 
@@ -148,8 +98,6 @@ public class RaceTimer : MonoBehaviour
     {
         if (raceRunning)
             elapsedTime += Time.deltaTime;
-        if (timerText != null)
-            timerText.text = GetFormattedTime();
     }
 
     public void StartRace()
@@ -160,15 +108,12 @@ public class RaceTimer : MonoBehaviour
         raceRunning = true;
     }
 
-    public void PassCheckpoint1() => PassCheckpoint(1);
-
     public void PassCheckpoint(int index)
     {
         if (!raceRunning || index != PassedCheckpoints + 1 || index > TotalCheckpoints)
             return;
         splits.Add(elapsedTime);
         PassedCheckpoints++;
-        checkpoint1Passed = PassedCheckpoints > 0;
         Delta = bestSplits.Length == TotalCheckpoints ? elapsedTime - bestSplits[index - 1] : (float?)null;
     }
 
@@ -177,7 +122,6 @@ public class RaceTimer : MonoBehaviour
         if (!raceRunning || PassedCheckpoints != TotalCheckpoints || elapsedTime <= 0f)
             return;
         raceRunning = false;
-        raceFinished = true;
         float score = driftScore != null ? driftScore.FinishRun() : 0f;
         float credit = StyleCreditFor(score);
         float adjusted = Mathf.Max(0f, elapsedTime - credit);
@@ -193,7 +137,7 @@ public class RaceTimer : MonoBehaviour
         }
 
         StageRecords.RecordVehicleRun(stageDefinition, TotalCheckpoints, VehicleId(), elapsedTime, score, credit, splits.ToArray());
-        PlayerPrefs.SetString(key, JsonUtility.ToJson(new StyleRecord { hasBest = hasBest, bestAdjustedTime = BestTime, bestRawTime = BestRawTime, bestDriftScore = BestDriftScore, rawSplitsOfBestAdjusted = bestSplits }));
+        PlayerPrefs.SetString(key, JsonUtility.ToJson(new StageRecords.Record { hasBest = hasBest, bestAdjustedTime = BestTime, bestRawTime = BestRawTime, bestDriftScore = BestDriftScore, rawSplitsOfBestAdjusted = bestSplits }));
         PlayerPrefs.Save();
         LastResult = new RunResult(elapsedTime, score, credit, BestTime, Delta, NewBest, Time.unscaledTime);
         // The same line crossing begins the next timed run; result data is independent.
@@ -229,7 +173,7 @@ public class RaceTimer : MonoBehaviour
             driftScore.ResetRun();
         elapsedTime = 0;
         PassedCheckpoints = 0;
-        raceRunning = raceFinished = checkpoint1Passed = NewBest = false;
+        raceRunning = NewBest = false;
         Delta = null;
         splits.Clear();
     }
@@ -258,8 +202,6 @@ public class RaceTimer : MonoBehaviour
         Delta = null;
         NewBest = false;
     }
-
-    public string GetFormattedTime() => FormatTime(elapsedTime);
 
     private string VehicleId()
     {

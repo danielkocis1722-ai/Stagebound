@@ -75,6 +75,17 @@ public static class ValidateVehicleFlow
     public static void Run()
     {
         Directory.CreateDirectory(Output);
+        foreach (string path in new[] { "Assets/Scenes/MainMenu.unity", "Assets/Scenes/SampleScene.unity", "Assets/Scenes/TrackCompleCircuit.unity" })
+        {
+            var scene = EditorSceneManager.OpenScene(path);
+            Check(scene.GetRootGameObjects().All(root => root.GetComponentsInChildren<Component>(true).All(c => c != null)), "No missing scripts: " + path);
+        }
+        foreach (string guid in AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Vehicles" }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            Check(prefab.GetComponentsInChildren<Component>(true).All(c => c != null), "No missing scripts: " + path);
+        }
         var rx = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Vehicles/Visuals/RX7_Visual.prefab");
         Func<string> meshSignature = () => string.Join("\n", rx.GetComponentsInChildren<MeshFilter>(true).Select(f =>
         {

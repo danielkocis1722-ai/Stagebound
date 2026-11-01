@@ -139,3 +139,14 @@ Modified runtime scripts: `MainMenu.cs`, `CarSelectPanel.cs`, `CarSelectNavigati
 Created: R32/RX7 visual prefabs, configs, definitions and 57 URP materials with Unity metadata. New editor utilities: `IntegrateVehicles.cs`, `RX7ImportPostprocessor.cs`, `ValidateVehicleFlow.cs`. Added source material metadata and updated this document, `Stages.md` and `MenuAndRaceFlow.md`. The exhaustive Git/file list is `Docs/VehicleIntegrationFiles.txt`.
 
 `IntegrateVehicles.Run` is an explicit one-time preparation/rebuild command. It does not run on normal imports, but deliberately rebuilding replaces the two generated configs with the recorded initial tuning. Do not run it over later manual tuning without saving those changes. `ValidateVehicleFlow.Run` is the explicit Play Mode verification entry point and exits its editor process when complete. It should be run in a dedicated editor process, not in an editor session with unsaved work.
+
+## Current runtime layout
+
+RaceHUD is attached directly in both race scenes. The Speedometer bootstrap,
+hidden CarTelemetry overlay, inactive DriftStability implementation and optional
+DrivetrainDebug logger have been removed. SuspensionTelemetry retains the body
+motion and contact count used by VisualBodyRoll; experiment-only wheel statistics
+are gone. StageRecords owns record parsing shared by the timer and stage menu.
+Earlier handling documents record historical experiments and may describe debug
+fields that are no longer present. Active handling settings and config values
+remain unchanged.

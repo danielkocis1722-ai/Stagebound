@@ -58,14 +58,15 @@ public static class StageRecords
 
     public static Record Overall(StageDefinition stage, int count, string scenePath = null)
     {
-        if (stage == null)
+        if (stage == null && scenePath == null)
             return new Record();
-        var record = Read(OverallKey(stage, count), count);
-        if (record.hasBest || !stage.importLegacySceneBest)
+        string legacyKey = RaceTimer.BuildBestTimeKey(scenePath ?? stage.scenePath, count);
+        var record = Read(stage != null ? OverallKey(stage, count) : legacyKey + ".style2", count);
+        if (record.hasBest || (stage != null && !stage.importLegacySceneBest))
             return record;
         try
         {
-            var old = JsonUtility.FromJson<Legacy>(PlayerPrefs.GetString(RaceTimer.BuildBestTimeKey(scenePath ?? stage.scenePath, count), "{}"));
+            var old = JsonUtility.FromJson<Legacy>(PlayerPrefs.GetString(legacyKey, "{}"));
             if (old != null && Finite(old.time) && old.time > 0 && old.splits != null && old.splits.Length == count)
                 return new Record
                 {
