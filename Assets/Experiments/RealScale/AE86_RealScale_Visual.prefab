@@ -2187,7 +2187,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8989a6521e0d479bae4a49f899d5763b, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::VehicleVisualSetup
   bodyRoot: {fileID: 4312045885040533378}
   frontLeftWheel: {fileID: 1038559351402268990}

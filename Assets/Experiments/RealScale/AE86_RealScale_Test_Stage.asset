@@ -16,9 +16,9 @@ MonoBehaviour:
   stageId: ae86-real-scale-pad
   stageName: REAL SCALE TEST PAD
   scenePath: Assets/Experiments/RealScale/AE86_RealScale_Test.unity
-  description: 
+  description:
   previewImage: {fileID: 0}
-  difficultyLabel: 
+  difficultyLabel:
   selectable: 1
   unavailableLabel: COMING SOON / DEVELOPMENT
   checkpointCount: 0

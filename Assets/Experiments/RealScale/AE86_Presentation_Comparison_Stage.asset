@@ -16,9 +16,9 @@ MonoBehaviour:
   stageId: ae86-presentation-pad
   stageName: PRESENTATION COMPARISON PAD
   scenePath: Assets/Experiments/RealScale/AE86_Presentation_Comparison.unity
-  description: 
+  description:
   previewImage: {fileID: 0}
-  difficultyLabel: 
+  difficultyLabel:
   selectable: 1
   unavailableLabel: COMING SOON / DEVELOPMENT
   checkpointCount: 0
