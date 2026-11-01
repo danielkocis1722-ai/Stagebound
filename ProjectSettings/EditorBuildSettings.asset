@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Experiments/RealScale/AE86_RealScale_Test.unity
+    guid: 099dd2b31d94c244681b113cc5fa2313
+  - enabled: 1
+    path: Assets/Experiments/RealScale/AE86_Presentation_Comparison.unity
+    guid: 8533818b52e0baf41b301abf6413f41d
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: e260befc75784411b73a6e807d1fa908
   - enabled: 1
