@@ -1,5 +1,7 @@
 # Imported stages and steering investigation
 
+> Historical report. The experimental branch now uses the full metre-scale migration documented in [RealScaleMigration.md](RealScaleMigration.md). Values and instructions below describe the earlier state.
+
 Historical integration report. The subsequent scale, original-texture recovery,
 brake/steering polish and stricter reverse-test findings are in [FocusedPolish.md](FocusedPolish.md).
 

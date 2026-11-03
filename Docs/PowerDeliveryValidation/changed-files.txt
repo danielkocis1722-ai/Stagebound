@@ -1,0 +1,14 @@
+Existing files changed in this pass:
+Assets/Scripts/CarController.cs
+Assets/Vehicles/Configs/AE86_VehicleConfig.asset
+Assets/Vehicles/Configs/RX7_VehicleConfig.asset
+Assets/Vehicles/Configs/SkylineR32_VehicleConfig.asset
+Docs/RealScaleMigration.md
+
+New source:
+Assets/Editor/ValidatePowerDelivery.cs
+Assets/Editor/ValidatePowerDelivery.cs.meta
+
+New report/evidence:
+Docs/PowerDeliveryTuning.md
+Docs/PowerDeliveryValidation/*

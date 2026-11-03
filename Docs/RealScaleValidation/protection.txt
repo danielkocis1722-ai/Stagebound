@@ -1,0 +1,7 @@
+Protected main files=595 mismatches=0
+Pre-existing settings preserved: ProjectSettings/ProjectSettings.asset = True
+Pre-existing settings preserved: ProjectSettings/QualitySettings.asset = True
+Engine preserved: Assets/Vehicles/Configs/AE86_VehicleConfig.asset = True
+Engine preserved: Assets/Vehicles/Configs/SkylineR32_VehicleConfig.asset = True
+Engine preserved: Assets/Vehicles/Configs/RX7_VehicleConfig.asset = True
+Production source model/texture/material files checked=244 mismatches=0 (retired experimental pad materials excluded)

@@ -8,15 +8,15 @@ public class FollowCamera : MonoBehaviour
     public Rigidbody carRigidbody;
 
     [Header("Chase Camera")]
-    public float slowDistance = 7.5f;
-    public float fastDistance = 8.4f;
-    public float slowHeight = 2.7f;
-    public float fastHeight = 3.0f;
+    public float slowDistance = 3.55f;
+    public float fastDistance = 4.2f;
+    public float slowHeight = 1.3f;
+    public float fastHeight = 1.6f;
     public float positionSharpness = 7f;
     public float lookSharpness = 5f;
-    public float lookAheadSlow = 2.0f;
-    public float lookAheadFast = 4.0f;
-    public float lookHeight = 0.8f;
+    public float lookAheadSlow = 1.1f;
+    public float lookAheadFast = 2.8f;
+    public float lookHeight = 0.4f;
 
     [Header("Drift Camera")]
     // Ako veľmi kamera reaguje na rozdiel
@@ -36,7 +36,7 @@ public class FollowCamera : MonoBehaviour
     public float driftCameraRange = 0.85f;
 
     // Jemné posunutie kamery do strany počas driftu.
-    public float driftSideOffset = 0.35f;
+    public float driftSideOffset = 0.18f;
     public float minDriftSpeed = 20f;
 
     [Header("Speed Effects")]
@@ -45,16 +45,16 @@ public class FollowCamera : MonoBehaviour
     public float fastFOV = 73f;
     public float fovSharpness = 4f;
     [Header("Low-speed proximity (fades out by 80 km/h)")]
-    [Min(0f)] public float lowSpeedDistanceReduction = .5f;
+    [Min(0f)] public float lowSpeedDistanceReduction = .25f;
     [Min(0f)] public float lowSpeedFOVReduction = 2f;
     [Min(1f)] public float proximityFadeSpeed = 80f;
 
     [Header("Acceleration Effects")]
     public bool accelerationFeedbackEnabled = true;
     [Min(0f)]
-    public float accelerationPullback = 0.5f;
+    public float accelerationPullback = 0.25f;
     [Min(0f)]
-    public float accelerationLowering = 0.05f;
+    public float accelerationLowering = 0.025f;
     [Min(0f)]
     public float accelerationFOVBonus = 3f;
     [Min(0.31f)]
@@ -63,11 +63,11 @@ public class FollowCamera : MonoBehaviour
     public float accelerationResponse = 10f;
     [Min(0.1f)]
     public float accelerationRecovery = 5f;
-    public float brakingPush = 0.25f;
+    public float brakingPush = 0.12f;
 
     [Header("Drivetrain Camera Hit")]
     [Min(0f)]
-    public float torqueKickPullback = 0.06f;
+    public float torqueKickPullback = 0.03f;
     [Min(0f)]
     public float torqueKickFOVBonus = 1.25f;
     [Min(1f)]

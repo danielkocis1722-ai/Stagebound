@@ -1,5 +1,7 @@
 # Three vehicles and two playable stages
 
+> Historical report. The experimental branch now uses the full metre-scale migration documented in [RealScaleMigration.md](RealScaleMigration.md). Values and instructions below describe the earlier state.
+
 Work performed directly in `C:\Users\dandy\Documents\Projects\Stagebound`. No commit or push. No external vehicle, track, texture, font or plugin assets were downloaded.
 
 ## 1. Detected car assets

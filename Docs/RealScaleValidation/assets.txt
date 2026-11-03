@@ -1,0 +1,121 @@
+PASS No missing scripts Assets/Scenes/MainMenu.unity
+PASS No missing geometry Assets/Scenes/MainMenu.unity
+PASS No missing materials/shaders Assets/Scenes/MainMenu.unity
+PASS No missing scripts Assets/Scenes/SampleScene.unity
+PASS No missing geometry Assets/Scenes/SampleScene.unity
+PASS No missing materials/shaders Assets/Scenes/SampleScene.unity
+PASS Unit-scale CarRoot Assets/Scenes/SampleScene.unity
+PASS Unit-scale metre WheelColliders Assets/Scenes/SampleScene.unity
+PASS Unit-scale static colliders and race triggers Assets/Scenes/SampleScene.unity
+PASS Visual/collider vertex agreement SampleScene/CurbeInner-col Collision (metres): maxError=0.000031m
+PASS Visual/collider vertex agreement SampleScene/CurbeOuter-col Collision (metres): maxError=0.000031m
+PASS Visual/collider vertex agreement SampleScene/SouthLoop-col Collision (metres): maxError=0.000031m
+PASS Real-scale record namespace south-loop
+PASS Authored checkpoint count south-loop
+PASS Metre gate widths south-loop
+PASS Gate over road Race Start-Finish
+PASS Gate over road Race Checkpoint 1
+ROAD south-loop sampledWidthMedian=8.700 minimum=8.600 maximum=8.700 widthSamples=2 supportedWheelProbes=24 staticColliders=4
+VISUAL_SURFACE south-loop/Cube bounds=(77.099, 0.224, 250.319) materials=Lit
+VISUAL_SURFACE south-loop/CurbeInner-col bounds=(80.353, 3.082, 253.974) materials=CurbeColor,CurbeConcrete
+VISUAL_SURFACE south-loop/CurbeOuter-col bounds=(100.293, 3.846, 276.302) materials=CurbeColor,CurbeConcrete
+VISUAL_SURFACE south-loop/SouthLoop-col bounds=(149.628, 4.431, 330.064) materials=Concrete,Pottery,Sand,Stripe,Tarmac
+PASS No missing scripts Assets/Scenes/TrackCompleCircuit.unity
+PASS No missing geometry Assets/Scenes/TrackCompleCircuit.unity
+PASS No missing materials/shaders Assets/Scenes/TrackCompleCircuit.unity
+PASS Unit-scale CarRoot Assets/Scenes/TrackCompleCircuit.unity
+PASS Unit-scale metre WheelColliders Assets/Scenes/TrackCompleCircuit.unity
+PASS Unit-scale static colliders and race triggers Assets/Scenes/TrackCompleCircuit.unity
+PASS Visual/collider vertex agreement TrackCompleCircuit/bridge Collision: maxError=0.000023m
+PASS Visual/collider vertex agreement TrackCompleCircuit/crooked road Collision: maxError=0.000010m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 90 Collision: maxError=0.000003m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 90 fix Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 90.001 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 90.002 Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 180 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 180.001 Collision: maxError=0.000007m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road 180.002 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road.001 Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road.002 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/road.003 Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/springboard Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/springboard.001 Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/Jump Connector Collision: maxError=0.000002m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.001 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.002 Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.003 Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.004 Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.005 Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.006 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.007 Collision: maxError=0.000006m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.008 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/bunch of wheels.009 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/finish board Collision: maxError=0.000002m
+PASS Visual/collider vertex agreement TrackCompleCircuit/stack of wheels Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/stone Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/stone.001 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/stone.002 Collision: maxError=0.000004m
+PASS Visual/collider vertex agreement TrackCompleCircuit/stone.004 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/tribune Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/wheel fence Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement TrackCompleCircuit/wheel fence.001 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement TrackCompleCircuit/Earth Collision: maxError=0.000024m
+PASS Visual/collider vertex agreement TrackCompleCircuit/parking Collision: maxError=0.000010m
+PASS Real-scale record namespace track-comple
+PASS Authored checkpoint count track-comple
+PASS Metre gate widths track-comple
+ROAD track-comple sampledWidthMedian=8.600 minimum=8.200 maximum=10.100 widthSamples=43 supportedWheelProbes=5160 staticColliders=64
+VISUAL_SURFACE track-comple/road bounds=(14.723, 0.562, 8.675) materials=Material
+PASS No missing scripts Assets/Scenes/CherryMountain.unity
+PASS No missing geometry Assets/Scenes/CherryMountain.unity
+PASS No missing materials/shaders Assets/Scenes/CherryMountain.unity
+PASS Unit-scale CarRoot Assets/Scenes/CherryMountain.unity
+PASS Unit-scale metre WheelColliders Assets/Scenes/CherryMountain.unity
+PASS Unit-scale static colliders and race triggers Assets/Scenes/CherryMountain.unity
+PASS Visual/collider vertex agreement CherryMountain/Object_9 Collision: maxError=0.000123m
+PASS Visual/collider vertex agreement CherryMountain/Object_10 Collision: maxError=0.000123m
+PASS Visual/collider vertex agreement CherryMountain/Object_11 Collision: maxError=0.000092m
+PASS Visual/collider vertex agreement CherryMountain/Object_5 Collision: maxError=0.000092m
+PASS Visual/collider vertex agreement CherryMountain/Object_6 Collision: maxError=0.000092m
+PASS Visual/collider vertex agreement CherryMountain/Object_7 Collision: maxError=0.000034m
+PASS Visual/collider vertex agreement CherryMountain/Object_8 Collision: maxError=0.000093m
+PASS Real-scale record namespace cherry-mountain
+PASS Authored checkpoint count cherry-mountain
+PASS Metre gate widths cherry-mountain
+ROAD cherry-mountain sampledWidthMedian=8.000 minimum=7.900 maximum=33.700 widthSamples=111 supportedWheelProbes=13428 staticColliders=7
+VISUAL_SURFACE cherry-mountain/Object_5 bounds=(71.988, 86.948, 699.211) materials=01_-_Default.099_1
+PASS Cherry native atlas cross section
+PAVEMENT cherry-mountain atlasRows=527..752 textureHeight=1024 UVperMetre=0.03169469 insideEdgeLines=6.9326 metres
+PASS No missing scripts Assets/Scenes/DriftTracks.unity
+PASS No missing geometry Assets/Scenes/DriftTracks.unity
+PASS No missing materials/shaders Assets/Scenes/DriftTracks.unity
+PASS Unit-scale CarRoot Assets/Scenes/DriftTracks.unity
+PASS Unit-scale metre WheelColliders Assets/Scenes/DriftTracks.unity
+PASS Unit-scale static colliders and race triggers Assets/Scenes/DriftTracks.unity
+PASS Visual/collider vertex agreement DriftTracks/Drift Track Collision: maxError=0.000016m
+PASS Visual/collider vertex agreement DriftTracks/DockyardEntranceHeightpost.001 Collision: maxError=0.000008m
+PASS Visual/collider vertex agreement DriftTracks/DockyardEntranceHeightpost.002 Collision: maxError=0.000016m
+PASS Visual/collider vertex agreement DriftTracks/Fence Collision: maxError=0.000015m
+PASS Visual/collider vertex agreement DriftTracks/Grass edge Collision: maxError=0.000017m
+PASS Visual/collider vertex agreement DriftTracks/Ground 2 Collision: maxError=0.000016m
+PASS Visual/collider vertex agreement DriftTracks/Ground.01 Collision: maxError=0.000019m
+PASS Visual/collider vertex agreement DriftTracks/Kerbs Collision: maxError=0.000016m
+PASS Visual/collider vertex agreement DriftTracks/Object_62.003 Collision: maxError=0.000005m
+PASS Visual/collider vertex agreement DriftTracks/Pond Bench Collision: maxError=0.000015m
+PASS Real-scale record namespace drift-tracks
+PASS Authored checkpoint count drift-tracks
+PASS Metre gate widths drift-tracks
+ROAD drift-tracks sampledWidthMedian=8.200 minimum=8.200 maximum=8.800 widthSamples=84 supportedWheelProbes=10176 staticColliders=10
+VISUAL_SURFACE drift-tracks/Drift Track bounds=(219.064, 0.009, 144.596) materials=Drift_Track_Albedo
+PASS Playable definition ae86
+PASS Visual prefab scripts ae86
+PASS Visual prefab meshes ae86
+PASS Playable definition skyline-r32
+PASS Visual prefab scripts skyline-r32
+PASS Visual prefab meshes skyline-r32
+PASS Playable definition rx7-fd
+PASS Visual prefab scripts rx7-fd
+PASS Visual prefab meshes rx7-fd
+COMPLETE

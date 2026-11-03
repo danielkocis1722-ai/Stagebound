@@ -13,7 +13,7 @@ public class WheelEffects : MonoBehaviour
         [Tooltip("Optional custom smoke system. Leave empty to create the starter effect.")]
         public ParticleSystem smoke;
         [Min(.05f)]
-        public float markWidth = .32f;
+        public float markWidth = .20f;
         [Min(0f)]
         public float smokeMultiplier = 1f;
         [NonSerialized]
@@ -70,7 +70,7 @@ public class WheelEffects : MonoBehaviour
     private float smokeResponse = 10f;
     [Min(0f)]
     [SerializeField]
-    private float contactOffset = .06f;
+    private float contactOffset = .025f;
 
     // Public runtime data
     public float StrongestSlip { get; private set; }
@@ -232,8 +232,8 @@ public class WheelEffects : MonoBehaviour
         main.playOnAwake = false;
         main.loop = true;
         main.startLifetime = new ParticleSystem.MinMaxCurve(.65f, 1.25f);
-        main.startSize = new ParticleSystem.MinMaxCurve(.35f, .65f);
-        main.startSpeed = new ParticleSystem.MinMaxCurve(.35f, .9f);
+        main.startSize = new ParticleSystem.MinMaxCurve(.16f, .30f);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(.16f, .41f);
         main.startRotation = new ParticleSystem.MinMaxCurve(0, Mathf.PI * 2);
         main.maxParticles = 180;
         main.gravityModifier = -.035f;
@@ -243,7 +243,7 @@ public class WheelEffects : MonoBehaviour
         var shape = smoke.shape;
         shape.shapeType = ParticleSystemShapeType.Cone;
         shape.angle = 25;
-        shape.radius = .12f;
+        shape.radius = .055f;
         var size = smoke.sizeOverLifetime;
         size.enabled = true;
         size.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0, .45f, 1, 2f));

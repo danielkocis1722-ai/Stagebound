@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb50455aa79f4f299e56cc18a770f255, type: 3}
   m_Name: TrackComple
   m_EditorClassIdentifier: Assembly-CSharp::StageDefinition
+  stageType: 0
   stageId: track-comple
   stageName: Track Comple Circuit
   scenePath: Assets/Scenes/TrackCompleCircuit.unity
@@ -21,7 +22,7 @@ MonoBehaviour:
   selectable: 1
   unavailableLabel: COMING SOON / DEVELOPMENT
   checkpointCount: 4
-  recordVersion: 1
+  recordVersion: 2
   importLegacySceneBest: 0
   pointsPerSecondCredit: 2000
   maxStyleCredit: 8

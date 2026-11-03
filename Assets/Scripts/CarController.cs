@@ -245,6 +245,8 @@ public class CarController : MonoBehaviour
     public bool ClutchKickActive => clutchKick.Active && ClutchKickTorque > 0.001f;
     public float ClutchKickTorque { get; private set; }
     public float ClutchCouplingTorque { get; private set; }
+    // Read-only combustion output after throttle/limiter, before clutch and gears.
+    public float EngineOutputTorque { get; private set; }
     public float ClutchEngagementRate { get; private set; }
 
     [Range(0f, 1f)]
@@ -287,7 +289,6 @@ public class CarController : MonoBehaviour
     private bool clutchKickArmed;
     private float previousClutchInput;
     private int clutchKickGear;
-    private float reflectedDrivetrainInertia;
     private float previousDriveRPM, previousDriveTorque, previousDriveRatio;
     private bool hasDriveSample;
     private readonly ClutchKickCoupling clutchKick = new ClutchKickCoupling();
@@ -303,7 +304,6 @@ public class CarController : MonoBehaviour
         automaticClutchEngagement = manualClutchEngagement = finalClutchEngagement = 1f;
         clutchKick.Cancel();
         ClutchCouplingTorque = ClutchKickTorque = ClutchEngagementRate = 0f;
-        reflectedDrivetrainInertia = 0f;
         hasDriveSample = false;
         EngineThrottle = 0f;
         previousBodyVelocity = rb.linearVelocity;
@@ -551,6 +551,7 @@ public class CarController : MonoBehaviour
     private void HandleMotor()
     {
         UpdateDifferential();
+        EngineOutputTorque = 0f;
         LimiterFactor = 1f;
         ClutchKickTorque = 0f;
         ClutchCouplingTorque = 0f;
@@ -588,6 +589,7 @@ public class CarController : MonoBehaviour
         }
 
         engineTorque *= limiterFactor;
+        EngineOutputTorque = engineTorque;
         LimiterFactor = limiterFactor;
         if (!CanClutchKick() || currentGear != clutchKickGear || ClutchInput > 0.5f)
             clutchKick.Cancel();
@@ -627,26 +629,14 @@ public class CarController : MonoBehaviour
 
     private float ReflectedRearWheelInertia(float gearRatio)
     {
-        // Read-only inertia estimate: gripping tires also accelerate the chassis;
-        // freely spinning tires mostly accelerate the wheels. Account for that
-        // transition instead of applying an engine-only synchronization impulse.
+        // Tire/chassis reaction is already included by EstimateDrivetrainLoad.
+        // Reflect the physical rotating wheels here, rather than also adding a
+        // slip-dependent chassis inertia to the same clutch solve. Counting that
+        // contact load twice creates drive/overrun oscillation as traction changes.
         float axleInertia = .5f * (backLeft.mass * backLeft.radius * backLeft.radius + backRight.mass * backRight.radius * backRight.radius);
-        float radiusSquared = .5f * (backLeft.radius * backLeft.radius + backRight.radius * backRight.radius);
-        float grip = .5f * (LongitudinalCoupling(backLeft) + LongitudinalCoupling(backRight));
-        axleInertia += rb.mass * radiusSquared * grip * grip;
         float ratio = Mathf.Abs(gearRatio * finalDrive);
-        float target = axleInertia / Mathf.Max(.001f, ratio * ratio * Mathf.Max(.01f, drivetrainEfficiency));
-        // Once a release breaks traction, do not reinterpret a single low-slip
-        // sample as a suddenly rigid chassis load and fire a second torque hit.
-        // Rebuild the load smoothly after the release interval has finished.
-        if (reflectedDrivetrainInertia <= 0f || target < reflectedDrivetrainInertia)
-            reflectedDrivetrainInertia = target;
-        else if (!clutchKick.Active)
-            reflectedDrivetrainInertia = Mathf.Lerp(reflectedDrivetrainInertia, target, 1f - Mathf.Exp(-6f * Time.fixedDeltaTime));
-        return reflectedDrivetrainInertia;
+        return axleInertia / Mathf.Max(.001f, ratio * ratio * Mathf.Max(.01f, drivetrainEfficiency));
     }
-
-    private static float LongitudinalCoupling(WheelCollider wheel) => wheel.GetGroundHit(out WheelHit hit) ? 1f - Mathf.Clamp01(Mathf.Abs(hit.forwardSlip) / Mathf.Max(.01f, wheel.forwardFriction.extremumSlip)) : 0f;
 
     private float EstimateDrivetrainLoad(float gearRatio)
     {

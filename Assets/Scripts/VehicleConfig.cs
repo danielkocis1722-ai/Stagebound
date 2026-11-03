@@ -314,6 +314,9 @@ public class VehicleConfig : ScriptableObject
         frontRight.Apply(car.frontRight);
         backLeft.Apply(car.backLeft);
         backRight.Apply(car.backRight);
+        // Recompute physical properties after fitting the selected metre-scale car.
+        body.ResetInertiaTensor();
+        car.frontLeft.ResetSprungMasses();
         var anti = car.GetComponent<AntiRollBar>();
         if (anti != null)
         {

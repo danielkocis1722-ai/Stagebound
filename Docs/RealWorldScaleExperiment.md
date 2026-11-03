@@ -1,5 +1,10 @@
 # AE86 real-world-scale experiment
 
+> Historical report. The experimental branch now uses the full metre-scale migration documented in [RealScaleMigration.md](RealScaleMigration.md). Values and instructions below describe the earlier state.
+
+This report records the initial scale experiment. The subsequent drivetrain-only
+ratio update and current gear speeds are in [RealScaleGearing.md](RealScaleGearing.md).
+
 Experimental worktree only: `C:\Users\dandy\Documents\Projects\Stagebound-real-scale`
 on `experiment/real-world-scale`. Do not merge this into the presentation version.
 

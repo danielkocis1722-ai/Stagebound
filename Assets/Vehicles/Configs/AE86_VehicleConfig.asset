@@ -24,7 +24,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 900
-        value: 0.6
+        value: 0.3
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2000
-        value: 0.84
+        value: 0.55
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 3000
-        value: 0.95
+        value: 0.78
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 4000
-        value: 1
+        value: 0.95
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -77,8 +77,26 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 7500
+        time: 6500
         value: 0.65
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 7000
+        value: 0.32
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 7500
+        value: 0.12
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -91,12 +109,12 @@ MonoBehaviour:
   transmission:
     gearRatios:
     - 4.2
-    - 3
-    - 2.1
-    - 1.55
+    - 2.3
+    - 1.78
+    - 1.46
     - 1.2
-    reverseRatio: 3.8
-    finalDrive: 5.3
+    reverseRatio: 5.673239
+    finalDrive: 3.55
     drivetrainEfficiency: 0.9
     shiftDuration: 0.2
   steering:
@@ -131,9 +149,9 @@ MonoBehaviour:
     clutchKickStrength: 1
     engineInertia: 0.35
   handbrake:
-    brakeTorque: 1600
-    frontBrakeBias: 0.52
-    handbrakeTorque: 15000
+    brakeTorque: 650
+    frontBrakeBias: 0.67
+    handbrakeTorque: 2400
     handbrakeRearGrip: 0.8
     handbrakeGripDropSpeed: 0.65
     handbrakeGripRecoverySpeed: 0.65
@@ -241,27 +259,27 @@ MonoBehaviour:
     mass: 1100
     linearDamping: 0
     angularDamping: 0.225
-    centerOfMass: {x: 0, y: -0.3, z: 0}
+    centerOfMass: {x: -0.00019578636, y: 0.057436317, z: 0.3868173}
     colliderPosition: {x: 0, y: 0, z: 0}
-    colliderScale: {x: 1.8, y: 0.5, z: 4}
-    colliderCenter: {x: 0, y: 0, z: 0}
-    colliderSize: {x: 1, y: 1, z: 1}
-    colliderRotation: {x: -0, y: -0, z: -0, w: 1}
+    colliderScale: {x: 1, y: 1, z: 1}
+    colliderCenter: {x: -0.00019578636, y: 0.09743632, z: 0.31566292}
+    colliderSize: {x: 1.65, y: 0.7, z: 3.7}
+    colliderRotation: {x: 0, y: 0, z: 0, w: 1}
     frontAntiRoll: 2200
     rearAntiRoll: 1700
   frontLeft:
-    localPosition: {x: -1.605, y: -0.2, z: 3.323}
+    localPosition: {x: -0.7049735, y: -0.07955565, z: 1.5018858}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: -0, y: -0, z: -0, w: 1}
-    radius: 0.65
+    radius: 0.29670006
     mass: 20
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 26000
-    damper: 2800
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 40000
+    damper: 3500
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.4
       extremumValue: 1
@@ -275,18 +293,18 @@ MonoBehaviour:
       asymptoteValue: 0.98
       stiffness: 1.26
   frontRight:
-    localPosition: {x: 1.605, y: -0.2, z: 3.323}
+    localPosition: {x: 0.709551, y: -0.07955574, z: 1.5012553}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: -0, y: -0, z: -0, w: 1}
-    radius: 0.65
+    radius: 0.29670012
     mass: 20
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 26000
-    damper: 2800
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 40000
+    damper: 3500
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.4
       extremumValue: 1
@@ -300,18 +318,18 @@ MonoBehaviour:
       asymptoteValue: 0.98
       stiffness: 1.26
   backLeft:
-    localPosition: {x: -1.605, y: -0.25, z: -1.938}
+    localPosition: {x: -0.7194156, y: -0.10217152, z: -0.86992943}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 1}
-    radius: 0.65
+    radius: 0.29670003
     mass: 20
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 26000
-    damper: 3600
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 36000
+    damper: 3200
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.25
       extremumValue: 1
@@ -325,18 +343,18 @@ MonoBehaviour:
       asymptoteValue: 1
       stiffness: 1.16
   backRight:
-    localPosition: {x: 1.605, y: -0.25, z: -1.938}
+    localPosition: {x: 0.714055, y: -0.10217161, z: -0.8705599}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: -0, y: -0, z: -0, w: 1}
-    radius: 0.65
+    radius: 0.2967
     mass: 20
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 26000
-    damper: 3600
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 36000
+    damper: 3200
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.25
       extremumValue: 1
@@ -349,10 +367,10 @@ MonoBehaviour:
       asymptoteSlip: 0.8
       asymptoteValue: 1
       stiffness: 1.16
-  visualPositionOffset: {x: 0.115, y: -0.92, z: 0.7624253}
+  visualPositionOffset: {x: 0.05189281, y: -0.41514248, z: 0.3440382}
   visualRotationOffset: {x: -0, y: 0, z: 0}
-  visualScale: {x: 0.5, y: 0.5, z: 0.5}
+  visualScale: {x: 0.22562091, y: 0.22562091, z: 0.22562091}
   frontRecoveryEnabled: 1
-  yawStabilityEnabled: 1
+  yawStabilityEnabled: 0
   visualMotionEnabled: 1
   startingGear: 1

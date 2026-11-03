@@ -1,0 +1,11 @@
+Protected pre-existing experimental files=724 mismatches=0 (five intentional code/config/report edits excluded)
+Config outside torque curve unchanged: AE86 = True
+Config outside torque curve unchanged: SkylineR32 = True
+Config outside torque curve unchanged: RX7 = True
+Protected main files=595 mismatches=0
+Controller method unchanged: ReadInput = True
+Controller method unchanged: UpdateClutch = True
+Controller method unchanged: UpdateEngineRPM = True
+Controller method unchanged: HandleSteering = True
+Controller method unchanged: HandleBrakes = True
+Controller method unchanged: UpdateVisualWheels = True

@@ -1,0 +1,181 @@
+PASS Authoritative selection ae86
+PASS Four grounded wheels on metre test pad
+INERTIA ae86 mass=1100 size=(1.650000, 0.700000, 3.700000) automatic/chosen=(1307.163000, 1510.057000, 296.231100) rotation=(0.147782, 0.000000, 0.000000) uniformBox=(1299.833000, 1504.479000, 294.479200)
+SUSPENSION ae86/FL_WheelCollider sprungMass=291.557 ground=True compression=0.2940
+SUSPENSION ae86/FR_WheelCollider sprungMass=291.443 ground=True compression=0.2940
+SUSPENSION ae86/BL_WheelCollider sprungMass=258.558 ground=True compression=0.2916
+SUSPENSION ae86/BR_WheelCollider sprungMass=258.442 ground=True compression=0.2916
+BRAKING ae86 100kmh stopTo0.1mps distance=48.721 time=3.550 lockFraction=0.0000 meanAbsoluteSlip=0.2149 baseTorque=650 frontShare=0.67
+PASS Controlled 100 km/h service stop ae86
+PASS Four grounded wheels on metre test pad
+TURN ae86 CGRadius=3.897 speed=10.002
+PASS Metre-scale turning radius ae86
+PASS Four grounded wheels on metre test pad
+STEER ae86 targetKmh=30 actualKmh=27.812 yaw=33.373 slip=0.982 frontSteer=10.394/11.637 grounded=4 roll=0.721 pitch=0.623 cameraFov=62.461
+PASS Speed steering probe ae86 30
+PASS Four grounded wheels on metre test pad
+STEER ae86 targetKmh=60 actualKmh=55.956 yaw=42.439 slip=-3.819 frontSteer=7.882/8.581 grounded=4 roll=1.314 pitch=0.643 cameraFov=65.384
+PASS Speed steering probe ae86 60
+PASS Four grounded wheels on metre test pad
+STEER ae86 targetKmh=100 actualKmh=94.071 yaw=39.263 slip=-5.659 frontSteer=5.485/5.816 grounded=4 roll=1.417 pitch=0.644 cameraFov=68.371
+PASS Speed steering probe ae86 100
+PASS Four grounded wheels on metre test pad
+STEER ae86 targetKmh=125 actualKmh=117.861 yaw=39.517 slip=-6.322 frontSteer=5.017/5.293 grounded=4 roll=1.486 pitch=0.654 cameraFov=69.986
+PASS Speed steering probe ae86 125
+PASS Four grounded wheels on metre test pad
+JTURN ae86 governor=True finalHeading=208.374 signedForwardKmh=54.658 speed=54.544
+PASS Forward recovery torque has correct sign ae86
+PASS Four grounded wheels on metre test pad
+TRANSITION ae86 governor=True peakYaw=122.011 peakSlip=179.980 driftSeconds=1.400 above7100Seconds=0.000 finalSpeed=12.211
+PASS Four grounded wheels on metre test pad
+JTURN ae86 governor=False finalHeading=208.087 signedForwardKmh=55.678 speed=55.745
+PASS Forward recovery torque has correct sign ae86
+PASS Four grounded wheels on metre test pad
+TRANSITION ae86 governor=False peakYaw=144.026 peakSlip=180.000 driftSeconds=1.017 above7100Seconds=0.000 finalSpeed=3.748
+PASS Four grounded wheels on metre test pad
+GEAR_SWEEP ae86 gear=1 seconds=11.867 speed=52.472 rpm=7284.635 throttle=0.220
+PASS Normal upshift ae86 to 2
+SHIFT_LANDING ae86 gear=2 rpm=4835.265
+GEAR_SWEEP ae86 gear=2 seconds=7.250 speed=85.413 rpm=7204.696 throttle=0.265
+PASS Normal upshift ae86 to 3
+SHIFT_LANDING ae86 gear=3 rpm=5485.718
+GEAR_SWEEP ae86 gear=3 seconds=9.600 speed=115.807 rpm=7202.751 throttle=0.310
+PASS Normal upshift ae86 to 4
+SHIFT_LANDING ae86 gear=4 rpm=5677.152
+GEAR_SWEEP ae86 gear=4 seconds=13.900 speed=145.573 rpm=7200.764 throttle=0.355
+PASS Normal upshift ae86 to 5
+SHIFT_LANDING ae86 gear=5 rpm=5827.427
+GEAR_SWEEP ae86 gear=5 seconds=35.000 speed=180.420 rpm=7024.649 throttle=0.400
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR ae86 gear=2 targetKmh=50 rpm=3120.12-5872.92 driftSeconds=0.050 above7100Seconds=0.000 finalSpeed=69.677
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR ae86 gear=2 targetKmh=70 rpm=4321.15-6992.93 driftSeconds=0.250 above7100Seconds=0.000 finalSpeed=81.993
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR ae86 gear=2 targetKmh=90 rpm=1974.00-6387.44 driftSeconds=2.150 above7100Seconds=0.000 finalSpeed=9.612
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR ae86 gear=3 targetKmh=80 rpm=3644.91-5650.84 driftSeconds=0.433 above7100Seconds=0.000 finalSpeed=87.378
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR ae86 gear=3 targetKmh=100 rpm=900.00-5387.57 driftSeconds=1.817 above7100Seconds=0.000 finalSpeed=9.298
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR ae86 gear=3 targetKmh=120 rpm=900.00-6053.00 driftSeconds=1.433 above7100Seconds=0.000 finalSpeed=20.053
+PASS Authoritative selection skyline-r32
+PASS Four grounded wheels on metre test pad
+INERTIA skyline-r32 mass=1450 size=(1.720000, 0.700000, 3.999600) automatic/chosen=(2030.493000, 2326.481000, 418.957900) rotation=(0.274575, 0.000000, 0.000000) uniformBox=(1992.155000, 2290.420000, 416.681700)
+SUSPENSION skyline-r32/FL_WheelCollider sprungMass=406.000 ground=True compression=0.2927
+SUSPENSION skyline-r32/FR_WheelCollider sprungMass=406.000 ground=True compression=0.2927
+SUSPENSION skyline-r32/BL_WheelCollider sprungMass=319.000 ground=True compression=0.2930
+SUSPENSION skyline-r32/BR_WheelCollider sprungMass=319.000 ground=True compression=0.2930
+BRAKING skyline-r32 100kmh stopTo0.1mps distance=49.388 time=3.600 lockFraction=0.0000 meanAbsoluteSlip=0.2133 baseTorque=957.6535 frontShare=0.68
+PASS Controlled 100 km/h service stop skyline-r32
+PASS Four grounded wheels on metre test pad
+TURN skyline-r32 CGRadius=4.316 speed=10.009
+PASS Metre-scale turning radius skyline-r32
+PASS Four grounded wheels on metre test pad
+STEER skyline-r32 targetKmh=30 actualKmh=28.108 yaw=30.318 slip=1.648 frontSteer=10.416/11.622 grounded=4 roll=0.571 pitch=0.049 cameraFov=62.483
+PASS Speed steering probe skyline-r32 30
+PASS Four grounded wheels on metre test pad
+STEER skyline-r32 targetKmh=60 actualKmh=56.535 yaw=38.467 slip=-2.992 frontSteer=7.839/8.507 grounded=4 roll=1.039 pitch=0.060 cameraFov=65.425
+PASS Speed steering probe skyline-r32 60
+PASS Four grounded wheels on metre test pad
+STEER skyline-r32 targetKmh=100 actualKmh=94.953 yaw=35.691 slip=-4.873 frontSteer=5.472/5.790 grounded=4 roll=1.125 pitch=0.054 cameraFov=68.415
+PASS Speed steering probe skyline-r32 100
+PASS Four grounded wheels on metre test pad
+STEER skyline-r32 targetKmh=125 actualKmh=118.920 yaw=36.042 slip=-5.540 frontSteer=5.015/5.281 grounded=4 roll=1.187 pitch=0.058 cameraFov=70.039
+PASS Speed steering probe skyline-r32 125
+PASS Four grounded wheels on metre test pad
+JTURN skyline-r32 governor=True finalHeading=230.852 signedForwardKmh=58.748 speed=58.523
+PASS Forward recovery torque has correct sign skyline-r32
+PASS Four grounded wheels on metre test pad
+TRANSITION skyline-r32 governor=True peakYaw=119.287 peakSlip=180.000 driftSeconds=1.367 above7100Seconds=0.000 finalSpeed=5.876
+PASS Four grounded wheels on metre test pad
+JTURN skyline-r32 governor=False finalHeading=230.634 signedForwardKmh=59.395 speed=59.225
+PASS Forward recovery torque has correct sign skyline-r32
+PASS Four grounded wheels on metre test pad
+TRANSITION skyline-r32 governor=False peakYaw=142.394 peakSlip=180.000 driftSeconds=1.000 above7100Seconds=0.000 finalSpeed=0.222
+PASS Four grounded wheels on metre test pad
+GEAR_SWEEP skyline-r32 gear=1 seconds=13.650 speed=57.619 rpm=7237.398 throttle=0.220
+PASS Normal upshift skyline-r32 to 2
+SHIFT_LANDING skyline-r32 gear=2 rpm=4961.341
+GEAR_SWEEP skyline-r32 gear=2 seconds=7.183 speed=90.561 rpm=7204.859 throttle=0.265
+PASS Normal upshift skyline-r32 to 3
+SHIFT_LANDING skyline-r32 gear=3 rpm=5325.272
+GEAR_SWEEP skyline-r32 gear=3 seconds=11.067 speed=128.482 rpm=7200.701 throttle=0.310
+PASS Normal upshift skyline-r32 to 4
+SHIFT_LANDING skyline-r32 gear=4 rpm=5617.530
+GEAR_SWEEP skyline-r32 gear=4 seconds=20.350 speed=172.005 rpm=7200.071 throttle=0.355
+PASS Normal upshift skyline-r32 to 5
+SHIFT_LANDING skyline-r32 gear=5 rpm=5988.682
+GEAR_SWEEP skyline-r32 gear=5 seconds=27.333 speed=207.957 rpm=7200.300 throttle=0.400
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR skyline-r32 gear=2 targetKmh=50 rpm=2981.43-5629.03 driftSeconds=0.067 above7100Seconds=0.000 finalSpeed=69.993
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR skyline-r32 gear=2 targetKmh=70 rpm=4138.74-6778.91 driftSeconds=0.233 above7100Seconds=0.000 finalSpeed=83.710
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR skyline-r32 gear=2 targetKmh=90 rpm=4962.25-7309.90 driftSeconds=0.817 above7100Seconds=0.650 finalSpeed=91.809
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR skyline-r32 gear=3 targetKmh=80 rpm=3408.95-5212.56 driftSeconds=0.383 above7100Seconds=0.000 finalSpeed=88.643
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR skyline-r32 gear=3 targetKmh=100 rpm=900.00-5009.38 driftSeconds=2.517 above7100Seconds=0.000 finalSpeed=19.341
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR skyline-r32 gear=3 targetKmh=120 rpm=900.00-5643.41 driftSeconds=1.617 above7100Seconds=0.000 finalSpeed=24.034
+PASS Authoritative selection rx7-fd
+PASS Four grounded wheels on metre test pad
+INERTIA rx7-fd mass=1250 size=(1.750000, 0.700000, 3.770800) automatic/chosen=(1534.181000, 1800.149000, 372.052100) rotation=(0.000000, 0.000000, 0.000000) uniformBox=(1532.180000, 1800.149000, 370.052100)
+SUSPENSION rx7-fd/FL_WheelCollider sprungMass=312.500 ground=True compression=0.2927
+SUSPENSION rx7-fd/FR_WheelCollider sprungMass=312.500 ground=True compression=0.2927
+SUSPENSION rx7-fd/BL_WheelCollider sprungMass=312.500 ground=True compression=0.2930
+SUSPENSION rx7-fd/BR_WheelCollider sprungMass=312.500 ground=True compression=0.2930
+BRAKING rx7-fd 100kmh stopTo0.1mps distance=49.150 time=3.583 lockFraction=0.0000 meanAbsoluteSlip=0.2145 baseTorque=801.007 frontShare=0.65
+PASS Controlled 100 km/h service stop rx7-fd
+PASS Four grounded wheels on metre test pad
+TURN rx7-fd CGRadius=3.966 speed=10.002
+PASS Metre-scale turning radius rx7-fd
+PASS Four grounded wheels on metre test pad
+STEER rx7-fd targetKmh=30 actualKmh=27.992 yaw=32.611 slip=0.733 frontSteer=10.428/11.628 grounded=4 roll=0.739 pitch=0.057 cameraFov=62.474
+PASS Speed steering probe rx7-fd 30
+PASS Four grounded wheels on metre test pad
+STEER rx7-fd targetKmh=60 actualKmh=56.308 yaw=41.220 slip=-3.913 frontSteer=7.868/8.536 grounded=4 roll=1.344 pitch=0.071 cameraFov=65.408
+PASS Speed steering probe rx7-fd 60
+PASS Four grounded wheels on metre test pad
+STEER rx7-fd targetKmh=100 actualKmh=94.620 yaw=38.104 slip=-5.629 frontSteer=5.482/5.800 grounded=4 roll=1.445 pitch=0.068 cameraFov=68.398
+PASS Speed steering probe rx7-fd 100
+PASS Four grounded wheels on metre test pad
+STEER rx7-fd targetKmh=125 actualKmh=118.521 yaw=38.389 slip=-6.271 frontSteer=5.020/5.285 grounded=4 roll=1.518 pitch=0.074 cameraFov=70.018
+PASS Speed steering probe rx7-fd 125
+PASS Four grounded wheels on metre test pad
+JTURN rx7-fd governor=True finalHeading=195.986 signedForwardKmh=58.898 speed=58.854
+PASS Forward recovery torque has correct sign rx7-fd
+PASS Four grounded wheels on metre test pad
+TRANSITION rx7-fd governor=True peakYaw=118.304 peakSlip=180.000 driftSeconds=1.350 above7100Seconds=0.000 finalSpeed=11.885
+PASS Four grounded wheels on metre test pad
+JTURN rx7-fd governor=False finalHeading=195.688 signedForwardKmh=58.760 speed=58.692
+PASS Forward recovery torque has correct sign rx7-fd
+PASS Four grounded wheels on metre test pad
+TRANSITION rx7-fd governor=False peakYaw=137.972 peakSlip=180.000 driftSeconds=1.017 above7100Seconds=0.000 finalSpeed=4.299
+PASS Four grounded wheels on metre test pad
+GEAR_SWEEP rx7-fd gear=1 seconds=9.167 speed=54.888 rpm=7201.589 throttle=0.220
+PASS Normal upshift rx7-fd to 2
+SHIFT_LANDING rx7-fd gear=2 rpm=4697.051
+GEAR_SWEEP rx7-fd gear=2 seconds=5.650 speed=89.945 rpm=7205.373 throttle=0.265
+PASS Normal upshift rx7-fd to 3
+SHIFT_LANDING rx7-fd gear=3 rpm=5123.975
+GEAR_SWEEP rx7-fd gear=3 seconds=8.133 speed=126.132 rpm=7203.954 throttle=0.310
+PASS Normal upshift rx7-fd to 4
+SHIFT_LANDING rx7-fd gear=4 rpm=5647.111
+GEAR_SWEEP rx7-fd gear=4 seconds=10.883 speed=161.836 rpm=7200.916 throttle=0.355
+PASS Normal upshift rx7-fd to 5
+SHIFT_LANDING rx7-fd gear=5 rpm=5842.091
+GEAR_SWEEP rx7-fd gear=5 seconds=25.633 speed=204.803 rpm=7200.010 throttle=0.400
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR rx7-fd gear=2 targetKmh=50 rpm=3000.58-6007.76 driftSeconds=0.050 above7100Seconds=0.000 finalSpeed=77.761
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR rx7-fd gear=2 targetKmh=70 rpm=4201.52-7224.36 driftSeconds=0.217 above7100Seconds=0.150 finalSpeed=89.880
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR rx7-fd gear=2 targetKmh=90 rpm=5248.37-7500.00 driftSeconds=0.633 above7100Seconds=1.600 finalSpeed=94.375
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR rx7-fd gear=3 targetKmh=80 rpm=3517.37-5617.36 driftSeconds=0.333 above7100Seconds=0.000 finalSpeed=94.400
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR rx7-fd gear=3 targetKmh=100 rpm=4173.19-6157.30 driftSeconds=1.000 above7100Seconds=0.000 finalSpeed=104.283
+PASS Four grounded wheels on metre test pad
+DRIFT_GEAR rx7-fd gear=3 targetKmh=120 rpm=900.00-5900.15 driftSeconds=1.850 above7100Seconds=0.000 finalSpeed=23.753
+COMPLETE

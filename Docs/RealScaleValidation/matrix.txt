@@ -1,0 +1,1671 @@
+PASS No missing scripts: Assets/Scenes/MainMenu.unity
+PASS No missing scripts: Assets/Scenes/SampleScene.unity
+PASS No missing scripts: Assets/Scenes/TrackCompleCircuit.unity
+PASS No missing scripts: Assets/Vehicles/Visuals/AE86_Visual.prefab
+PASS No missing scripts: Assets/Vehicles/Visuals/RX7_Visual.prefab
+PASS No missing scripts: Assets/Vehicles/Visuals/SkylineR32_Visual.prefab
+PASS RX7 mesh references survive a forced FBX reimport
+PASS Launch opens Main Menu
+PASS All four real stages are available
+PASS Unique stable stage IDs
+PASS Separate overall stage record keys
+PASS Separate per-car stage record keys
+PASS All three definitions have valid configs and visual references
+PASS Unique stable vehicle IDs
+CASE south-loop / ae86
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders ae86
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage south-loop
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected ae86
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE ae86 inertia=(1307.163, 1510.057, 296.231) tensorRotation=(0.148, 0.000, 0.000) wheelbase=2.372 frontTrack=1.415
+PASS Per-car mass and torque applied
+PASS Wheel geometry ae86 0
+PASS Wheel visual follows suspension 0 error=0.0001
+PASS Wheel geometry ae86 1
+PASS Wheel visual follows suspension 1 error=0.0001
+PASS Wheel geometry ae86 2
+PASS Wheel visual follows suspension 2 error=0.0001
+PASS Wheel geometry ae86 3
+PASS Wheel visual follows suspension 3 error=0.0001
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS south-loop start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on south-loop: ae86 (4)
+PASS Engine accelerates ae86
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS DriftTelemetry detects real rear slip: ae86
+PASS DriftScore earns Style Credit: ae86
+PASS Live slip drives smoke, screech gain and skidmarks: ae86
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: south-loop / ae86
+PASS Physical finish rejected without checkpoints
+PASS Physical checkpoint 1 accepted in order
+PASS Checkpoint respawn retains race progress
+PASS Physical finish follows stage type: south-loop
+PASS Finish saves isolated per-stage/per-car record
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers ae86
+PASS PLAY again remembers south-loop
+PASS Escape returns to main buttons
+CASE south-loop / skyline-r32
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders skyline-r32
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage south-loop
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected skyline-r32
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE skyline-r32 inertia=(2030.493, 2326.481, 418.958) tensorRotation=(0.275, 0.000, 0.000) wheelbase=2.627 frontTrack=1.517
+PASS Per-car mass and torque applied
+PASS Wheel geometry skyline-r32 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry skyline-r32 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry skyline-r32 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry skyline-r32 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS south-loop start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on south-loop: skyline-r32 (4)
+PASS Engine accelerates skyline-r32
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: widnows
+PASS Non-brake material stays dark: black windows
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: headlights
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: RearLens_0
+PASS Non-brake material stays dark: RearLens_1
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: rear lights2
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: headlights.001
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: red
+PASS Non-brake material stays dark: white
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: exhaust
+PASS Non-brake material stays dark: black plastic.001
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: rear light
+PASS Non-brake material stays dark: Material.001
+PASS DriftTelemetry detects real rear slip: skyline-r32
+PASS DriftScore earns Style Credit: skyline-r32
+PASS Live slip drives smoke, screech gain and skidmarks: skyline-r32
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: south-loop / skyline-r32
+PASS Physical finish rejected without checkpoints
+PASS Physical checkpoint 1 accepted in order
+PASS Checkpoint respawn retains race progress
+PASS Physical finish follows stage type: south-loop
+PASS Finish saves isolated per-stage/per-car record
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers skyline-r32
+PASS PLAY again remembers south-loop
+PASS Escape returns to main buttons
+CASE south-loop / rx7-fd
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders rx7-fd
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage south-loop
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected rx7-fd
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE rx7-fd inertia=(1534.181, 1800.149, 372.052) tensorRotation=(0.000, 0.000, 0.000) wheelbase=2.438 frontTrack=1.399
+PASS Per-car mass and torque applied
+PASS Wheel geometry rx7-fd 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry rx7-fd 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry rx7-fd 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry rx7-fd 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS south-loop start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on south-loop: rx7-fd (4)
+PASS Engine accelerates rx7-fd
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: inter_cooler
+PASS Non-brake material stays dark: line
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: plate2
+PASS Non-brake material stays dark: aiStandardSurface55
+PASS Non-brake material stays dark: choem
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: light_back
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: aiStandardSurface13
+PASS Non-brake material stays dark: body
+PASS DriftTelemetry detects real rear slip: rx7-fd
+PASS DriftScore earns Style Credit: rx7-fd
+PASS Live slip drives smoke, screech gain and skidmarks: rx7-fd
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: south-loop / rx7-fd
+PASS Physical finish rejected without checkpoints
+PASS Physical checkpoint 1 accepted in order
+PASS Checkpoint respawn retains race progress
+PASS Physical finish follows stage type: south-loop
+PASS Finish saves isolated per-stage/per-car record
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers rx7-fd
+PASS PLAY again remembers south-loop
+PASS Escape returns to main buttons
+CASE track-comple / ae86
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders ae86
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage track-comple
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected ae86
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE ae86 inertia=(1307.163, 1510.057, 296.231) tensorRotation=(0.148, 0.000, 0.000) wheelbase=2.372 frontTrack=1.415
+PASS Per-car mass and torque applied
+PASS Wheel geometry ae86 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry ae86 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry ae86 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry ae86 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS track-comple start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on track-comple: ae86 (4)
+PASS Engine accelerates ae86
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS DriftTelemetry detects real rear slip: ae86
+PASS DriftScore earns Style Credit: ae86
+PASS Live slip drives smoke, screech gain and skidmarks: ae86
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: track-comple / ae86
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical finish follows stage type: track-comple
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 1720 wheel-footprint probes have real road support: ae86
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0045 bridge / ae86 grounded=4
+PASS Suspension stays above road on 0081 road 180.002 / ae86 grounded=4
+PASS Suspension stays above road on 0104 road.003 / ae86 grounded=4
+PASS Suspension stays above road on 0123 road 90 fix / ae86 grounded=4
+PASS Suspension stays above road on 0146 road 90.001 / ae86 grounded=4
+PASS Suspension stays above road on 0166 crooked road / ae86 grounded=4
+PASS Suspension stays above road on 0187 road 90.002 / ae86 grounded=4
+PASS Suspension stays above road on 0209 springboard / ae86 grounded=4
+PASS Suspension stays above road on 0235 Jump Connector / ae86 grounded=4
+PASS Suspension stays above road on 0251 springboard.001 / ae86 grounded=4
+PASS Suspension stays above road on 0260 road.001 / ae86 grounded=4
+PASS Suspension stays above road on 0284 road 180.001 / ae86 grounded=4
+PASS Suspension stays above road on 0310 road / ae86 grounded=4
+PASS Suspension stays above road on 0327 road 90 / ae86 grounded=4
+PASS Suspension stays above road on 0351 road.002 / ae86 grounded=4
+PASS Suspension stays above road on 0384 road 180 / ae86 grounded=4
+PASS Visible trackside fence blocks controlled car push: ae86
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers ae86
+PASS PLAY again remembers track-comple
+PASS Escape returns to main buttons
+CASE track-comple / skyline-r32
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders skyline-r32
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage track-comple
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected skyline-r32
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE skyline-r32 inertia=(2030.493, 2326.481, 418.958) tensorRotation=(0.275, 0.000, 0.000) wheelbase=2.627 frontTrack=1.517
+PASS Per-car mass and torque applied
+PASS Wheel geometry skyline-r32 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry skyline-r32 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry skyline-r32 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry skyline-r32 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS track-comple start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on track-comple: skyline-r32 (4)
+PASS Engine accelerates skyline-r32
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: widnows
+PASS Non-brake material stays dark: black windows
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: headlights
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: RearLens_0
+PASS Non-brake material stays dark: RearLens_1
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: rear lights2
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: headlights.001
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: red
+PASS Non-brake material stays dark: white
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: exhaust
+PASS Non-brake material stays dark: black plastic.001
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: rear light
+PASS Non-brake material stays dark: Material.001
+PASS DriftTelemetry detects real rear slip: skyline-r32
+PASS DriftScore earns Style Credit: skyline-r32
+PASS Live slip drives smoke, screech gain and skidmarks: skyline-r32
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: track-comple / skyline-r32
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical finish follows stage type: track-comple
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 1720 wheel-footprint probes have real road support: skyline-r32
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0045 bridge / skyline-r32 grounded=4
+PASS Suspension stays above road on 0081 road 180.002 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0104 road.003 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0123 road 90 fix / skyline-r32 grounded=4
+PASS Suspension stays above road on 0146 road 90.001 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0166 crooked road / skyline-r32 grounded=4
+PASS Suspension stays above road on 0187 road 90.002 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0209 springboard / skyline-r32 grounded=4
+PASS Suspension stays above road on 0235 Jump Connector / skyline-r32 grounded=4
+PASS Suspension stays above road on 0251 springboard.001 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0260 road.001 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0284 road 180.001 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0310 road / skyline-r32 grounded=4
+PASS Suspension stays above road on 0327 road 90 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0351 road.002 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0384 road 180 / skyline-r32 grounded=4
+PASS Visible trackside fence blocks controlled car push: skyline-r32
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers skyline-r32
+PASS PLAY again remembers track-comple
+PASS Escape returns to main buttons
+CASE track-comple / rx7-fd
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders rx7-fd
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage track-comple
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected rx7-fd
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE rx7-fd inertia=(1534.180, 1800.149, 372.052) tensorRotation=(0.000, 0.000, 0.000) wheelbase=2.438 frontTrack=1.399
+PASS Per-car mass and torque applied
+PASS Wheel geometry rx7-fd 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry rx7-fd 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry rx7-fd 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry rx7-fd 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS track-comple start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on track-comple: rx7-fd (4)
+PASS Engine accelerates rx7-fd
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: inter_cooler
+PASS Non-brake material stays dark: line
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: plate2
+PASS Non-brake material stays dark: aiStandardSurface55
+PASS Non-brake material stays dark: choem
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: light_back
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: aiStandardSurface13
+PASS Non-brake material stays dark: body
+PASS DriftTelemetry detects real rear slip: rx7-fd
+PASS DriftScore earns Style Credit: rx7-fd
+PASS Live slip drives smoke, screech gain and skidmarks: rx7-fd
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: track-comple / rx7-fd
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical finish follows stage type: track-comple
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 1720 wheel-footprint probes have real road support: rx7-fd
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0045 bridge / rx7-fd grounded=4
+PASS Suspension stays above road on 0081 road 180.002 / rx7-fd grounded=4
+PASS Suspension stays above road on 0104 road.003 / rx7-fd grounded=4
+PASS Suspension stays above road on 0123 road 90 fix / rx7-fd grounded=4
+PASS Suspension stays above road on 0146 road 90.001 / rx7-fd grounded=4
+PASS Suspension stays above road on 0166 crooked road / rx7-fd grounded=4
+PASS Suspension stays above road on 0187 road 90.002 / rx7-fd grounded=4
+PASS Suspension stays above road on 0209 springboard / rx7-fd grounded=4
+PASS Suspension stays above road on 0235 Jump Connector / rx7-fd grounded=4
+PASS Suspension stays above road on 0251 springboard.001 / rx7-fd grounded=4
+PASS Suspension stays above road on 0260 road.001 / rx7-fd grounded=4
+PASS Suspension stays above road on 0284 road 180.001 / rx7-fd grounded=4
+PASS Suspension stays above road on 0310 road / rx7-fd grounded=4
+PASS Suspension stays above road on 0327 road 90 / rx7-fd grounded=4
+PASS Suspension stays above road on 0351 road.002 / rx7-fd grounded=4
+PASS Suspension stays above road on 0384 road 180 / rx7-fd grounded=4
+PASS Visible trackside fence blocks controlled car push: rx7-fd
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers rx7-fd
+PASS PLAY again remembers track-comple
+PASS Escape returns to main buttons
+CASE cherry-mountain / ae86
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders ae86
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage cherry-mountain
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected ae86
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE ae86 inertia=(1307.171, 1510.065, 296.232) tensorRotation=(0.148, 0.000, 0.000) wheelbase=2.372 frontTrack=1.415
+PASS Per-car mass and torque applied
+PASS Wheel geometry ae86 0
+PASS Wheel visual follows suspension 0 error=0.0002
+PASS Wheel geometry ae86 1
+PASS Wheel visual follows suspension 1 error=0.0001
+PASS Wheel geometry ae86 2
+PASS Wheel visual follows suspension 2 error=0.0001
+PASS Wheel geometry ae86 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS cherry-mountain start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on cherry-mountain: ae86 (4)
+PASS Engine accelerates ae86
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS DriftTelemetry detects real rear slip: ae86
+PASS DriftScore earns Style Credit: ae86
+PASS Live slip drives smoke, screech gain and skidmarks: ae86
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: cherry-mountain / ae86
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical checkpoint 5 accepted in order
+PASS Physical checkpoint 6 accepted in order
+PASS Physical checkpoint 7 accepted in order
+PASS Physical checkpoint 8 accepted in order
+PASS Physical checkpoint 9 accepted in order
+PASS Physical finish follows stage type: cherry-mountain
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 4476 wheel-footprint probes have real road support: ae86
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0052 Road00 / ae86 grounded=4
+PASS Suspension stays above road on 0150 Road01 / ae86 grounded=4
+PASS Suspension stays above road on 0250 Road02 / ae86 grounded=4
+PASS Suspension stays above road on 0350 Road03 / ae86 grounded=4
+PASS Suspension stays above road on 0450 Road04 / ae86 grounded=4
+PASS Suspension stays above road on 0550 Road05 / ae86 grounded=4
+PASS Suspension stays above road on 0650 Road06 / ae86 grounded=4
+PASS Suspension stays above road on 0750 Road07 / ae86 grounded=4
+PASS Suspension stays above road on 0850 Road08 / ae86 grounded=4
+PASS Suspension stays above road on 0950 Road09 / ae86 grounded=4
+PASS Suspension stays above road on 1050 Road10 / ae86 grounded=4
+PASS Suspension stays above road on 1111 Road11 / ae86 grounded=4
+PASS Visible roadside solid has collision: ae86
+PASS Roadside solid stops physical chassis impact: ae86
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers ae86
+PASS PLAY again remembers cherry-mountain
+PASS Escape returns to main buttons
+CASE cherry-mountain / skyline-r32
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders skyline-r32
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage cherry-mountain
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected skyline-r32
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE skyline-r32 inertia=(2030.503, 2326.491, 418.958) tensorRotation=(0.275, 0.000, 0.000) wheelbase=2.627 frontTrack=1.517
+PASS Per-car mass and torque applied
+PASS Wheel geometry skyline-r32 0
+PASS Wheel visual follows suspension 0 error=0.0003
+PASS Wheel geometry skyline-r32 1
+PASS Wheel visual follows suspension 1 error=0.0026
+PASS Wheel geometry skyline-r32 2
+PASS Wheel visual follows suspension 2 error=0.0002
+PASS Wheel geometry skyline-r32 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS cherry-mountain start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on cherry-mountain: skyline-r32 (4)
+PASS Engine accelerates skyline-r32
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: widnows
+PASS Non-brake material stays dark: black windows
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: headlights
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: RearLens_0
+PASS Non-brake material stays dark: RearLens_1
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: rear lights2
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: headlights.001
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: red
+PASS Non-brake material stays dark: white
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: exhaust
+PASS Non-brake material stays dark: black plastic.001
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: rear light
+PASS Non-brake material stays dark: Material.001
+PASS DriftTelemetry detects real rear slip: skyline-r32
+PASS DriftScore earns Style Credit: skyline-r32
+PASS Live slip drives smoke, screech gain and skidmarks: skyline-r32
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: cherry-mountain / skyline-r32
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical checkpoint 5 accepted in order
+PASS Physical checkpoint 6 accepted in order
+PASS Physical checkpoint 7 accepted in order
+PASS Physical checkpoint 8 accepted in order
+PASS Physical checkpoint 9 accepted in order
+PASS Physical finish follows stage type: cherry-mountain
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 4476 wheel-footprint probes have real road support: skyline-r32
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0052 Road00 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0150 Road01 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0250 Road02 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0350 Road03 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0450 Road04 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0550 Road05 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0650 Road06 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0750 Road07 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0850 Road08 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0950 Road09 / skyline-r32 grounded=4
+PASS Suspension stays above road on 1050 Road10 / skyline-r32 grounded=4
+PASS Suspension stays above road on 1111 Road11 / skyline-r32 grounded=4
+PASS Visible roadside solid has collision: skyline-r32
+PASS Roadside solid stops physical chassis impact: skyline-r32
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers skyline-r32
+PASS PLAY again remembers cherry-mountain
+PASS Escape returns to main buttons
+CASE cherry-mountain / rx7-fd
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders rx7-fd
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage cherry-mountain
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected rx7-fd
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE rx7-fd inertia=(1534.182, 1800.149, 372.053) tensorRotation=(0.000, 0.000, 0.000) wheelbase=2.438 frontTrack=1.399
+PASS Per-car mass and torque applied
+PASS Wheel geometry rx7-fd 0
+PASS Wheel visual follows suspension 0 error=0.0001
+PASS Wheel geometry rx7-fd 1
+PASS Wheel visual follows suspension 1 error=0.0022
+PASS Wheel geometry rx7-fd 2
+PASS Wheel visual follows suspension 2 error=0.0003
+PASS Wheel geometry rx7-fd 3
+PASS Wheel visual follows suspension 3 error=0.0001
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS cherry-mountain start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on cherry-mountain: rx7-fd (4)
+PASS Engine accelerates rx7-fd
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: inter_cooler
+PASS Non-brake material stays dark: line
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: plate2
+PASS Non-brake material stays dark: aiStandardSurface55
+PASS Non-brake material stays dark: choem
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: light_back
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: aiStandardSurface13
+PASS Non-brake material stays dark: body
+PASS DriftTelemetry detects real rear slip: rx7-fd
+PASS DriftScore earns Style Credit: rx7-fd
+PASS Live slip drives smoke, screech gain and skidmarks: rx7-fd
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: cherry-mountain / rx7-fd
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical checkpoint 5 accepted in order
+PASS Physical checkpoint 6 accepted in order
+PASS Physical checkpoint 7 accepted in order
+PASS Physical checkpoint 8 accepted in order
+PASS Physical checkpoint 9 accepted in order
+PASS Physical finish follows stage type: cherry-mountain
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 4476 wheel-footprint probes have real road support: rx7-fd
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0052 Road00 / rx7-fd grounded=4
+PASS Suspension stays above road on 0150 Road01 / rx7-fd grounded=4
+PASS Suspension stays above road on 0250 Road02 / rx7-fd grounded=4
+PASS Suspension stays above road on 0350 Road03 / rx7-fd grounded=4
+PASS Suspension stays above road on 0450 Road04 / rx7-fd grounded=4
+PASS Suspension stays above road on 0550 Road05 / rx7-fd grounded=4
+PASS Suspension stays above road on 0650 Road06 / rx7-fd grounded=4
+PASS Suspension stays above road on 0750 Road07 / rx7-fd grounded=4
+PASS Suspension stays above road on 0850 Road08 / rx7-fd grounded=4
+PASS Suspension stays above road on 0950 Road09 / rx7-fd grounded=4
+PASS Suspension stays above road on 1050 Road10 / rx7-fd grounded=4
+PASS Suspension stays above road on 1111 Road11 / rx7-fd grounded=4
+PASS Visible roadside solid has collision: rx7-fd
+PASS Roadside solid stops physical chassis impact: rx7-fd
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers rx7-fd
+PASS PLAY again remembers cherry-mountain
+PASS Escape returns to main buttons
+CASE drift-tracks / ae86
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders ae86
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage drift-tracks
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected ae86
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE ae86 inertia=(1307.163, 1510.057, 296.231) tensorRotation=(0.148, 0.000, 0.000) wheelbase=2.372 frontTrack=1.415
+PASS Per-car mass and torque applied
+PASS Wheel geometry ae86 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry ae86 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry ae86 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry ae86 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS drift-tracks start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on drift-tracks: ae86 (4)
+PASS Engine accelerates ae86
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS DriftTelemetry detects real rear slip: ae86
+PASS DriftScore earns Style Credit: ae86
+PASS Live slip drives smoke, screech gain and skidmarks: ae86
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: drift-tracks / ae86
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical checkpoint 5 accepted in order
+PASS Physical checkpoint 6 accepted in order
+PASS Physical finish follows stage type: drift-tracks
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 3392 wheel-footprint probes have real road support: ae86
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0050 Road00 / ae86 grounded=4
+PASS Suspension stays above road on 0150 Road01 / ae86 grounded=4
+PASS Suspension stays above road on 0250 Road02 / ae86 grounded=4
+PASS Suspension stays above road on 0350 Road03 / ae86 grounded=4
+PASS Suspension stays above road on 0450 Road04 / ae86 grounded=4
+PASS Suspension stays above road on 0550 Road05 / ae86 grounded=4
+PASS Suspension stays above road on 0650 Road06 / ae86 grounded=4
+PASS Suspension stays above road on 0750 Road07 / ae86 grounded=4
+PASS Suspension stays above road on 0824 Road08 / ae86 grounded=4
+PASS Visible roadside solid has collision: ae86
+PASS Roadside solid stops physical chassis impact: ae86
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers ae86
+PASS PLAY again remembers drift-tracks
+PASS Escape returns to main buttons
+CASE drift-tracks / skyline-r32
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders skyline-r32
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage drift-tracks
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected skyline-r32
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE skyline-r32 inertia=(2030.493, 2326.481, 418.958) tensorRotation=(0.275, 0.000, 0.000) wheelbase=2.627 frontTrack=1.517
+PASS Per-car mass and torque applied
+PASS Wheel geometry skyline-r32 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry skyline-r32 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry skyline-r32 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry skyline-r32 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS drift-tracks start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on drift-tracks: skyline-r32 (4)
+PASS Engine accelerates skyline-r32
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: tyre
+PASS Non-brake material stays dark: rims
+PASS Non-brake material stays dark: brake caliper
+PASS Non-brake material stays dark: brake
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: widnows
+PASS Non-brake material stays dark: black windows
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: headlights
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: RearLens_0
+PASS Non-brake material stays dark: RearLens_1
+PASS Non-brake material stays dark: paint
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: rear lights2
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: headlights.001
+PASS Non-brake material stays dark: chrome
+PASS Non-brake material stays dark: red
+PASS Non-brake material stays dark: white
+PASS Non-brake material stays dark: dummy
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: exhaust
+PASS Non-brake material stays dark: black plastic.001
+PASS Non-brake material stays dark: headlights orange
+PASS Non-brake material stays dark: black plastic
+PASS Non-brake material stays dark: rear light
+PASS Non-brake material stays dark: Material.001
+PASS DriftTelemetry detects real rear slip: skyline-r32
+PASS DriftScore earns Style Credit: skyline-r32
+PASS Live slip drives smoke, screech gain and skidmarks: skyline-r32
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: drift-tracks / skyline-r32
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical checkpoint 5 accepted in order
+PASS Physical checkpoint 6 accepted in order
+PASS Physical finish follows stage type: drift-tracks
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 3392 wheel-footprint probes have real road support: skyline-r32
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0050 Road00 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0150 Road01 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0250 Road02 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0350 Road03 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0450 Road04 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0550 Road05 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0650 Road06 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0750 Road07 / skyline-r32 grounded=4
+PASS Suspension stays above road on 0824 Road08 / skyline-r32 grounded=4
+PASS Visible roadside solid has collision: skyline-r32
+PASS Roadside solid stops physical chassis impact: skyline-r32
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers skyline-r32
+PASS PLAY again remembers drift-tracks
+PASS Escape returns to main buttons
+CASE drift-tracks / rx7-fd
+PASS PLAY opens Car Select
+PASS R1 browses vehicles
+PASS L1 returns to vehicle
+PASS Right navigation browses on focused footer
+PASS 3D visual preview renders rx7-fd
+PASS Car confirmation opens Stage Select
+PASS Car confirmation does not load race
+PASS Selected stage drift-tracks
+PASS Coming-soon stage cannot start
+PASS Unavailable stage does not load a scene
+PASS Vehicle selection persists by ID
+PASS Circle / Stage Back restores selected car
+PASS Keyboard Enter confirms selected car
+PASS Race initializes selected rx7-fd
+PASS Stage selection persists by ID
+PASS Exactly one playable controller
+PASS Exactly one active vehicle visual
+MEASURE rx7-fd inertia=(1534.180, 1800.149, 372.052) tensorRotation=(0.000, 0.000, 0.000) wheelbase=2.438 frontTrack=1.399
+PASS Per-car mass and torque applied
+PASS Wheel geometry rx7-fd 0
+PASS Wheel visual follows suspension 0 error=0.0000
+PASS Wheel geometry rx7-fd 1
+PASS Wheel visual follows suspension 1 error=0.0000
+PASS Wheel geometry rx7-fd 2
+PASS Wheel visual follows suspension 2 error=0.0000
+PASS Wheel geometry rx7-fd 3
+PASS Wheel visual follows suspension 3 error=0.0000
+PASS Uses authoritative spawn
+PASS Camera follows shared CarRoot
+PASS drift-tracks start/checkpoints ready
+PASS Drift telemetry and scoring bound to race
+PASS Engine and screech clips assigned
+PASS Smoke and skidmark wheel bindings
+PASS All four wheels settle on drift-tracks: rx7-fd (4)
+PASS Engine accelerates rx7-fd
+PASS Wheel meshes rotate
+PASS Front wheels steer
+PASS Gearbox upshift
+PASS Handbrake reaches rear wheels
+PASS Manual clutch input
+PASS Brake-light availability matches verified geometry
+PASS Brake pedal emits on dedicated rear-light slot
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: MAX
+PASS Non-brake material stays dark: max_outline
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface4
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_disbreak
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_max
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_bolt
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface5
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface9
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface7
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_aiStandardSurface8
+PASS Non-brake material stays dark: tire_side1
+PASS Non-brake material stays dark: v_cross_hood_wheel_BBS_ad_size_tire
+PASS Non-brake material stays dark: inter_cooler
+PASS Non-brake material stays dark: line
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: aiStandardSurface2
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: plate2
+PASS Non-brake material stays dark: aiStandardSurface55
+PASS Non-brake material stays dark: choem
+PASS Non-brake material stays dark: black_hold
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: mirror_reflex
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface14
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: aiStandardSurface18
+PASS Non-brake material stays dark: chorm
+PASS Non-brake material stays dark: aiStandardSurface19
+PASS Non-brake material stays dark: case_light
+PASS Non-brake material stays dark: aiStandardSurface15
+PASS Non-brake material stays dark: light_back
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: hand_door
+PASS Non-brake material stays dark: body
+PASS Non-brake material stays dark: body_black_fiber
+PASS Non-brake material stays dark: aiStandardSurface13
+PASS Non-brake material stays dark: body
+PASS DriftTelemetry detects real rear slip: rx7-fd
+PASS DriftScore earns Style Credit: rx7-fd
+PASS Live slip drives smoke, screech gain and skidmarks: rx7-fd
+PASS Finish follows configured circuit / point-to-point flow
+PASS Style Credit uses existing eight-second cap
+PASS Physical start line starts timer: drift-tracks / rx7-fd
+PASS Physical finish rejected without checkpoints
+PASS Out-of-order physical checkpoint rejected
+PASS Physical checkpoint 1 accepted in order
+PASS R respawns at latest checkpoint
+PASS Checkpoint respawn retains race progress
+PASS Physical checkpoint 2 accepted in order
+PASS Physical checkpoint 3 accepted in order
+PASS Physical checkpoint 4 accepted in order
+PASS Physical checkpoint 5 accepted in order
+PASS Physical checkpoint 6 accepted in order
+PASS Physical finish follows stage type: drift-tracks
+PASS Finish saves isolated per-stage/per-car record
+PASS Complete track surface guide
+PASS All 3392 wheel-footprint probes have real road support: rx7-fd
+PASS All track colliders are static, non-trigger and positively scaled
+PASS Suspension stays above road on 0050 Road00 / rx7-fd grounded=4
+PASS Suspension stays above road on 0150 Road01 / rx7-fd grounded=4
+PASS Suspension stays above road on 0250 Road02 / rx7-fd grounded=4
+PASS Suspension stays above road on 0350 Road03 / rx7-fd grounded=4
+PASS Suspension stays above road on 0450 Road04 / rx7-fd grounded=4
+PASS Suspension stays above road on 0550 Road05 / rx7-fd grounded=4
+PASS Suspension stays above road on 0650 Road06 / rx7-fd grounded=4
+PASS Suspension stays above road on 0750 Road07 / rx7-fd grounded=4
+PASS Suspension stays above road on 0824 Road08 / rx7-fd grounded=4
+PASS Visible roadside solid has collision: rx7-fd
+PASS Roadside solid stops physical chassis impact: rx7-fd
+PASS Pause works
+PASS Restart uses SpawnPoint
+PASS Pause returns to Main Menu
+PASS PLAY again remembers rx7-fd
+PASS PLAY again remembers drift-tracks
+PASS Escape returns to main buttons
+PASS AE86 config unchanged by all runtime selections
+PASS: all playable vehicle/stage combinations, physical triggers, route support and menu/race integration. Synthetic inputs, not a physical controller road test.

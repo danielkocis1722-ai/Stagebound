@@ -1,0 +1,6 @@
+POWER ae86 before peakNm=360 peakKW=207.695 atRPM=6254
+POWER ae86 after peakNm=360 peakKW=204.013 atRPM=6026
+POWER skyline-r32 before peakNm=460 peakKW=265.388 atRPM=6254
+POWER skyline-r32 after peakNm=460 peakKW=260.683 atRPM=6026
+POWER rx7-fd before peakNm=500 peakKW=288.466 atRPM=6254
+POWER rx7-fd after peakNm=500 peakKW=283.284 atRPM=6023

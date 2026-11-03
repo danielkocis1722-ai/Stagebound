@@ -24,7 +24,7 @@ MonoBehaviour:
       m_Curve:
       - serializedVersion: 3
         time: 900
-        value: 0.6
+        value: 0.25
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 2000
-        value: 0.84
+        value: 0.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 3000
-        value: 0.95
+        value: 0.75
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 4000
-        value: 1
+        value: 0.95
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -77,8 +77,26 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 7500
+        time: 6500
         value: 0.65
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 7000
+        value: 0.32
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 7500
+        value: 0.12
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -90,13 +108,13 @@ MonoBehaviour:
       m_RotationOrder: 4
   transmission:
     gearRatios:
-    - 4.2
-    - 3
-    - 2.1
-    - 1.55
-    - 1.2
-    reverseRatio: 3.8
-    finalDrive: 4.1
+    - 3.8776917
+    - 2.2260823
+    - 1.6580476
+    - 1.2995508
+    - 1.0685196
+    reverseRatio: 5.7242117
+    finalDrive: 3.9
     drivetrainEfficiency: 0.9
     shiftDuration: 0.2
   steering:
@@ -131,9 +149,9 @@ MonoBehaviour:
     clutchKickStrength: 1
     engineInertia: 0.44
   handbrake:
-    brakeTorque: 2250
-    frontBrakeBias: 0.55
-    handbrakeTorque: 15000
+    brakeTorque: 957.6535
+    frontBrakeBias: 0.68
+    handbrakeTorque: 3163.6365
     handbrakeRearGrip: 0.8
     handbrakeGripDropSpeed: 0.65
     handbrakeGripRecoverySpeed: 0.65
@@ -241,27 +259,27 @@ MonoBehaviour:
     mass: 1450
     linearDamping: 0
     angularDamping: 0.28
-    centerOfMass: {x: 0, y: -0.3, z: 0.12}
+    centerOfMass: {x: 0, y: 0.10083625, z: 0.47351637}
     colliderPosition: {x: 0, y: 0, z: 0}
     colliderScale: {x: 1, y: 1, z: 1}
-    colliderCenter: {x: -0.021127954, y: 0.7679577, z: 0.6704864}
-    colliderSize: {x: 3.5728955, y: 1.2839895, z: 8.767455}
+    colliderCenter: {x: 0, y: 0.14083624, z: 0.3159095}
+    colliderSize: {x: 1.72, y: 0.7, z: 3.9996}
     colliderRotation: {x: 0, y: 0, z: 0, w: 1}
     frontAntiRoll: 3200
     rearAntiRoll: 2400
   frontLeft:
-    localPosition: {x: -1.6630297, y: -0.14806741, z: 3.5715606}
+    localPosition: {x: -0.75865275, y: -0.012546398, z: 1.6292999}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 1}
-    radius: 0.72693264
+    radius: 0.33161736
     mass: 25
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 34272.73
-    damper: 3690.9092
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 52727.273
+    damper: 4613.6367
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.4
       extremumValue: 1
@@ -275,18 +293,18 @@ MonoBehaviour:
       asymptoteValue: 0.98
       stiffness: 1.26
   frontRight:
-    localPosition: {x: 1.6630297, y: -0.1480673, z: 3.571561}
+    localPosition: {x: 0.75865275, y: -0.012546398, z: 1.6293001}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 1}
-    radius: 0.7269327
+    radius: 0.33161736
     mass: 25
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 34272.73
-    damper: 3690.9092
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 52727.273
+    damper: 4613.6367
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.4
       extremumValue: 1
@@ -300,18 +318,18 @@ MonoBehaviour:
       asymptoteValue: 0.98
       stiffness: 1.26
   backLeft:
-    localPosition: {x: -1.6630297, y: -0.14806741, z: -2.186561}
+    localPosition: {x: -0.75865275, y: -0.012546398, z: -0.99748105}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 1}
-    radius: 0.72693264
+    radius: 0.3316173
     mass: 25
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 34272.73
-    damper: 4745.4546
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 47454.547
+    damper: 4218.182
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.25
       extremumValue: 1
@@ -325,18 +343,18 @@ MonoBehaviour:
       asymptoteValue: 1
       stiffness: 1.16
   backRight:
-    localPosition: {x: 1.6630297, y: -0.1480673, z: -2.1865606}
+    localPosition: {x: 0.75865275, y: -0.012546398, z: -0.99748087}
     localScale: {x: 1, y: 1, z: 1}
     center: {x: 0, y: 0, z: 0}
     localRotation: {x: 0, y: 0, z: 0, w: 1}
-    radius: 0.7269327
+    radius: 0.33161736
     mass: 25
     damping: 0.5
-    suspensionDistance: 0.25
-    forceAppPointDistance: 0.3
-    spring: 34272.73
-    damper: 4745.4546
-    targetPosition: 0.38
+    suspensionDistance: 0.18
+    forceAppPointDistance: 0.22
+    spring: 47454.547
+    damper: 4218.182
+    targetPosition: 0.3
     forwardTires:
       extremumSlip: 0.25
       extremumValue: 1
@@ -349,10 +367,10 @@ MonoBehaviour:
       asymptoteSlip: 0.8
       asymptoteValue: 1
       stiffness: 1.16
-  visualPositionOffset: {x: 0.0000003470103, y: -0.85148203, z: 0.6700302}
+  visualPositionOffset: {x: 0.00000015830163, y: -0.38843516, z: 0.30565915}
   visualRotationOffset: {x: 0, y: 0, z: 0}
-  visualScale: {x: 3.8812447, y: 3.8812447, z: 3.8812447}
+  visualScale: {x: 1.7705739, y: 1.7705739, z: 1.7705739}
   frontRecoveryEnabled: 1
-  yawStabilityEnabled: 1
+  yawStabilityEnabled: 0
   visualMotionEnabled: 1
   startingGear: 1

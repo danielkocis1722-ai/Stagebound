@@ -61,9 +61,9 @@ public class VehicleAudio : MonoBehaviour
     [Range(0f, 1f)]
     public float spatialBlend = .8f;
     [Min(.1f)]
-    public float minDistance = 5f;
+    public float minDistance = 2.3f;
     [Min(1f)]
-    public float maxDistance = 65f;
+    public float maxDistance = 30f;
     private CarController car;
     private WheelEffects wheels;
     private bool audioPaused, screechPaused;

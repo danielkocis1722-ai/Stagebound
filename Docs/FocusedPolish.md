@@ -1,5 +1,7 @@
 # Focused track and driving polish — 2026-11-01
 
+> Historical report. The experimental branch now uses the full metre-scale migration documented in [RealScaleMigration.md](RealScaleMigration.md). Values and instructions below describe the earlier state.
+
 Working tree changes only. Nothing committed or pushed. This report supersedes
 the scale/material findings in `NewTracksAndSteering.md`; the existing integration
 and stage structure remain in place.

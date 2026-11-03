@@ -31,7 +31,7 @@ public static class ValidateVehicleFlow
     private static readonly List<InputDevice> disabled = new List<InputDevice>();
     private static int lastFrame = -1;
     private static double deadline;
-    private const string Output = "Library/TrackIntegration";
+    private const string Output = "Library/FullScale/Matrix";
 
     private static void Check(bool condition, string label)
     {
@@ -280,7 +280,7 @@ public static class ValidateVehicleFlow
         var direction = trigger.transform.forward;
         for (int i = 0; i <= 44; i++)
         {
-            body.position = center - Vector3.up * 1.25f + direction * (-11 + i * .5f);
+            body.position = center + direction * (-5.5f + i * .25f);
             body.rotation = trigger.transform.rotation;
             body.linearVelocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
@@ -422,7 +422,7 @@ public static class ValidateVehicleFlow
         };
         foreach (var point in representatives)
         {
-            rb.position = point.position + Vector3.up * 1.25f;
+            rb.position = point.position + Vector3.up * .7f;
             rb.rotation = point.rotation;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;

@@ -1,0 +1,92 @@
+WORLD: one Unity unit = one metre; kg, seconds, Nm.
+VEHICLE ae86 envelope=(1.828579, 1.927765, 4.200000) mass=1100.000 COM=(-0.000196, 0.057436, 0.386817) collider=(1.650000, 0.700000, 3.700000)
+ WHEEL 0 mount=(-0.704974, -0.079556, 1.501886) radius=0.296700 spring=40000.00 damper=3500.00 travel=0.18 target=0.3 mass=20
+ WHEEL 1 mount=(0.709551, -0.079556, 1.501255) radius=0.296700 spring=40000.00 damper=3500.00 travel=0.18 target=0.3 mass=20
+ WHEEL 2 mount=(-0.719416, -0.102172, -0.869929) radius=0.296700 spring=36000.00 damper=3200.00 travel=0.18 target=0.3 mass=20
+ WHEEL 3 mount=(0.714055, -0.102172, -0.870560) radius=0.296700 spring=36000.00 damper=3200.00 travel=0.18 target=0.3 mass=20
+ STEERING wheelbase=2.371815 frontTrack=1.414525 rearTrack=1.433471 max=40 high=30 fade=30-80 km/h
+ BRAKES base=650.000 frontShare=0.670 handbrake=2400.000
+ ENGINE torque=360 redline=7500 FD=3.55 reverse=5.673239
+ GEAR 1 ratio=4.200000 redlineKmh=56.264
+ GEAR 2 ratio=2.300000 redlineKmh=102.743
+ GEAR 3 ratio=1.780000 redlineKmh=132.758
+ GEAR 4 ratio=1.460000 redlineKmh=161.856
+ GEAR 5 ratio=1.200000 redlineKmh=196.925
+VEHICLE skyline-r32 envelope=(1.875966, 1.335235, 4.545000) mass=1450.000 COM=(0.000000, 0.100836, 0.473516) collider=(1.720000, 0.700000, 3.999600)
+ WHEEL 0 mount=(-0.758653, -0.012546, 1.629300) radius=0.331617 spring=52727.27 damper=4613.64 travel=0.18 target=0.3 mass=25
+ WHEEL 1 mount=(0.758653, -0.012546, 1.629300) radius=0.331617 spring=52727.27 damper=4613.64 travel=0.18 target=0.3 mass=25
+ WHEEL 2 mount=(-0.758653, -0.012546, -0.997481) radius=0.331617 spring=47454.55 damper=4218.18 travel=0.18 target=0.3 mass=25
+ WHEEL 3 mount=(0.758653, -0.012546, -0.997481) radius=0.331617 spring=47454.55 damper=4218.18 travel=0.18 target=0.3 mass=25
+ STEERING wheelbase=2.626781 frontTrack=1.517305 rearTrack=1.517305 max=40 high=30 fade=30-80 km/h
+ BRAKES base=957.654 frontShare=0.680 handbrake=3163.636
+ ENGINE torque=460 redline=7500 FD=3.9 reverse=5.724212
+ GEAR 1 ratio=3.877692 redlineKmh=62.000
+ GEAR 2 ratio=2.226082 redlineKmh=108.000
+ GEAR 3 ratio=1.658048 redlineKmh=145.000
+ GEAR 4 ratio=1.299551 redlineKmh=185.000
+ GEAR 5 ratio=1.068520 redlineKmh=225.000
+VEHICLE rx7-fd envelope=(1.893306, 1.225163, 4.285000) mass=1250.000 COM=(0.000000, 0.114216, 0.315910) collider=(1.750000, 0.700000, 3.770800)
+ WHEEL 0 mount=(-0.699581, -0.009030, 1.535090) radius=0.321729 spring=45454.55 damper=3977.27 travel=0.18 target=0.3 mass=22
+ WHEEL 1 mount=(0.699581, -0.009031, 1.535090) radius=0.321730 spring=45454.55 damper=3977.27 travel=0.18 target=0.3 mass=22
+ WHEEL 2 mount=(-0.699581, -0.009031, -0.903270) radius=0.321778 spring=40909.09 damper=3636.36 travel=0.18 target=0.3 mass=22
+ WHEEL 3 mount=(0.699581, -0.009031, -0.903270) radius=0.321778 spring=40909.09 damper=3636.36 travel=0.18 target=0.3 mass=22
+ STEERING wheelbase=2.438360 frontTrack=1.399161 rearTrack=1.399161 max=40 high=30 fade=30-80 km/h
+ BRAKES base=801.007 frontShare=0.650 handbrake=2727.273
+ ENGINE torque=500 redline=7500 FD=4.1 reverse=5.283417
+ GEAR 1 ratio=3.698392 redlineKmh=60.000
+ GEAR 2 ratio=2.054662 redlineKmh=108.000
+ GEAR 3 ratio=1.530369 redlineKmh=145.000
+ GEAR 4 ratio=1.232797 redlineKmh=180.000
+ GEAR 5 ratio=1.008652 redlineKmh=220.000
+ GATE south-loop/Race Start-Finish size=(10.8029, 3.6496, 0.4562) position=(2.9197, 1.1747, 4.9270)
+ GATE south-loop/Race Checkpoint 1 size=(11.0949, 4.4161, 0.4562) position=(41.2728, 1.7518, 4.9270)
+ SPAWN south-loop/Start Respawn position=(2.9197, 0.7009, 2.1898) rotation=(0.000, 0.000, 0.000)
+STAGE south-loop factor=0.45620440 staticColliders=4 recordVersion=2 inertiaAE86=(1307.163000, 1510.057000, 296.231100)
+ GATE track-comple/Checkpoint 1 - Lower Straight size=(7.5274, 2.7372, 0.6843) position=(-0.2576, 1.1092, -32.8467)
+ GATE track-comple/Checkpoint 4 - Upper Return size=(7.5274, 2.7372, 0.6843) position=(13.5994, 1.1772, 30.1095)
+ GATE track-comple/Checkpoint 3 - Elevated Crossing size=(7.5274, 2.7372, 0.6843) position=(8.2117, 4.0983, 17.5081)
+ GATE track-comple/Checkpoint 2 - West S Bend size=(7.5274, 2.7372, 0.6843) position=(-37.0073, 1.1092, 5.4745)
+ GATE track-comple/Start Finish size=(7.5274, 2.7372, 0.6843) position=(-0.2576, 1.1290, 12.6233)
+ SPAWN track-comple/Checkpoint 1 Respawn position=(-0.2576, 0.5876, -36.9526) rotation=(0.000, 180.000, 0.000)
+ SPAWN track-comple/Checkpoint 4 Respawn position=(13.5994, 0.6555, 34.2153) rotation=(0.000, 0.000, 0.000)
+ SPAWN track-comple/Checkpoint 3 Respawn position=(12.3175, 3.5875, 17.5081) rotation=(0.000, 90.000, 0.000)
+ SPAWN track-comple/Checkpoint 2 Respawn position=(-37.0073, 0.5876, 9.5803) rotation=(0.000, 0.000, 0.000)
+ SPAWN track-comple/SpawnPoint position=(-0.2576, 0.6259, 21.8978) rotation=(0.000, 180.000, 0.000)
+STAGE track-comple factor=0.45620440 staticColliders=64 recordVersion=2 inertiaAE86=(1307.163000, 1510.057000, 296.231100)
+ GATE cherry-mountain/Finish size=(10.6752, 2.2810, 0.6843) position=(182.6440, 0.7903, 376.5866)
+ GATE cherry-mountain/Checkpoint 9 size=(10.6752, 2.2810, 0.6843) position=(25.2624, 0.8529, 479.1151)
+ GATE cherry-mountain/Start size=(10.6752, 2.2810, 0.6843) position=(48.2881, 160.9079, -482.9277)
+ GATE cherry-mountain/Checkpoint 4 size=(10.6752, 2.2810, 0.6843) position=(-82.2280, 77.7028, -4.8820)
+ GATE cherry-mountain/Checkpoint 8 size=(10.6752, 2.2810, 0.6843) position=(-38.3802, 1.2286, 496.1500)
+ GATE cherry-mountain/Checkpoint 6 size=(10.6752, 2.2810, 0.6843) position=(-175.9167, 29.9918, 323.4216)
+ GATE cherry-mountain/Checkpoint 7 size=(10.6752, 2.2810, 0.6843) position=(-139.7241, 8.5851, 464.6492)
+ GATE cherry-mountain/Checkpoint 1 size=(10.6752, 2.2810, 0.6843) position=(-69.2446, 110.9740, -361.5426)
+ GATE cherry-mountain/Checkpoint 2 size=(10.6752, 2.2810, 0.6843) position=(-114.5678, 85.4180, -206.8616)
+ GATE cherry-mountain/Checkpoint 5 size=(10.6752, 2.2810, 0.6843) position=(-118.3856, 55.8932, 159.5911)
+ GATE cherry-mountain/Checkpoint 3 size=(10.6752, 2.2810, 0.6843) position=(-142.8340, 86.0683, -99.8459)
+ SPAWN cherry-mountain/Checkpoint 9 Respawn position=(25.2624, 0.7875, 479.1151) rotation=(0.000, 140.748, 0.000)
+ SPAWN cherry-mountain/Checkpoint 4 Respawn position=(-82.2280, 77.6394, -4.8820) rotation=(2.657, 47.308, 0.000)
+ SPAWN cherry-mountain/Checkpoint 8 Respawn position=(-38.3802, 1.1631, 496.1500) rotation=(0.000, 157.742, 0.000)
+ SPAWN cherry-mountain/Checkpoint 6 Respawn position=(-175.9167, 29.9361, 323.4216) rotation=(4.751, 336.858, 0.000)
+ SPAWN cherry-mountain/Checkpoint 7 Respawn position=(-139.7241, 8.7718, 464.6492) rotation=(41.151, 42.829, 0.000)
+ SPAWN cherry-mountain/Checkpoint 1 Respawn position=(-69.2446, 110.9323, -361.5426) rotation=(15.109, 317.434, 0.000)
+ SPAWN cherry-mountain/Checkpoint 2 Respawn position=(-114.5678, 85.3500, -206.8616) rotation=(356.753, 316.588, 0.000)
+ SPAWN cherry-mountain/Checkpoint 5 Respawn position=(-118.3856, 55.8330, 159.5911) rotation=(7.653, 339.741, 0.000)
+ SPAWN cherry-mountain/Checkpoint 3 Respawn position=(-142.8340, 86.0028, -99.8459) rotation=(359.507, 51.315, 0.000)
+ SPAWN cherry-mountain/SpawnPoint position=(45.6241, 164.7660, -499.1216) rotation=(8.906, 24.554, 0.000)
+STAGE cherry-mountain factor=0.45620440 staticColliders=7 recordVersion=3 inertiaAE86=(1307.170000, 1510.065000, 296.230300)
+ GATE drift-tracks/Checkpoint 2 size=(9.4891, 2.2810, 0.6843) position=(75.5491, 0.6888, 23.4821)
+ GATE drift-tracks/Checkpoint 3 size=(9.4891, 2.2810, 0.6843) position=(12.5620, 0.6888, 32.9310)
+ GATE drift-tracks/Checkpoint 1 size=(9.4891, 2.2810, 0.6843) position=(104.9083, 0.6888, -10.4674)
+ GATE drift-tracks/Checkpoint 6 size=(9.4890, 2.2810, 0.6843) position=(-1.7225, 0.6888, -39.4580)
+ GATE drift-tracks/Checkpoint 4 size=(9.4891, 2.2810, 0.6843) position=(-88.2339, 0.6888, 54.0149)
+ GATE drift-tracks/Checkpoint 5 size=(9.4891, 2.2810, 0.6843) position=(-60.3944, 0.6888, 12.1491)
+ GATE drift-tracks/StartFinish size=(9.4891, 2.2810, 0.6843) position=(-12.1772, 0.6888, -67.7646)
+ SPAWN drift-tracks/Checkpoint 2 Respawn position=(75.5491, 0.6234, 23.4821) rotation=(0.000, 163.592, 0.000)
+ SPAWN drift-tracks/Checkpoint 3 Respawn position=(12.5620, 0.6234, 32.9310) rotation=(0.000, 73.468, 0.000)
+ SPAWN drift-tracks/Checkpoint 1 Respawn position=(104.9083, 0.6234, -10.4674) rotation=(0.000, 357.791, 0.000)
+ SPAWN drift-tracks/Checkpoint 6 Respawn position=(-1.7225, 0.6234, -39.4580) rotation=(0.000, 271.415, 0.000)
+ SPAWN drift-tracks/Checkpoint 4 Respawn position=(-88.2339, 0.6234, 54.0149) rotation=(0.000, 230.279, 0.000)
+ SPAWN drift-tracks/Checkpoint 5 Respawn position=(-60.3944, 0.6234, 12.1491) rotation=(0.000, 281.814, 0.000)
+ SPAWN drift-tracks/SpawnPoint position=(-26.7800, 0.6234, -67.8324) rotation=(0.000, 89.727, 0.000)
+STAGE drift-tracks factor=0.45620440 staticColliders=10 recordVersion=3 inertiaAE86=(1307.163000, 1510.057000, 296.231100)

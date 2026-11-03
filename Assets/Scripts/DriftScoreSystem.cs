@@ -48,7 +48,7 @@ public class DriftScoreSystem : MonoBehaviour
     [Header("Repeated-area farming protection (per run)")]
     [Min(5f)]
     [SerializeField]
-    private float scoringCellSize = 20f;
+    private float scoringCellSize = 9.124087f;
     [Min(.1f)]
     [SerializeField]
     private float scoringSecondsPerCell = 3f;

@@ -9,11 +9,11 @@ public class SkidmarkSystem : MonoBehaviour
     [Range(64, 8192)]
     public int maxSegments = 2048;
     [Min(.01f)]
-    public float minSegmentLength = .12f;
+    public float minSegmentLength = .06f;
     [Min(.1f)]
     public float maxSegmentLength = 3f;
     [Min(0f)]
-    public float groundOffset = .015f;
+    public float groundOffset = .007f;
     private Mesh mesh;
     private GameObject marksObject;
     private Vector3[] vertices;

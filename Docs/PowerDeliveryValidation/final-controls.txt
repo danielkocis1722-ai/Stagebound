@@ -1,0 +1,28 @@
+PASS ae86 uses authoritative tuned curve
+LAUNCH ae86 speed=54.779 RPM=7409.458
+PASS ae86 full-throttle launch
+PASS ae86 ordinary controller upshift
+PASS ae86 manual clutch disconnects
+CLUTCH ae86 peakAxleNm=2752.225 peakKickNm=374.529 exitSpeed=89.772
+PASS ae86 clutch reconnects with physical kick
+BRAKE ae86 distance=48.723 seconds=3.567
+PASS ae86 existing service braking remains effective
+PASS skyline-r32 uses authoritative tuned curve
+LAUNCH skyline-r32 speed=59.661 RPM=7382.391
+PASS skyline-r32 full-throttle launch
+PASS skyline-r32 ordinary controller upshift
+PASS skyline-r32 manual clutch disconnects
+CLUTCH skyline-r32 peakAxleNm=4032.458 peakKickNm=516.085 exitSpeed=92.799
+PASS skyline-r32 clutch reconnects with physical kick
+BRAKE skyline-r32 distance=49.391 seconds=3.583
+PASS skyline-r32 existing service braking remains effective
+PASS rx7-fd uses authoritative tuned curve
+LAUNCH rx7-fd speed=58.582 RPM=7416.914
+PASS rx7-fd full-throttle launch
+PASS rx7-fd ordinary controller upshift
+PASS rx7-fd manual clutch disconnects
+CLUTCH rx7-fd peakAxleNm=3267.994 peakKickNm=431.037 exitSpeed=95.436
+PASS rx7-fd clutch reconnects with physical kick
+BRAKE rx7-fd distance=49.152 seconds=3.583
+PASS rx7-fd existing service braking remains effective
+COMPLETE

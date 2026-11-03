@@ -12,14 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb50455aa79f4f299e56cc18a770f255, type: 3}
   m_Name: SouthLoop
   m_EditorClassIdentifier: Assembly-CSharp::StageDefinition
+  stageType: 0
   stageId: south-loop
   stageName: South Loop
-  recordVersion: 1
-  importLegacySceneBest: 1
-  pointsPerSecondCredit: 2000
-  maxStyleCredit: 8
   scenePath: Assets/Scenes/SampleScene.unity
   description: South Loop time attack. Chase a clean line and earn style credit.
+  previewImage: {fileID: 0}
+  difficultyLabel:
   selectable: 1
   unavailableLabel: MAP UNAVAILABLE
   checkpointCount: 1
+  recordVersion: 2
+  importLegacySceneBest: 0
+  pointsPerSecondCredit: 2000
+  maxStyleCredit: 8

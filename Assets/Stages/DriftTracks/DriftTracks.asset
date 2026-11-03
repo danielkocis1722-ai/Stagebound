@@ -22,7 +22,7 @@ MonoBehaviour:
   selectable: 1
   unavailableLabel: ROAD VALIDATION IN PROGRESS
   checkpointCount: 6
-  recordVersion: 2
+  recordVersion: 3
   importLegacySceneBest: 0
   pointsPerSecondCredit: 2000
   maxStyleCredit: 8

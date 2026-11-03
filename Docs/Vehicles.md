@@ -1,5 +1,7 @@
 # Vehicles, Car Select and Stage Select
 
+> Historical report. The experimental branch now uses the full metre-scale migration documented in [RealScaleMigration.md](RealScaleMigration.md). Values and instructions below describe the earlier state.
+
 Current integration: 29 October 2026. Work was performed directly in `C:\Users\dandy\Documents\Projects\Stagebound`. Nothing was committed or pushed.
 
 ## Detected content

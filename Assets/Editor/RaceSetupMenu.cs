@@ -33,7 +33,7 @@ public static class RaceSetupMenu
             obj.transform.position = view.pivot;
         var collider = obj.AddComponent<BoxCollider>();
         collider.isTrigger = true;
-        collider.size = new Vector3(16, 8, 1);
+        collider.size = new Vector3(8, 3, .7f);
         var trigger = obj.AddComponent<RaceTrigger>();
         trigger.triggerType = start ? RaceTrigger.TriggerType.StartFinish : RaceTrigger.TriggerType.Checkpoint1;
         trigger.checkpointIndex = next;
