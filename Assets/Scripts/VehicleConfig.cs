@@ -85,6 +85,7 @@ public class VehicleConfig : ScriptableObject
     {
         public float brakeTorque;
         [Range(.3f, .8f)] public float frontBrakeBias = .5f;
+        public ServiceBrakeAssist.Settings serviceBrakeAssist = new ServiceBrakeAssist.Settings();
         public float handbrakeTorque;
         public float handbrakeRearGrip;
         public float handbrakeGripDropSpeed;
@@ -367,6 +368,7 @@ public class VehicleConfig : ScriptableObject
         car.engineInertia = clutch.engineInertia;
         car.brakeTorque = handbrake.brakeTorque;
         car.frontBrakeBias = handbrake.frontBrakeBias;
+        car.serviceBrakeAssist = handbrake.serviceBrakeAssist != null ? handbrake.serviceBrakeAssist.Copy() : new ServiceBrakeAssist.Settings();
         car.handbrakeTorque = handbrake.handbrakeTorque;
         car.handbrakeRearGrip = handbrake.handbrakeRearGrip;
         car.handbrakeGripDropSpeed = handbrake.handbrakeGripDropSpeed;
@@ -515,6 +517,7 @@ public class VehicleConfig : ScriptableObject
         clutch.engineInertia = car.engineInertia;
         handbrake.brakeTorque = car.brakeTorque;
         handbrake.frontBrakeBias = car.frontBrakeBias;
+        handbrake.serviceBrakeAssist = car.serviceBrakeAssist != null ? car.serviceBrakeAssist.Copy() : new ServiceBrakeAssist.Settings();
         handbrake.handbrakeTorque = car.handbrakeTorque;
         handbrake.handbrakeRearGrip = car.handbrakeRearGrip;
         handbrake.handbrakeGripDropSpeed = car.handbrakeGripDropSpeed;

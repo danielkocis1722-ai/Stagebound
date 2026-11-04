@@ -102,6 +102,12 @@ public class CarController : MonoBehaviour
     [Tooltip("Front axle share of service braking. Handbrake and engine braking stay separate.")]
     [Range(0.3f, 0.8f)]
     public float frontBrakeBias = .5f;
+    [Tooltip("Per-wheel ABS-style pressure control for normal brakes only. Configured by the selected vehicle.")]
+    public ServiceBrakeAssist.Settings serviceBrakeAssist = new ServiceBrakeAssist.Settings();
+    readonly ServiceBrakeAssist frontLeftBrake = new ServiceBrakeAssist();
+    readonly ServiceBrakeAssist frontRightBrake = new ServiceBrakeAssist();
+    readonly ServiceBrakeAssist rearLeftBrake = new ServiceBrakeAssist();
+    readonly ServiceBrakeAssist rearRightBrake = new ServiceBrakeAssist();
 
     // Zadná ručná brzda
     public float handbrakeTorque = 15000f;
@@ -710,11 +716,11 @@ public class CarController : MonoBehaviour
         float rearServiceBrake = normalBrake * (2f * (1f - frontBrakeBias));
         float rearHandbrake = HandbrakeInput * handbrakeTorque;
         // NORMAL BRAKE
-        frontLeft.brakeTorque = frontServiceBrake;
-        frontRight.brakeTorque = frontServiceBrake;
+        frontLeft.brakeTorque = frontLeftBrake.Apply(frontLeft, rb, frontServiceBrake, serviceBrakeAssist, false, Time.fixedDeltaTime);
+        frontRight.brakeTorque = frontRightBrake.Apply(frontRight, rb, frontServiceBrake, serviceBrakeAssist, false, Time.fixedDeltaTime);
         // REAR + HANDBRAKE
-        backLeft.brakeTorque = rearServiceBrake + rearHandbrake + EngineBrakeTorque(backLeft, rearLeftTorqueShare);
-        backRight.brakeTorque = rearServiceBrake + rearHandbrake + EngineBrakeTorque(backRight, 1f - rearLeftTorqueShare);
+        backLeft.brakeTorque = rearLeftBrake.Apply(backLeft, rb, rearServiceBrake, serviceBrakeAssist, HandbrakeInput > .05f, Time.fixedDeltaTime) + rearHandbrake + EngineBrakeTorque(backLeft, rearLeftTorqueShare);
+        backRight.brakeTorque = rearRightBrake.Apply(backRight, rb, rearServiceBrake, serviceBrakeAssist, HandbrakeInput > .05f, Time.fixedDeltaTime) + rearHandbrake + EngineBrakeTorque(backRight, 1f - rearLeftTorqueShare);
         // HANDBRAKE REAR GRIP
         UpdateSlipAngle();
         UpdateDriftGripState();

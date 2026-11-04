@@ -8250,41 +8250,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FollowCamera
   target: {fileID: 1369976805}
   carRigidbody: {fileID: 1369976807}
-  slowDistance: 3.55
-  fastDistance: 4.2
-  slowHeight: 1.3
-  fastHeight: 1.6
+  slowDistance: 3.85
+  fastDistance: 4.15
+  slowHeight: 1.42
+  fastHeight: 1.5
   positionSharpness: 7
   lookSharpness: 5
   lookAheadSlow: 1.1
-  lookAheadFast: 2.8
+  lookAheadFast: 2.1
   lookHeight: 0.4
-  driftSensitivity: 0.75
+  driftSensitivity: 0.55
   driftFullAngle: 35
   driftLookSharpness: 2.5
-  driftCameraRange: 0.85
-  driftSideOffset: 0.18
+  driftCameraRange: 0.65
+  driftSideOffset: 0.08
   minDriftSpeed: 20
   maxEffectSpeed: 160
-  slowFOV: 62
-  fastFOV: 73
-  fovSharpness: 4
-  lowSpeedDistanceReduction: 0.25
-  lowSpeedFOVReduction: 2
+  slowFOV: 60
+  fastFOV: 65
+  fovSharpness: 2.2
+  lowSpeedDistanceReduction: 0.08
+  lowSpeedFOVReduction: 0
   proximityFadeSpeed: 80
   accelerationFeedbackEnabled: 1
-  accelerationPullback: 0.25
-  accelerationLowering: 0.025
-  accelerationFOVBonus: 3
+  accelerationPullback: 0.1
+  accelerationLowering: 0.012
+  accelerationFOVBonus: 0.8
   fullFeedbackAcceleration: 6
-  accelerationResponse: 10
+  accelerationResponse: 5.5
   accelerationRecovery: 5
-  brakingPush: 0.12
-  torqueKickPullback: 0.03
-  torqueKickFOVBonus: 1.25
+  brakingPush: 0.05
+  torqueKickPullback: 0.012
+  torqueKickFOVBonus: 0.25
   torqueKickThreshold: 150
   torqueKickDuration: 0.18
   torqueKickCooldown: 0.4
+  slopeFollowStrength: 0.85
+  slopePitchLimit: 25
+  slopeSmoothing: 2
+  groundNormalSmoothing: 3
+  slopeNoiseDeadband: 1
+  slopePitchRate: 12
+  orbitYawSpeed: 90
+  orbitYawLimit: 140
+  orbitPitchSpeed: 35
+  orbitPitchMin: -10
+  orbitPitchMax: 18
+  orbitDeadzone: 0.12
+  orbitReturnDelay: 0.6
+  orbitReturnSpeed: 3
+  invertOrbitX: 0
+  invertOrbitY: 0
 --- !u!1 &331313381
 GameObject:
   m_ObjectHideFlags: 0
@@ -29091,7 +29107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eefe4fd6a4346a4ac2a66efd127dcc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SuspensionTelemetry
-  accelerationResponse: 12
+  accelerationResponse: 5.5
   localLateralAcceleration: 0
   localLongitudinalAcceleration: 0
   physicalBodyRoll: 0

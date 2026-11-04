@@ -149,8 +149,14 @@ MonoBehaviour:
     clutchKickStrength: 1
     engineInertia: 0.44
   handbrake:
-    brakeTorque: 957.6535
+    brakeTorque: 1436.4803
     frontBrakeBias: 0.68
+    serviceBrakeAssist:
+      enabled: 1
+      targetSlip: 0.36
+      minimumSpeedKmh: 8
+      releaseRate: 20
+      recoveryRate: 5
     handbrakeTorque: 3163.6365
     handbrakeRearGrip: 0.8
     handbrakeGripDropSpeed: 0.65

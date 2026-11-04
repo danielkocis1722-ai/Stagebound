@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [DefaultExecutionOrder(200)]
 public class FollowCamera : MonoBehaviour
@@ -8,21 +9,21 @@ public class FollowCamera : MonoBehaviour
     public Rigidbody carRigidbody;
 
     [Header("Chase Camera")]
-    public float slowDistance = 3.55f;
-    public float fastDistance = 4.2f;
-    public float slowHeight = 1.3f;
-    public float fastHeight = 1.6f;
+    public float slowDistance = 3.85f;
+    public float fastDistance = 4.15f;
+    public float slowHeight = 1.42f;
+    public float fastHeight = 1.5f;
     public float positionSharpness = 7f;
     public float lookSharpness = 5f;
     public float lookAheadSlow = 1.1f;
-    public float lookAheadFast = 2.8f;
+    public float lookAheadFast = 2.1f;
     public float lookHeight = 0.4f;
 
     [Header("Drift Camera")]
     // Ako veľmi kamera reaguje na rozdiel
     // medzi smerom auta a smerom pohybu.
     [Range(0f, 1f)]
-    public float driftSensitivity = 0.75f;
+    public float driftSensitivity = 0.55f;
 
     // Pri tomto slip angle už považujeme
     // drift efekt kamery za prakticky maximálny.
@@ -33,49 +34,75 @@ public class FollowCamera : MonoBehaviour
 
     // Koľko z velocity direction môže kamera použiť.
     [Range(0f, 1f)]
-    public float driftCameraRange = 0.85f;
+    public float driftCameraRange = 0.65f;
 
     // Jemné posunutie kamery do strany počas driftu.
-    public float driftSideOffset = 0.18f;
+    public float driftSideOffset = 0.08f;
     public float minDriftSpeed = 20f;
 
     [Header("Speed Effects")]
     public float maxEffectSpeed = 160f;
-    public float slowFOV = 62f;
-    public float fastFOV = 73f;
-    public float fovSharpness = 4f;
+    public float slowFOV = 60f;
+    public float fastFOV = 65f;
+    public float fovSharpness = 2.2f;
     [Header("Low-speed proximity (fades out by 80 km/h)")]
-    [Min(0f)] public float lowSpeedDistanceReduction = .25f;
-    [Min(0f)] public float lowSpeedFOVReduction = 2f;
+    [Min(0f)] public float lowSpeedDistanceReduction = 0.08f;
+    [Min(0f)] public float lowSpeedFOVReduction = 0f;
     [Min(1f)] public float proximityFadeSpeed = 80f;
 
     [Header("Acceleration Effects")]
     public bool accelerationFeedbackEnabled = true;
     [Min(0f)]
-    public float accelerationPullback = 0.25f;
+    public float accelerationPullback = 0.1f;
     [Min(0f)]
-    public float accelerationLowering = 0.025f;
+    public float accelerationLowering = 0.012f;
     [Min(0f)]
-    public float accelerationFOVBonus = 3f;
+    public float accelerationFOVBonus = 0.8f;
     [Min(0.31f)]
     public float fullFeedbackAcceleration = 6f;
     [Min(0.1f)]
-    public float accelerationResponse = 10f;
+    public float accelerationResponse = 5.5f;
     [Min(0.1f)]
     public float accelerationRecovery = 5f;
-    public float brakingPush = 0.12f;
+    public float brakingPush = 0.05f;
 
     [Header("Drivetrain Camera Hit")]
     [Min(0f)]
-    public float torqueKickPullback = 0.03f;
+    public float torqueKickPullback = 0.012f;
     [Min(0f)]
-    public float torqueKickFOVBonus = 1.25f;
+    public float torqueKickFOVBonus = 0.25f;
     [Min(1f)]
     public float torqueKickThreshold = 150f;
     [Min(0.01f)]
     public float torqueKickDuration = 0.18f;
     [Min(0f)]
     public float torqueKickCooldown = 0.4f;
+
+    [Header("Road slope (pitch only)")]
+    [Range(0f, 1f)] public float slopeFollowStrength = .85f;
+    [Range(0f, 45f)] public float slopePitchLimit = 25f;
+    [Min(.1f)] public float slopeSmoothing = 2f;
+    [Min(.1f)] public float groundNormalSmoothing = 3f;
+    [Min(0f)] public float slopeNoiseDeadband = 1f;
+    [Min(.1f)] public float slopePitchRate = 12f;
+
+    [Header("Right-stick orbit")]
+    [Min(0f)] public float orbitYawSpeed = 90f;
+    [Range(0f, 180f)] public float orbitYawLimit = 140f;
+    [Min(0f)] public float orbitPitchSpeed = 35f;
+    [Range(-20f, 0f)] public float orbitPitchMin = -10f;
+    [Range(0f, 30f)] public float orbitPitchMax = 18f;
+    [Tooltip("Additional radial deadzone after the Input System's existing stick processing. Zero uses the project deadzone alone.")]
+    [Range(0f, .5f)] public float orbitDeadzone = .12f;
+    [Min(0f)] public float orbitReturnDelay = .6f;
+    [Min(.1f)] public float orbitReturnSpeed = 3f;
+    public bool invertOrbitX;
+    public bool invertOrbitY;
+
+    public float SlopePitch => slopePitch;
+    public int GroundedWheelCount { get; private set; }
+    public float OrbitYaw => orbitYaw;
+    public float OrbitPitch => orbitPitch;
 
     public float AccelerationFeedbackAmount => feedback.AccelerationAmount;
     public float DrivetrainKickAmount => feedback.KickAmount;
@@ -88,6 +115,26 @@ public class FollowCamera : MonoBehaviour
     private float brakingOffset;
     private CarController car;
     private readonly AccelerationCameraFeedback feedback = new AccelerationCameraFeedback();
+    private InputAction cameraLook;
+    private Vector3 groundNormal = Vector3.up, manualForward;
+    private WheelCollider[] slopeWheels;
+    private float slopePitch, missingGroundTime, orbitYaw, orbitPitch, orbitIdleTime;
+    private bool manualOrbit;
+
+    private void OnEnable()
+    {
+        // Driving already uses the Input System directly; own only this camera action.
+        cameraLook = new InputAction("CameraLook", InputActionType.Value, "<Gamepad>/rightStick", expectedControlType: "Vector2");
+        cameraLook.Enable();
+    }
+
+    private void OnDisable()
+    {
+        cameraLook?.Dispose();
+        cameraLook = null;
+        orbitYaw = orbitPitch = orbitIdleTime = 0f;
+        manualOrbit = false;
+    }
 
     private void Start()
     {
@@ -95,6 +142,8 @@ public class FollowCamera : MonoBehaviour
         if (target == null || carRigidbody == null)
             return;
         car = carRigidbody.GetComponent<CarController>();
+        if (car != null)
+            slopeWheels = new[] { car.frontLeft, car.frontRight, car.backLeft, car.backRight };
         feedback.Reset(car != null ? car.DeliveredAxleTorque : 0f, car != null ? car.ThrottleInput : 0f, car != null ? car.ClutchEngagement : 1f);
         Vector3 carForward = Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized;
         smoothedForward = carForward;
@@ -112,6 +161,7 @@ public class FollowCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
+        SampleRoadNormal();
         if (car == null)
             return;
         if (!car.isActiveAndEnabled || !accelerationFeedbackEnabled)
@@ -193,13 +243,27 @@ public class FollowCamera : MonoBehaviour
         // ====================================================
         // DRIFT SIDE OFFSET
         // ====================================================
-        Vector3 cameraRight = Vector3.Cross(Vector3.up, smoothedForward).normalized;
         float normalizedSlip = Mathf.Clamp(CurrentSlipAngle / driftFullAngle, -1f, 1f);
         float sideOffset = normalizedSlip * driftSideOffset * driftAmount;
         // ====================================================
         // DESIRED CAMERA POSITION
         // ====================================================
-        Vector3 desiredPosition = target.position - smoothedForward * distance + Vector3.up * height + cameraRight * sideOffset;
+        UpdateOrbit(Time.deltaTime);
+        Vector3 chaseForward = manualOrbit ? manualForward : smoothedForward;
+        Vector3 roadForward = Vector3.ProjectOnPlane(chaseForward, groundNormal).normalized;
+        float roadPitch = Mathf.Atan2(roadForward.y, Vector3.ProjectOnPlane(roadForward, Vector3.up).magnitude) * Mathf.Rad2Deg;
+        roadPitch = Mathf.Sign(roadPitch) * Mathf.Max(0f, Mathf.Abs(roadPitch) - slopeNoiseDeadband);
+        float wantedPitch = Mathf.Clamp(roadPitch * slopeFollowStrength, -slopePitchLimit, slopePitchLimit);
+        float filteredPitch = Mathf.Lerp(slopePitch, wantedPitch, 1f - Mathf.Exp(-slopeSmoothing * Time.deltaTime));
+        slopePitch = Mathf.MoveTowards(slopePitch, filteredPitch, slopePitchRate * Time.deltaTime);
+        Vector3 chaseRight = Vector3.Cross(Vector3.up, chaseForward).normalized;
+        Quaternion roadRotation = Quaternion.AngleAxis(-slopePitch, chaseRight);
+        Vector3 routeForward = roadRotation * chaseForward;
+        Vector3 pivot = target.position + Vector3.up * lookHeight;
+        // Right input moves the camera to the vehicle's right side. Positive Y raises it.
+        Quaternion orbit = Quaternion.AngleAxis(-orbitYaw, Vector3.up) * Quaternion.AngleAxis(orbitPitch, chaseRight);
+        Vector3 offset = -chaseForward * distance + Vector3.up * (height - lookHeight) + chaseRight * sideOffset;
+        Vector3 desiredPosition = pivot + roadRotation * (orbit * offset);
         float positionLerp = 1f - Mathf.Exp(-positionSharpness * Time.deltaTime);
         smoothedPosition = Vector3.Lerp(smoothedPosition, desiredPosition, positionLerp);
         transform.position = smoothedPosition;
@@ -207,9 +271,13 @@ public class FollowCamera : MonoBehaviour
         // LOOK TARGET
         // ====================================================
         float lookAhead = Mathf.Lerp(lookAheadSlow, lookAheadFast, speedFactor);
-        Vector3 lookTarget = target.position + smoothedForward * lookAhead + Vector3.up * lookHeight;
+        // At large orbit angles look near the car, rather than beyond its nose.
+        float orbitLookWeight = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(Mathf.Max(Mathf.Abs(orbitYaw) / 70f, Mathf.Abs(orbitPitch) / 18f)));
+        Vector3 lookTarget = pivot + routeForward * (lookAhead * (1f - orbitLookWeight));
         Quaternion desiredRotation = Quaternion.LookRotation(lookTarget - transform.position, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, directionLerp);
+        // Interpolate the viewing direction, then reconstruct with world up: no bank/body roll.
+        float lookLerp = manualOrbit ? 1f - Mathf.Exp(-lookSharpness * Time.deltaTime) : directionLerp;
+        transform.rotation = Quaternion.LookRotation(Vector3.Slerp(transform.forward, desiredRotation * Vector3.forward, lookLerp), Vector3.up);
         // ====================================================
         // FOV
         // ====================================================
@@ -220,4 +288,61 @@ public class FollowCamera : MonoBehaviour
     }
 
     private float Proximity(float speedKmh) => 1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(speedKmh / proximityFadeSpeed));
+
+    private void SampleRoadNormal()
+    {
+        GroundedWheelCount = 0;
+        Vector3 normal = Vector3.zero;
+        bool front = false, rear = false;
+        if (slopeWheels != null)
+            for (int i = 0; i < slopeWheels.Length; i++)
+                if (slopeWheels[i] != null && slopeWheels[i].GetGroundHit(out var hit) && Vector3.Dot(hit.normal, Vector3.up) > .35f)
+                {
+                    normal += hit.normal;
+                    GroundedWheelCount++;
+                    if (i < 2) front = true; else rear = true;
+                }
+        if (GroundedWheelCount >= 3 && front && rear)
+        {
+            missingGroundTime = 0f;
+            groundNormal = Vector3.Slerp(groundNormal, normal.normalized, 1f - Mathf.Exp(-groundNormalSmoothing * Time.fixedDeltaTime)).normalized;
+        }
+        else
+        {
+            // Hold the last road through a bump/jump; never use airborne body pitch.
+            missingGroundTime += Time.fixedDeltaTime;
+            if (missingGroundTime > .6f)
+                groundNormal = Vector3.Slerp(groundNormal, Vector3.up, 1f - Mathf.Exp(-.3f * Time.fixedDeltaTime)).normalized;
+        }
+    }
+
+    private void UpdateOrbit(float dt)
+    {
+        Vector2 input = (car != null && !car.isActiveAndEnabled) || PauseMenu.IsPaused
+            ? Vector2.zero : cameraLook != null ? cameraLook.ReadValue<Vector2>() : Vector2.zero;
+        float magnitude = input.magnitude;
+        if (magnitude > orbitDeadzone)
+        {
+            input = input.normalized * Mathf.InverseLerp(orbitDeadzone, 1f, magnitude);
+            if (!manualOrbit) manualForward = smoothedForward;
+            manualOrbit = true;
+            orbitIdleTime = 0f;
+            orbitYaw = Mathf.Clamp(orbitYaw + input.x * (invertOrbitX ? -1f : 1f) * orbitYawSpeed * dt, -orbitYawLimit, orbitYawLimit);
+            orbitPitch = Mathf.Clamp(orbitPitch + input.y * (invertOrbitY ? -1f : 1f) * orbitPitchSpeed * dt, orbitPitchMin, orbitPitchMax);
+        }
+        else if (manualOrbit)
+        {
+            orbitIdleTime += dt;
+            if (orbitIdleTime < orbitReturnDelay) return;
+            float blend = 1f - Mathf.Exp(-orbitReturnSpeed * dt);
+            orbitYaw = Mathf.Lerp(orbitYaw, 0f, blend);
+            orbitPitch = Mathf.Lerp(orbitPitch, 0f, blend);
+            manualForward = Vector3.Slerp(manualForward, smoothedForward, blend).normalized;
+            if (Mathf.Abs(orbitYaw) < .01f && Mathf.Abs(orbitPitch) < .01f && Vector3.Dot(manualForward, smoothedForward) > .9999f)
+            {
+                orbitYaw = orbitPitch = 0f;
+                manualOrbit = false;
+            }
+        }
+    }
 }
