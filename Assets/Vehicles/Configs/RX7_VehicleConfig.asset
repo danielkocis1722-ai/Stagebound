@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574821ee938740f2b614fad479ebbc87, type: 3}
   m_Name: RX7_VehicleConfig
   m_EditorClassIdentifier: Assembly-CSharp::VehicleConfig
+  hudDisplay:
+    HudMaxSpeedKmh: 280
+    HudMaxRpm: 9000
+    RedlineStartRpm: 7500
   engine:
     maxEngineTorque: 500
     idleRPM: 900
@@ -263,6 +267,7 @@ MonoBehaviour:
     maximumVisualPitch: 0.6
   chassis:
     mass: 1250
+    yawInertiaMultiplier: 1.25
     linearDamping: 0
     angularDamping: 0.24
     centerOfMass: {x: 0, y: 0.11421604, z: 0.31590968}

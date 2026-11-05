@@ -25,6 +25,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 7529558345435346906, guid: 874a47a574158774e872432f327e5c2a, type: 3}
   previewImage: {fileID: 0}
   engineLoop: {fileID: 0}
+  engineAudio: {fileID: 11400000, guid: d2c8b845e98c4a5fb42fe6c92a3a7567, type: 2}
   power: 0.7
   handling: 0.7
   drift: 0.8

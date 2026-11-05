@@ -6,6 +6,15 @@ using UnityEngine;
 public class VehicleConfig : ScriptableObject
 {
     [Serializable]
+    public class HudDisplay
+    {
+        [Min(60f)] public float HudMaxSpeedKmh = 240f;
+        [Min(1000f)] public float HudMaxRpm = 9000f;
+        [Min(500f)] public float RedlineStartRpm = 7500f;
+    }
+    [Header("Display only — never changes vehicle performance")]
+    public HudDisplay hudDisplay = new HudDisplay();
+    [Serializable]
     public class Engine
     {
         public float maxEngineTorque;
@@ -52,6 +61,16 @@ public class VehicleConfig : ScriptableObject
     }
 
     public Steering steering = new Steering();
+
+    [Serializable]
+    public class WheelSteering
+    {
+        [Range(40f, 900f)] public float rotationDegrees = 900f;
+        [Min(1f)] public float steeringRatio = 11.25f;
+        public SteeringForceFeedback.Tuning feedback = new SteeringForceFeedback.Tuning();
+    }
+
+    public WheelSteering wheelSteering = new WheelSteering();
 
     [Serializable]
     public class Differential
@@ -172,6 +191,8 @@ public class VehicleConfig : ScriptableObject
     public class Chassis
     {
         public float mass, linearDamping, angularDamping;
+        [Tooltip("Mass-distribution correction to the automatic chassis yaw inertia. Does not change tire grip or pitch/roll principal inertia.")]
+        [Range(1f, 1.5f)] public float yawInertiaMultiplier = 1f;
         public Vector3 centerOfMass;
         public Vector3 colliderPosition, colliderScale = Vector3.one, colliderCenter, colliderSize;
         public Quaternion colliderRotation = Quaternion.identity;
@@ -294,6 +315,23 @@ public class VehicleConfig : ScriptableObject
         postWrapMode = source.postWrapMode
     };
 
+    // Scale the principal axis closest to vehicle up, not blindly tensor.y:
+    // inertiaTensorRotation can reorder the principal axes. Call after ResetInertiaTensor.
+    public static void ApplyYawInertia(Rigidbody body, float multiplier)
+    {
+        if (!float.IsFinite(multiplier)) multiplier = 1f;
+        multiplier = Mathf.Clamp(multiplier, 1f, 1.5f);
+        var rotation = body.inertiaTensorRotation;
+        float x = Mathf.Abs(Vector3.Dot(rotation * Vector3.right, Vector3.up));
+        float y = Mathf.Abs(Vector3.Dot(rotation * Vector3.up, Vector3.up));
+        float z = Mathf.Abs(Vector3.Dot(rotation * Vector3.forward, Vector3.up));
+        var tensor = body.inertiaTensor;
+        if (x > y && x > z) tensor.x *= multiplier;
+        else if (z > y) tensor.z *= multiplier;
+        else tensor.y *= multiplier;
+        body.inertiaTensor = tensor;
+    }
+
     // Called once, before the rig's Awake/Start caches. Never called each frame.
     public void ApplyTo(CarController car, BoxCollider chassisCollider)
     {
@@ -317,6 +355,7 @@ public class VehicleConfig : ScriptableObject
         backRight.Apply(car.backRight);
         // Recompute physical properties after fitting the selected metre-scale car.
         body.ResetInertiaTensor();
+        ApplyYawInertia(body, chassis.yawInertiaMultiplier);
         car.frontLeft.ResetSprungMasses();
         var anti = car.GetComponent<AntiRollBar>();
         if (anti != null)

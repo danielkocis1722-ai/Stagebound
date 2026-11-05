@@ -34,7 +34,8 @@ public class RespawnManager : MonoBehaviour
         var keyboard = Keyboard.current;
         var pad = Gamepad.current;
         // Triangle / Y is unused by the existing driving controls.
-        if ((keyboard != null && keyboard.rKey.wasPressedThisFrame) || (pad != null && pad.buttonNorth.wasPressedThisFrame))
+        if ((keyboard != null && keyboard.rKey.wasPressedThisFrame) || (pad != null && pad.buttonNorth.wasPressedThisFrame) ||
+            (car.WheelInput != null && car.WheelInput.RespawnPressed))
             Respawn();
     }
 

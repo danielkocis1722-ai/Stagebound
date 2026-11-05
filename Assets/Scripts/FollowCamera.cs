@@ -43,7 +43,9 @@ public class FollowCamera : MonoBehaviour
     [Header("Speed Effects")]
     public float maxEffectSpeed = 160f;
     public float slowFOV = 60f;
-    public float fastFOV = 65f;
+    public float fastFOV = 80f;
+    [Min(1f)] public float framingSpeedKmh = 75f;
+    public float framingFOV = 73f;
     public float fovSharpness = 2.2f;
     [Header("Low-speed proximity (fades out by 80 km/h)")]
     [Min(0f)] public float lowSpeedDistanceReduction = 0.08f;
@@ -149,14 +151,14 @@ public class FollowCamera : MonoBehaviour
         smoothedForward = carForward;
         float speedKmh = carRigidbody.linearVelocity.magnitude * 3.6f;
         float speedFactor = Mathf.Clamp01(speedKmh / maxEffectSpeed);
-        float distance = Mathf.Lerp(slowDistance, fastDistance, speedFactor) - lowSpeedDistanceReduction * Proximity(speedKmh);
+        float distance = SpeedDistance(speedKmh);
         float height = Mathf.Lerp(slowHeight, fastHeight, speedFactor);
         // Kamera sa hneď spawnne na správnom mieste.
         smoothedPosition = target.position - carForward * distance + Vector3.up * height;
         transform.position = smoothedPosition;
         Vector3 lookTarget = target.position + carForward * lookAheadSlow + Vector3.up * lookHeight;
         transform.rotation = Quaternion.LookRotation(lookTarget - transform.position, Vector3.up);
-        speedFOV = cam.fieldOfView = Mathf.Lerp(slowFOV, fastFOV, speedFactor) - lowSpeedFOVReduction * Proximity(speedKmh);
+        speedFOV = cam.fieldOfView = SpeedFOV(speedKmh);
     }
 
     private void FixedUpdate()
@@ -233,7 +235,7 @@ public class FollowCamera : MonoBehaviour
         // ====================================================
         // CAMERA DISTANCE + HEIGHT
         // ====================================================
-        float distance = Mathf.Lerp(slowDistance, fastDistance, speedFactor) - lowSpeedDistanceReduction * Proximity(speedKmh);
+        float distance = SpeedDistance(speedKmh);
         float height = Mathf.Lerp(slowHeight, fastHeight, speedFactor);
         // ====================================================
         // ACCELERATION / BRAKING
@@ -265,6 +267,11 @@ public class FollowCamera : MonoBehaviour
         Vector3 offset = -chaseForward * distance + Vector3.up * (height - lookHeight) + chaseRight * sideOffset;
         Vector3 desiredPosition = pivot + roadRotation * (orbit * offset);
         float positionLerp = 1f - Mathf.Exp(-positionSharpness * Time.deltaTime);
+        // Retain offset smoothing, but carry the camera with forward travel above
+        // the speed that would otherwise add about 35 cm of steady chase lag.
+        float forwardSpeed = Vector3.Dot(carRigidbody.linearVelocity, carForward);
+        float carriedSpeed = Mathf.Max(0f, forwardSpeed - .35f * positionSharpness);
+        smoothedPosition += carForward * (carriedSpeed * Time.deltaTime);
         smoothedPosition = Vector3.Lerp(smoothedPosition, desiredPosition, positionLerp);
         transform.position = smoothedPosition;
         // ====================================================
@@ -281,10 +288,22 @@ public class FollowCamera : MonoBehaviour
         // ====================================================
         // FOV
         // ====================================================
-        float desiredFOV = Mathf.Lerp(slowFOV, fastFOV, speedFactor) - lowSpeedFOVReduction * Proximity(speedKmh);
+        float desiredFOV = SpeedFOV(speedKmh);
         float fovLerp = 1f - Mathf.Exp(-fovSharpness * Time.deltaTime);
         speedFOV = Mathf.Lerp(speedFOV, desiredFOV, fovLerp);
         cam.fieldOfView = speedFOV + accelerationFOVBonus * feedback.AccelerationAmount + torqueKickFOVBonus * feedback.KickAmount;
+    }
+
+    private float SpeedDistance(float speedKmh) =>
+        Mathf.Lerp(slowDistance, fastDistance, Mathf.InverseLerp(0f, framingSpeedKmh, speedKmh)) -
+        lowSpeedDistanceReduction * Proximity(speedKmh);
+
+    private float SpeedFOV(float speedKmh)
+    {
+        float fov = speedKmh <= framingSpeedKmh
+            ? Mathf.Lerp(slowFOV, framingFOV, Mathf.InverseLerp(0f, framingSpeedKmh, speedKmh))
+            : Mathf.Lerp(framingFOV, fastFOV, Mathf.InverseLerp(framingSpeedKmh, Mathf.Max(framingSpeedKmh + 1f, maxEffectSpeed), speedKmh));
+        return fov - lowSpeedFOVReduction * Proximity(speedKmh);
     }
 
     private float Proximity(float speedKmh) => 1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(speedKmh / proximityFadeSpeed));

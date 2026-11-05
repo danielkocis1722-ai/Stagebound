@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574821ee938740f2b614fad479ebbc87, type: 3}
   m_Name: SkylineR32_VehicleConfig
   m_EditorClassIdentifier: Assembly-CSharp::VehicleConfig
+  hudDisplay:
+    HudMaxSpeedKmh: 300
+    HudMaxRpm: 9000
+    RedlineStartRpm: 7500
   engine:
     maxEngineTorque: 460
     idleRPM: 900
@@ -263,6 +267,7 @@ MonoBehaviour:
     maximumVisualPitch: 0.6
   chassis:
     mass: 1450
+    yawInertiaMultiplier: 1.3
     linearDamping: 0
     angularDamping: 0.28
     centerOfMass: {x: 0, y: 0.10083625, z: 0.47351637}

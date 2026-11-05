@@ -19,6 +19,8 @@ public class VehicleDefinition : ScriptableObject
     public Sprite previewImage;
     [Tooltip("Optional first engine-loop override. Empty preserves the shared rig audio.")]
     public AudioClip engineLoop;
+    [Tooltip("Optional layered engine audio. Supersedes the single engine loop when assigned.")]
+    public EngineAudioProfile engineAudio;
 
     [Header("Display stats only (never used by physics)")]
     [Range(0, 1)]

@@ -14,8 +14,10 @@ public class RaceHUD : MonoBehaviour
     public float resultDisplayDuration = 5f;
     [SerializeField]
     private RaceTimer race;
-    private TMP_Text speed, rpm, gear, checkpoints, clock, delta, best, status, result;
-    private Image revFill;
+    private TMP_Text checkpoints, clock, delta, best, status, result;
+    private InstrumentCluster cluster;
+    private CarController boundCar;
+    private VehicleRigLoader rigLoader;
     private GameObject results;
     private GameObject hudRoot;
     private RectTransform safeArea;
@@ -48,7 +50,7 @@ public class RaceHUD : MonoBehaviour
         hudRoot = root;
         root.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         root.GetComponent<Canvas>().sortingOrder = 20;
-        StageboundMenuUI.EnsureEventSystem(false);
+        if (Application.isPlaying) StageboundMenuUI.EnsureEventSystem(false);
         var scaler = root.GetComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920, 1080);
@@ -59,26 +61,18 @@ public class RaceHUD : MonoBehaviour
         safe.anchorMax = new Vector2(Screen.safeArea.xMax / Screen.width, Screen.safeArea.yMax / Screen.height);
         safe.offsetMin = safe.offsetMax = Vector2.zero;
         safeArea = safe;
-        var top = Panel(safe, "Timing", new Vector2(.5f, 1), new Vector2(0, -30), new Vector2(530, 182));
+        var top = Panel(safe, "Timing", new Vector2(.5f, 1), new Vector2(0, -30), new Vector2(600, 182));
         Text(top, "STAGEBOUND  /  TIME ATTACK", 20, new Vector2(24, -16), Muted);
         clock = Text(top, "00:00.000", 56, new Vector2(24, -43), Color.white);
-        delta = Text(top, "SPLIT  --", 23, new Vector2(310, -65), Muted);
+        delta = Text(top, "SPLIT  --", 23, new Vector2(350, -65), Muted);
         best = Text(top, "BEST  --:--.---", 20, new Vector2(24, -119), Muted);
         status = Text(top, "READY", 18, new Vector2(24, -150), Mint);
         top.localScale = Vector3.one * PanelScale;
-        var right = Panel(safe, "Dashboard", new Vector2(0, 1), new Vector2(20, -20), new Vector2(340, 268));
-        Text(right, "VEHICLE  /  LIVE", 18, new Vector2(24, -18), Muted);
-        speed = Text(right, "000", 94, new Vector2(18, -40), Color.white);
-        Text(right, "KM/H", 22, new Vector2(235, -104), Muted);
-        gear = Text(right, "1", 32, new Vector2(250, -50), Mint);
-        rpm = Text(right, "0 RPM", 24, new Vector2(24, -155), Color.white);
-        var bar = Panel(right, "RPM track", new Vector2(0, 1), new Vector2(24, -197), new Vector2(292, 8));
-        bar.pivot = new Vector2(0, 1);
-        revFill = bar.GetComponent<Image>();
-        revFill.color = Mint;
-        Text(right, "CHECKPOINTS", 18, new Vector2(24, -227), Muted);
-        checkpoints = Text(right, "0 / 0", 30, new Vector2(230, -220), Color.white);
-        right.localScale = Vector3.one * PanelScale;
+        var right = Panel(safe, "Instrument cluster", new Vector2(1, 0), new Vector2(-28, 28), new Vector2(680, 310));
+        right.GetComponent<Image>().color = new Color32(7, 14, 22, 0);
+        cluster = right.gameObject.AddComponent<InstrumentCluster>();
+        BindCluster();
+        checkpoints = InstrumentCluster.Label(top, "CHECKPOINT  0 / 0", 17, new Vector2(165, -39), new Vector2(240, 24), Mint);
         if (race.driftScore != null)
         {
             driftHUD = root.AddComponent<DriftHUD>();
@@ -100,35 +94,44 @@ public class RaceHUD : MonoBehaviour
         Canvas.ForceUpdateCanvases();
         timingPanel = top.gameObject.AddComponent<DraggableHUDPanel>();
         timingPanel.backgroundOpacity = timingBackgroundOpacity;
-        timingPanel.Initialize("Stagebound.HUD.Timing.v1");
+        if (Application.isPlaying) timingPanel.Initialize("Stagebound.HUD.Timing.v1");
         vehiclePanel = right.gameObject.AddComponent<DraggableHUDPanel>();
-        vehiclePanel.backgroundOpacity = vehicleBackgroundOpacity;
-        vehiclePanel.Initialize("Stagebound.HUD.Vehicle.v1");
-        SetHUDEditMode(false);
+        vehiclePanel.backgroundOpacity = 0f;
+        if (Application.isPlaying) vehiclePanel.Initialize("Stagebound.HUD.Cluster.v2");
+        if (Application.isPlaying) SetHUDEditMode(false);
+        else editLabel.gameObject.SetActive(false);
     }
 
     private void LateUpdate()
     {
+        if (hudRoot == null) return;
         UpdateHUDEditor();
         if (race == null)
             return;
+        if (boundCar != car) BindCluster();
         if (car != null)
         {
-            speed.text = Mathf.RoundToInt(car.SpeedKmh).ToString("000");
-            gear.text = car.CurrentGearText;
-            rpm.text = $"{car.EngineRPM:0} RPM";
-            float rev = Mathf.Clamp01(car.EngineRPM / Mathf.Max(1, car.redlineRPM));
-            revFill.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 292 * rev);
-            revFill.color = rev > .88f ? Red : Mint;
+            var definition = rigLoader != null ? rigLoader.CurrentDefinition : null;
+            cluster.Configure(definition != null && definition.config != null ? definition.config.hudDisplay : null,
+                car.redlineRPM, definition != null ? definition.displayName : "STAGEBOUND");
+            cluster.Present(car.SpeedKmh, car.EngineRPM, car.CurrentGearText, car.redlineRPM, Time.unscaledDeltaTime);
         }
-
         clock.text = RaceTimer.FormatTime(race.elapsedTime);
         best.text = "BEST  " + (race.HasBest ? RaceTimer.FormatTime(race.BestTime) : "--:--.---");
-        checkpoints.text = $"{race.PassedCheckpoints} / {race.TotalCheckpoints}";
+        checkpoints.text = $"CHECKPOINT  {race.PassedCheckpoints} / {race.TotalCheckpoints}";
         delta.text = "SPLIT  " + (race.Delta.HasValue ? DeltaText(race.Delta) : race.LatestSplit.HasValue ? RaceTimer.FormatTime(race.LatestSplit.Value) : "--");
         delta.color = !race.Delta.HasValue ? Muted : race.Delta.Value <= 0 ? Mint : Red;
         status.text = !race.TrackReady ? "SETUP REQUIRED: START + CHECKPOINTS" : race.raceRunning ? "STAGE IN PROGRESS" : race.LastResult != null ? "STAGE COMPLETE / RESTART TO RUN AGAIN" : "CROSS START TO BEGIN";
         UpdateResults(Time.unscaledTime);
+    }
+
+    private void BindCluster()
+    {
+        boundCar = car;
+        rigLoader = car != null ? car.GetComponent<VehicleRigLoader>() : null;
+        var definition = rigLoader != null ? rigLoader.CurrentDefinition : null;
+        cluster.Configure(definition != null && definition.config != null ? definition.config.hudDisplay : null,
+            car != null ? car.redlineRPM : 7500f, definition != null ? definition.displayName : "STAGEBOUND");
     }
 
     private void UpdateResults(float now)
@@ -204,6 +207,7 @@ public class RaceHUD : MonoBehaviour
 
     private void OnDisable()
     {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
         if (hudEditMode)
             SetHUDEditMode(false);
         if (hudRoot != null)
@@ -212,6 +216,7 @@ public class RaceHUD : MonoBehaviour
 
     private void OnEnable()
     {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
         // A runtime canvas may have been destroyed between Play sessions or
         // when the owner was disabled. Rebuild once instead of keeping stale UI references.
         if (Application.isPlaying)
@@ -220,10 +225,19 @@ public class RaceHUD : MonoBehaviour
             hudRoot.SetActive(true);
     }
 
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        if (car == null) car = FindAnyObjectByType<CarController>();
+        if (cluster != null) BindCluster();
+    }
+
     private void OnDestroy()
     {
         if (hudRoot != null)
-            Destroy(hudRoot);
+        {
+            if (Application.isPlaying) Destroy(hudRoot);
+            else DestroyImmediate(hudRoot);
+        }
     }
 
     private void OnApplicationFocus(bool focused)

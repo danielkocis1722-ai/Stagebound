@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574821ee938740f2b614fad479ebbc87, type: 3}
   m_Name: AE86_VehicleConfig
   m_EditorClassIdentifier: Assembly-CSharp::VehicleConfig
+  hudDisplay:
+    HudMaxSpeedKmh: 240
+    HudMaxRpm: 9000
+    RedlineStartRpm: 7500
   engine:
     maxEngineTorque: 360
     idleRPM: 900
@@ -263,6 +267,7 @@ MonoBehaviour:
     maximumVisualPitch: 0.6
   chassis:
     mass: 1100
+    yawInertiaMultiplier: 1.2
     linearDamping: 0
     angularDamping: 0.225
     centerOfMass: {x: -0.00019578636, y: 0.057436317, z: 0.3868173}

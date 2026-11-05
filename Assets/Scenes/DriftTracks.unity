@@ -6345,7 +6345,9 @@ MonoBehaviour:
   minDriftSpeed: 20
   maxEffectSpeed: 160
   slowFOV: 60
-  fastFOV: 65
+  fastFOV: 80
+  framingSpeedKmh: 75
+  framingFOV: 73
   fovSharpness: 2.2
   lowSpeedDistanceReduction: 0.08
   lowSpeedFOVReduction: 0

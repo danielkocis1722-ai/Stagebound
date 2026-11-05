@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
@@ -42,6 +43,12 @@ public static class StageboundMenuUI
 
         if (assignDefaultActions && input.actionsAsset == null)
             input.AssignDefaultActions();
+
+        // Runtime and scene EventSystems can start with the package defaults.
+        // Route both through the project's UI bindings, which exclude wheel axes.
+        var projectActions = InputSystem.actions;
+        if (projectActions != null && input.actionsAsset != projectActions)
+            input.actionsAsset = projectActions;
     }
 
     public static RectTransform Panel(Transform parent, string name, Vector2 anchor, Vector2 position, Vector2 size, Color color)

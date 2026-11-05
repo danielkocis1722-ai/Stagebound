@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a192bb4d0904f21aa8e64fedef34d7b, type: 3}
+  m_Name: R32_EngineAudio
+  m_EditorClassIdentifier: Assembly-CSharp::EngineAudioProfile
+  layers:
+  - clip: {fileID: 8300000, guid: 00c68412e2014908b8be1d56578956d7, type: 3}
+    loadedClip: {fileID: 8300000, guid: f742e8275c294445bfd46a62e0562ccb, type: 3}
+    recordedRPM: 900
+    gain: 1
+  - clip: {fileID: 8300000, guid: d70bc5cf26954238b34ed85d0eabb445, type: 3}
+    loadedClip: {fileID: 8300000, guid: 05914ce4594b4c42967a78270d8a8109, type: 3}
+    recordedRPM: 1800
+    gain: 1
+  - clip: {fileID: 8300000, guid: 9f8c6d5f29174a48bedc7dfd2a8b1c56, type: 3}
+    loadedClip: {fileID: 8300000, guid: 6df63672fee54fabace7fb7ecb78693e, type: 3}
+    recordedRPM: 3000
+    gain: 1
+  - clip: {fileID: 8300000, guid: 8ab0aa6510c347fd906e1de0a357db1e, type: 3}
+    loadedClip: {fileID: 8300000, guid: 9a83e1e6d158437f98c1ba6559c2fc4d, type: 3}
+    recordedRPM: 4500
+    gain: 1
+  - clip: {fileID: 8300000, guid: 8a0fc75d039940d5a304afeee5ed19e7, type: 3}
+    loadedClip: {fileID: 8300000, guid: e0db60ab26584969b28c64c014b7efe2, type: 3}
+    recordedRPM: 6000
+    gain: 1
+  idleVolume: 0.28
+  loadedVolume: 0.78
+  rpmSmoothTime: 0.055
+  volumeSmoothTime: 0.09
+  idleCutoff: 3000
+  highRPMCutoff: 10500
+  coastBrightness: 0.6
+  minimumPitch: 0.35
+  maximumPitch: 3
+  limiterRange: 0.025
+  limiterFrequency: 12
+  limiterDepth: 0.32
+  spatialBlend: 0.8
+  minDistance: 2.3
+  maxDistance: 30

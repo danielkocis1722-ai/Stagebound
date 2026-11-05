@@ -51,6 +51,10 @@ crashlytics-build.properties
 /Assets/Plugins/Editor/JetBrains*
 /Assets/VisualScripting.Generated/*
 
+# Locally installed Logitech Steering Wheel SDK
+/Assets/Plugins/x86_64/LogitechSteeringWheelEnginesWrapper.dll
+/Assets/Plugins/x86_64/LogitechSteeringWheelEnginesWrapper.dll.meta
+
 # Operating system files
 .DS_Store
 Thumbs.db

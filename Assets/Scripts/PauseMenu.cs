@@ -44,9 +44,12 @@ public class PauseMenu : MonoBehaviour
 
     private void Update()
     {
+        // Settings owns Back/Cancel while open, including its modal.
+        if (paused && settings != null && settings.gameObject.activeInHierarchy) return;
         var keyboard = Keyboard.current;
         var pad = Gamepad.current;
-        if ((keyboard != null && keyboard.escapeKey.wasPressedThisFrame) || (pad != null && pad.startButton.wasPressedThisFrame))
+        if ((keyboard != null && keyboard.escapeKey.wasPressedThisFrame) || (pad != null && pad.startButton.wasPressedThisFrame) ||
+            (car.WheelInput != null && car.WheelInput.PausePressed))
         {
             if (paused)
                 Resume();

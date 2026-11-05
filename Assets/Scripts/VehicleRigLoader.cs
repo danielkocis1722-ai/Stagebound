@@ -80,6 +80,15 @@ public class VehicleRigLoader : MonoBehaviour
         }
 
         var audio = GetComponent<VehicleAudio>();
+        if (definition.engineAudio != null)
+        {
+            var engineAudio = GetComponent<EngineAudioController>();
+            if (engineAudio == null)
+                engineAudio = gameObject.AddComponent<EngineAudioController>();
+            engineAudio.profile = definition.engineAudio;
+            if (audio != null)
+                audio.EngineManagedExternally = true;
+        }
         if (audio != null && definition.engineLoop != null && audio.engineLayers != null && audio.engineLayers.Length > 0 && audio.engineLayers[0] != null)
             audio.engineLayers[0].clip = definition.engineLoop;
         CurrentDefinition = definition;

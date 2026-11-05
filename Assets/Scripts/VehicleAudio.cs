@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CarController), typeof(WheelEffects))]
 public class VehicleAudio : MonoBehaviour
 {
+    public bool EngineManagedExternally { get; set; }
     [Serializable]
     public class EngineLayer
     {
@@ -75,7 +76,7 @@ public class VehicleAudio : MonoBehaviour
         wheels = GetComponent<WheelEffects>();
         if (engineLayers == null)
             engineLayers = Array.Empty<EngineLayer>();
-        for (int i = 0; i < engineLayers.Length; i++)
+        for (int i = 0; !EngineManagedExternally && i < engineLayers.Length; i++)
         {
             var layer = engineLayers[i];
             if (layer == null)
@@ -124,7 +125,7 @@ public class VehicleAudio : MonoBehaviour
         float volume = EngineVolume(rpm, car.ThrottleInput);
         foreach (var layer in engineLayers)
         {
-            if (layer == null || layer.source == null)
+            if (EngineManagedExternally || layer == null || layer.source == null)
                 continue;
             // A missing clip is intentionally silent; assigning a clip in Play Mode also works.
             if (layer.clip != null && layer.source.clip != layer.clip)

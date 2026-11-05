@@ -304,6 +304,12 @@ public class CarController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        ActiveDrivingSource = Gamepad.current != null ? DrivingSource.Gamepad : DrivingSource.Keyboard;
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+        WheelInput = GetComponent<LogitechWheelInput>();
+        if (WheelInput == null)
+            WheelInput = gameObject.AddComponent<LogitechWheelInput>();
+#endif
         frontAxleRecovery = GetComponent<FrontAxleRecovery>();
         rb.centerOfMass = centerOfMass;
         EngineRPM = idleRPM;
@@ -329,6 +335,7 @@ public class CarController : MonoBehaviour
     // UPDATE
     private void Update()
     {
+        UpdateDrivingSource();
         HandleGearInput();
     }
 
@@ -351,15 +358,76 @@ public class CarController : MonoBehaviour
         }
     }
 
+    public enum DrivingSource { Keyboard, Gamepad, Wheel }
+    public DrivingSource ActiveDrivingSource { get; private set; }
+    public LogitechWheelInput WheelInput { get; private set; }
+    private Gamepad observedPad;
+    private Vector3 padActivityAnchor;
+
+    private void UpdateDrivingSource()
+    {
+        var keyboard = Keyboard.current;
+        var pad = Gamepad.current;
+        bool keyActivity = keyboard != null &&
+            (keyboard.wKey.wasPressedThisFrame || keyboard.sKey.wasPressedThisFrame ||
+             keyboard.aKey.wasPressedThisFrame || keyboard.dKey.wasPressedThisFrame ||
+             keyboard.leftArrowKey.wasPressedThisFrame || keyboard.rightArrowKey.wasPressedThisFrame ||
+             keyboard.spaceKey.wasPressedThisFrame || keyboard.qKey.wasPressedThisFrame || keyboard.eKey.wasPressedThisFrame);
+        if (pad != observedPad)
+        {
+            observedPad = pad;
+            padActivityAnchor = Vector3.zero;
+        }
+
+        bool padActivity = false;
+        if (pad != null)
+        {
+            var axes = new Vector3(pad.leftStick.x.ReadValue(), pad.rightTrigger.ReadValue(), pad.leftTrigger.ReadValue());
+            var change = axes - padActivityAnchor;
+            bool steerMoved = Mathf.Abs(change.x) >= .04f;
+            bool throttleMoved = Mathf.Abs(change.y) >= .04f;
+            bool brakeMoved = Mathf.Abs(change.z) >= .04f;
+            padActivity = (steerMoved && Mathf.Abs(axes.x) >= .12f) ||
+                (throttleMoved && axes.y >= .08f) || (brakeMoved && axes.z >= .08f) ||
+                pad.buttonSouth.wasPressedThisFrame || pad.buttonWest.wasPressedThisFrame ||
+                pad.leftShoulder.wasPressedThisFrame || pad.rightShoulder.wasPressedThisFrame;
+            if (steerMoved) padActivityAnchor.x = axes.x;
+            if (throttleMoved) padActivityAnchor.y = axes.y;
+            if (brakeMoved) padActivityAnchor.z = axes.z;
+        }
+
+        bool wheelReady = WheelInput != null && WheelInput.CanDrive;
+        if (keyActivity)
+            ActiveDrivingSource = DrivingSource.Keyboard;
+        else if (padActivity)
+            ActiveDrivingSource = DrivingSource.Gamepad;
+        else if (wheelReady && WheelInput.HasActivity)
+            ActiveDrivingSource = DrivingSource.Wheel;
+        else if ((ActiveDrivingSource == DrivingSource.Wheel && !wheelReady) ||
+                 (ActiveDrivingSource == DrivingSource.Gamepad && pad == null))
+            ActiveDrivingSource = pad != null ? DrivingSource.Gamepad : DrivingSource.Keyboard;
+    }
+
     // INPUT
     private void ReadInput()
     {
-        Gamepad gamepad = Gamepad.current;
+        if (ActiveDrivingSource == DrivingSource.Wheel && WheelInput != null && WheelInput.CanDrive)
+        {
+            currentKeyboardSteering = currentKeyboardThrottle = 0f;
+            SteeringInput = WheelInput.SteeringInput;
+            ThrottleInput = WheelInput.ThrottleInput;
+            BrakeInput = WheelInput.BrakeInput;
+            ClutchInput = WheelInput.ClutchInput;
+            HandbrakeInput = WheelInput.Handbrake ? 1f : 0f;
+            return;
+        }
+        Gamepad gamepad = ActiveDrivingSource == DrivingSource.Keyboard ? null : Gamepad.current;
         // Square / west face button; keyboard remains usable with a pad connected.
         ClutchInput = (gamepad != null && gamepad.buttonWest.isPressed) || (Keyboard.current != null && Keyboard.current.leftShiftKey.isPressed) ? 1f : 0f;
         // CONTROLLER / DUALSENSE
         if (gamepad != null)
         {
+            currentKeyboardSteering = currentKeyboardThrottle = 0f;
             float steer = gamepad.leftStick.x.ReadValue();
             SteeringInput = ApplySteeringCurve(steer);
             // R2 = throttle
@@ -416,7 +484,21 @@ public class CarController : MonoBehaviour
     {
         if (shiftTimer > 0f)
             return;
-        Gamepad gamepad = Gamepad.current;
+        if (ActiveDrivingSource == DrivingSource.Wheel && WheelInput != null && WheelInput.CanDrive)
+        {
+            if (WheelInput.useHShifter)
+            {
+                if (WheelInput.TryGetSelectedGear(out int gear) && gear != currentGear && gear <= gearRatios.Length)
+                {
+                    currentGear = gear;
+                    shiftTimer = shiftDuration;
+                }
+            }
+            else if (WheelInput.ShiftUpPressed) ShiftUp();
+            else if (WheelInput.ShiftDownPressed) ShiftDown();
+            return;
+        }
+        Gamepad gamepad = ActiveDrivingSource == DrivingSource.Keyboard ? null : Gamepad.current;
         // CONTROLLER
         if (gamepad != null)
         {
@@ -684,12 +766,19 @@ public class CarController : MonoBehaviour
     // STEERING
     private void HandleSteering()
     {
-        float lockBlend = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(fullLowSpeedLockKmh, Mathf.Max(fullLowSpeedLockKmh + 1f, highSpeedLockKmh), SpeedKmh));
-        float steeringLimit = Mathf.Lerp(maxSteerAngle, highSpeedMaxSteerAngle, lockBlend);
-        float targetSteerAngle = SteeringInput * steeringLimit;
-        float rate = Mathf.Abs(SteeringInput) > 0.01f && SteeringInput * currentSteerAngle >= 0f ? steeringSpeed : steeringReturnSpeed;
-        // Opposite input crosses center at the configured return rate.
-        currentSteerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, rate * Time.fixedDeltaTime);
+        if (ActiveDrivingSource == DrivingSource.Wheel && WheelInput != null && WheelInput.CanDrive)
+        {
+            currentSteerAngle = WheelInput.RoadWheelTarget;
+        }
+        else
+        {
+            float lockBlend = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(fullLowSpeedLockKmh, Mathf.Max(fullLowSpeedLockKmh + 1f, highSpeedLockKmh), SpeedKmh));
+            float steeringLimit = Mathf.Lerp(maxSteerAngle, highSpeedMaxSteerAngle, lockBlend);
+            float targetSteerAngle = SteeringInput * steeringLimit;
+            float rate = Mathf.Abs(SteeringInput) > 0.01f && SteeringInput * currentSteerAngle >= 0f ? steeringSpeed : steeringReturnSpeed;
+            // Opposite input crosses center at the configured return rate.
+            currentSteerAngle = Mathf.MoveTowards(currentSteerAngle, targetSteerAngle, rate * Time.fixedDeltaTime);
+        }
         UpdateSteeringGeometry();
         float leftAngle = currentSteerAngle, rightAngle = currentSteerAngle;
         if (useAckermannSteering)
