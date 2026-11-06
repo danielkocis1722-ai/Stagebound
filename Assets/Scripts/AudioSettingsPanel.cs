@@ -34,10 +34,11 @@ public class AudioSettingsPanel : MonoBehaviour
             new Vector2(1140, 900), new Color32(10, 18, 29, 250));
         var panel = root.gameObject.AddComponent<AudioSettingsPanel>();
         panel.back = onBack;
-        StageboundMenuUI.Text(root, "SETTINGS", 30, new Vector2(36, -24), new Vector2(700, 46), Color.white);
+        StageboundMenuUI.Text(root, "STAGEBOUND  /  SETTINGS", 25, new Vector2(36, -24), new Vector2(700, 46), Color.white);
+        StageboundMenuUI.Panel(root, "Header rule", new Vector2(0, 1), new Vector2(36, -72), new Vector2(1068, 1), new Color32(91, 255, 191, 75));
         var header = StageboundMenuUI.Panel(root, "Tabs", new Vector2(0, 1), new Vector2(36, -84), new Vector2(1068, 52), Color.clear);
         panel.tabsGroup = header.gameObject.AddComponent<CanvasGroup>();
-        string[] names = { "CONTROLS", "WHEEL", "AUDIO" };
+        string[] names = { "AUDIO", "WHEEL", "CONTROLS" };
         for (int i = 0; i < names.Length; i++)
         {
             int index = i;
@@ -66,17 +67,22 @@ public class AudioSettingsPanel : MonoBehaviour
     {
         CancelCapture(false);
         page = index;
-        foreach (Transform child in body) { child.gameObject.SetActive(false); Destroy(child.gameObject); }
+        for (int i = body.childCount - 1; i >= 0; i--)
+        {
+            var child = body.GetChild(i).gameObject;
+            child.SetActive(false);
+            if (Application.isPlaying) Destroy(child); else DestroyImmediate(child);
+        }
         bindingLabels.Clear();
         wheelControls.Clear();
         device = activeInput = ffbValue = invertValue = shifterValue = strengthValue = notice = null;
         strength = null;
         for (int i = 0; i < tabs.Length; i++)
             tabs[i].GetComponent<MenuSelectionHighlight>().Initialize(tabs[i].GetComponentInChildren<TMP_Text>(),
-                (i == index ? "• " : "") + new[] { "CONTROLS", "WHEEL", "AUDIO" }[i]);
-        if (index == 0) BuildControls();
+                (i == index ? "• " : "") + new[] { "AUDIO", "WHEEL", "CONTROLS" }[i]);
+        if (index == 0) BuildAudio();
         else if (index == 1) BuildWheel();
-        else BuildAudio();
+        else BuildControls();
         SmallButton(body, "BACK", 0, 650, 220, Back);
         StageboundMenuUI.Select(tabs[index]);
         Refresh();
@@ -282,6 +288,8 @@ public class AudioSettingsPanel : MonoBehaviour
 
     private void Update()
     {
+        if (transform.parent is RectTransform parent)
+            transform.localScale = Vector3.one * Mathf.Clamp(Mathf.Min((parent.rect.width - 64) / 1140f, (parent.rect.height - 64) / 900f), .1f, 1f);
         var keyboard = Keyboard.current;
         var pad = Gamepad.current;
         bool cancel = (keyboard != null && keyboard.escapeKey.wasPressedThisFrame) ||

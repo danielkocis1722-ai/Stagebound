@@ -12,7 +12,7 @@ public class CarSelectPanel : MonoBehaviour
     private Action onBack;
     private Action<VehicleDefinition> onSelect;
     private int index;
-    private TMP_Text nameLabel, detail, description, status, count, previewHint;
+    private TMP_Text nameLabel, detail, description, status, count, previewHint, manufacturer;
     private readonly RectTransform[] bars = new RectTransform[4];
     private Button select, back, browser;
 
@@ -27,7 +27,7 @@ public class CarSelectPanel : MonoBehaviour
 
     public static CarSelectPanel Create(Transform parent, VehicleCatalog vehicles, Action leave, Action<VehicleDefinition> choose)
     {
-        var root = StageboundMenuUI.Panel(parent, "Car Select", new Vector2(.5f, .5f), Vector2.zero, new Vector2(1360, 860), new Color32(10, 18, 29, 245));
+        var root = StageboundMenuUI.Panel(parent, "Car Select", new Vector2(.5f, .5f), Vector2.zero, new Vector2(1560, 900), new Color32(10, 18, 29, 245));
         var panel = root.gameObject.AddComponent<CarSelectPanel>();
         panel.catalog = vehicles;
         panel.onBack = leave;
@@ -39,11 +39,13 @@ public class CarSelectPanel : MonoBehaviour
 
     private void Build()
     {
-        StageboundMenuUI.Text(transform, "CAR SELECT", 38, new Vector2(40, -26), new Vector2(1100, 70), Color.white);
-        count = StageboundMenuUI.Text(transform, "", 18, new Vector2(1200, -40), new Vector2(120, 35), StageboundMenuUI.Muted);
-        var previous = StageboundMenuUI.Button(transform, "<", new Vector2(40, -115), new Vector2(70, 54), () => Browse(-1));
-        var next = StageboundMenuUI.Button(transform, ">", new Vector2(1240, -115), new Vector2(70, 54), () => Browse(1));
-        var browserRect = StageboundMenuUI.Panel(transform, "Car Browser", new Vector2(0, 1), new Vector2(125, -115), new Vector2(1100, 60), Color.white);
+        StageboundMenuUI.Text(transform, "STAGEBOUND  /  GARAGE", 20, new Vector2(40, -26), new Vector2(1100, 70), Color.white);
+        count = StageboundMenuUI.Text(transform, "", 18, new Vector2(1390, -32), new Vector2(120, 35), StageboundMenuUI.Muted);
+        StageboundMenuUI.Panel(transform, "Header rule", new Vector2(0, 1), new Vector2(40, -64), new Vector2(1480, 1), new Color32(91, 255, 191, 75));
+        StageboundMenuUI.Text(transform, "BROWSE COLLECTION", 14, new Vector2(370, -774), new Vector2(300, 26), StageboundMenuUI.Muted);
+        var previous = StageboundMenuUI.Button(transform, "<", new Vector2(40, -754), new Vector2(70, 54), () => Browse(-1));
+        var next = StageboundMenuUI.Button(transform, ">", new Vector2(920, -754), new Vector2(70, 54), () => Browse(1));
+        var browserRect = StageboundMenuUI.Panel(transform, "Car Browser", new Vector2(0, 1), new Vector2(40, -111), new Vector2(1480, 78), Color.white);
         browser = browserRect.gameObject.AddComponent<Button>();
         browser.targetGraphic = browserRect.GetComponent<Image>();
         browser.targetGraphic.raycastTarget = true;
@@ -52,9 +54,10 @@ public class CarSelectPanel : MonoBehaviour
         colors.highlightedColor = colors.selectedColor = new Color32(30, 58, 65, 150);
         browser.colors = colors;
         browser.onClick.AddListener(Confirm);
-        nameLabel = StageboundMenuUI.Text(browserRect, "", 38, new Vector2(10, 2), new Vector2(1080, 66), Color.white);
-        detail = StageboundMenuUI.Text(transform, "", 20, new Vector2(40, -225), new Vector2(590, 40), StageboundMenuUI.Mint);
-        description = StageboundMenuUI.Text(transform, "", 24, new Vector2(40, -280), new Vector2(590, 110), StageboundMenuUI.Muted);
+        nameLabel = StageboundMenuUI.Text(browserRect, "", 52, new Vector2(0, 0), new Vector2(1460, 78), Color.white);
+        manufacturer = StageboundMenuUI.Text(transform, "", 17, new Vector2(40, -82), new Vector2(1400, 28), StageboundMenuUI.Mint);
+        detail = StageboundMenuUI.Text(transform, "", 20, new Vector2(1050, -254), new Vector2(460, 76), StageboundMenuUI.Mint);
+        description = StageboundMenuUI.Text(transform, "", 22, new Vector2(1050, -352), new Vector2(450, 140), StageboundMenuUI.Muted);
         description.textWrappingMode = TextWrappingModes.Normal;
         var labels = new[]
         {
@@ -65,13 +68,13 @@ public class CarSelectPanel : MonoBehaviour
         };
         for (int i = 0; i < 4; i++)
         {
-            float y = 420 + i * 54;
-            StageboundMenuUI.Text(transform, labels[i], 17, new Vector2(40, -y), new Vector2(150, 30), StageboundMenuUI.Muted);
-            var track = StageboundMenuUI.Panel(transform, labels[i] + " Track", new Vector2(0, 1), new Vector2(210, -y - 8), new Vector2(370, 8), new Color32(42, 58, 73, 255));
-            bars[i] = StageboundMenuUI.Panel(track, labels[i] + " Fill", new Vector2(0, 1), Vector2.zero, new Vector2(370, 8), StageboundMenuUI.Mint);
+            float y = 526 + i * 48;
+            StageboundMenuUI.Text(transform, labels[i], 17, new Vector2(1050, -y), new Vector2(150, 30), StageboundMenuUI.Muted);
+            var track = StageboundMenuUI.Panel(transform, labels[i] + " Track", new Vector2(0, 1), new Vector2(1200, -y - 8), new Vector2(300, 5), new Color32(42, 58, 73, 255));
+            bars[i] = StageboundMenuUI.Panel(track, labels[i] + " Fill", new Vector2(0, 1), Vector2.zero, new Vector2(300, 5), StageboundMenuUI.Mint);
         }
 
-        var frame = StageboundMenuUI.Panel(transform, "Vehicle Preview", new Vector2(0, 1), new Vector2(650, -220), new Vector2(660, 420), new Color32(9, 17, 26, 220));
+        var frame = StageboundMenuUI.Panel(transform, "Vehicle Preview", new Vector2(0, 1), new Vector2(40, -208), new Vector2(960, 530), new Color32(9, 17, 26, 220));
         var imageObject = new GameObject("Preview Image", typeof(RectTransform), typeof(RawImage));
         var image = imageObject.GetComponent<RawImage>();
         image.rectTransform.SetParent(frame, false);
@@ -82,10 +85,10 @@ public class CarSelectPanel : MonoBehaviour
         preview = imageObject.AddComponent<VehiclePreview>();
         preview.image = image;
         previewHint = StageboundMenuUI.Text(frame, "", 18, new Vector2(24, -180), new Vector2(610, 60), StageboundMenuUI.Muted);
-        status = StageboundMenuUI.Text(transform, "", 18, new Vector2(650, -658), new Vector2(660, 42), StageboundMenuUI.Mint);
-        select = StageboundMenuUI.Button(transform, "CONTINUE", new Vector2(40, -716), new Vector2(300, 60), Confirm);
-        back = StageboundMenuUI.Button(transform, "BACK", new Vector2(365, -716), new Vector2(240, 60), Back);
-        StageboundMenuUI.Text(transform, "LEFT / RIGHT / L1 / R1: CAR    ENTER / CROSS: CONTINUE    ESC / CIRCLE: BACK", 16, new Vector2(40, -807), new Vector2(1260, 30), StageboundMenuUI.Muted);
+        status = StageboundMenuUI.Text(transform, "", 18, new Vector2(1050, -210), new Vector2(460, 32), StageboundMenuUI.Mint);
+        select = StageboundMenuUI.Button(transform, "CONTINUE", new Vector2(1050, -754), new Vector2(285, 60), Confirm);
+        back = StageboundMenuUI.Button(transform, "BACK", new Vector2(1350, -754), new Vector2(160, 60), Back);
+        StageboundMenuUI.Text(transform, "LEFT / RIGHT / L1 / R1: CAR    ENTER / CROSS: CONTINUE    ESC / CIRCLE: BACK", 16, new Vector2(40, -850), new Vector2(1260, 30), StageboundMenuUI.Muted);
         foreach (var button in new[]
         {
             previous,
@@ -160,8 +163,9 @@ public class CarSelectPanel : MonoBehaviour
             return;
         }
 
+        manufacturer.text = (vehicle.manufacturer ?? "").ToUpperInvariant() + "   /   PERFORMANCE COLLECTION";
         nameLabel.text = (string.IsNullOrWhiteSpace(vehicle.displayName) ? vehicle.vehicleId : vehicle.displayName).ToUpperInvariant();
-        detail.text = vehicle.config != null ? $"{vehicle.drivetrainLabel}   /   {vehicle.config.chassis.mass:0} kg   /   {vehicle.config.engine.maxEngineTorque:0} Nm" : vehicle.drivetrainLabel;
+        detail.text = vehicle.config != null ? $"{vehicle.drivetrainLabel}   /   DRIVETRAIN\n{vehicle.config.chassis.mass:0} kg     /     {vehicle.config.engine.maxEngineTorque:0} Nm" : vehicle.drivetrainLabel;
         description.text = vehicle.description;
         count.text = $"{index + 1:00} / {catalog.vehicles.Length:00}";
         var values = new[]
@@ -172,7 +176,7 @@ public class CarSelectPanel : MonoBehaviour
             vehicle.stability
         };
         for (int i = 0; i < 4; i++)
-            bars[i].sizeDelta = new Vector2(370 * Mathf.Clamp01(values[i]), 8);
+            bars[i].sizeDelta = new Vector2(300 * Mathf.Clamp01(values[i]), 5);
         select.interactable = vehicle.IsPlayable;
         status.text = vehicle.IsPlayable ? (VehicleSelection.Resolve(catalog) == vehicle ? "CURRENT CAR" : "AVAILABLE") : vehicle.unavailableLabel;
         previewHint.text = preview.Show(vehicle) ? "" : vehicle.visualPrefab == null ? "MODEL NOT YET ASSIGNED" : "VEHICLE PREVIEW";
@@ -228,6 +232,12 @@ public class CarSelectPanel : MonoBehaviour
 
     private void Update()
     {
+        // Fit the composition within the parent canvas at both 16:9 and 16:10.
+        if (transform.parent is RectTransform parent)
+        {
+            float scale = Mathf.Min(1f, (parent.rect.width - 64f) / 1560f, (parent.rect.height - 64f) / 900f);
+            transform.localScale = Vector3.one * Mathf.Max(.1f, scale);
+        }
         var pad = Gamepad.current;
         if (pad != null && pad.leftShoulder.wasPressedThisFrame)
             ChangeVehicle(-1);

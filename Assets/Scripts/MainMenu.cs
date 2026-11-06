@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
     // Runtime UI state
     private GameObject menu;
     private AudioSettingsPanel settings;
-    private Button play, carButton, settingsButton;
+    private Button play, settingsButton;
     private CarSelectPanel cars;
     private StageSelectPanel maps;
 
@@ -48,9 +48,8 @@ public class MainMenu : MonoBehaviour
         StageboundMenuUI.Text(menu.transform, "TIME ATTACK", 20, new Vector2(4, -108), new Vector2(600, 40), StageboundMenuUI.Mint);
         StageboundMenuUI.Panel(menu.transform, "Accent", new Vector2(0, 1), new Vector2(4, -170), new Vector2(54, 3), StageboundMenuUI.Mint);
         play = StageboundMenuUI.Button(menu.transform, "PLAY", new Vector2(0, -215), new Vector2(400, 64), Play);
-        carButton = StageboundMenuUI.Button(menu.transform, "CAR SELECT", new Vector2(0, -295), new Vector2(400, 64), ShowCarSelect);
-        settingsButton = StageboundMenuUI.Button(menu.transform, "SETTINGS", new Vector2(0, -375), new Vector2(400, 64), ShowSettings);
-        StageboundMenuUI.Button(menu.transform, "QUIT", new Vector2(0, -455), new Vector2(400, 64), Quit);
+        settingsButton = StageboundMenuUI.Button(menu.transform, "SETTINGS", new Vector2(0, -295), new Vector2(400, 64), ShowSettings);
+        StageboundMenuUI.Button(menu.transform, "QUIT", new Vector2(0, -375), new Vector2(400, 64), Quit);
         StageboundMenuUI.Text(menu.transform, "A STAGE. YOUR LINE. YOUR TIME.", 16, new Vector2(4, -565), new Vector2(800, 30), StageboundMenuUI.Muted);
         settings = AudioSettingsPanel.Create(shade, ShowMenu);
         cars = CarSelectPanel.Create(shade, vehicleCatalog, ShowCarMenu, ChooseCar);
@@ -74,7 +73,7 @@ public class MainMenu : MonoBehaviour
     private void ShowCarMenu()
     {
         menu.SetActive(true);
-        StageboundMenuUI.Select(carButton);
+        StageboundMenuUI.Select(play);
     }
 
     private void ChooseCar(VehicleDefinition vehicle)

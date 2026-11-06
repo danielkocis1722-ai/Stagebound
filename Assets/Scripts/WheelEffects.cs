@@ -28,6 +28,8 @@ public class WheelEffects : MonoBehaviour
         public float previousIntensity;
         [NonSerialized]
         public bool ownsSmoke;
+        [NonSerialized] public Collider previousSurface;
+        [NonSerialized] public float nextPatchTime;
     }
 
     // Wheel references
@@ -82,10 +84,12 @@ public class WheelEffects : MonoBehaviour
     private SkidmarkSystem marks;
     private Material runtimeSmokeMaterial;
     private Texture2D smokeTexture;
+    private Rigidbody body;
 
     private void Awake()
     {
         car = GetComponent<CarController>();
+        body = GetComponent<Rigidbody>();
         marks = GetComponent<SkidmarkSystem>();
         if (wheels == null || wheels.Length == 0)
             wheels = new[]
@@ -151,15 +155,35 @@ public class WheelEffects : MonoBehaviour
             float speed = Mathf.Max(Mathf.Abs(car.SpeedKmh), surfaceSpeed);
             StrongestSlip = Mathf.Max(StrongestSlip, slip);
             ContactSpeedKmh = Mathf.Max(ContactSpeedKmh, speed);
-            float targetMark = Mathf.Abs(car.SpeedKmh) >= markMinSpeedKmh ? SlipIntensity(slip, markSlipStart, markSlipFull) : 0f;
+            // Keep the audio-facing aggregate above unchanged. Visuals use local contact
+            // motion and wheel load, including wheelspin when the chassis is stationary.
+            Vector3 relativeVelocity = body.GetPointVelocity(hit.point);
+            if (hit.collider.attachedRigidbody != null)
+                relativeVelocity -= hit.collider.attachedRigidbody.GetPointVelocity(hit.point);
+            float roadSpeed = Vector3.ProjectOnPlane(relativeVelocity, hit.normal).magnitude * 3.6f;
+            float visualSpeed = Mathf.Max(roadSpeed, surfaceSpeed);
+            float load = LoadFactor(hit.force, wheel.collider.sprungMass * Physics.gravity.magnitude);
+            float targetMark = SlipIntensity(slip, markSlipStart, markSlipFull) * load *
+                Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.3f, Mathf.Max(1f, markMinSpeedKmh), visualSpeed));
             wheel.markIntensity = Mathf.Lerp(wheel.markIntensity, targetMark, 1f - Mathf.Exp(-markResponse * Time.fixedDeltaTime));
-            if (targetMark > 0f && wheel.markIntensity > .01f)
+            if (wheel.previousSurface != hit.collider) wheel.hasPrevious = false;
+            wheel.previousSurface = hit.collider;
+            if (targetMark > .001f && wheel.markIntensity > .01f)
             {
+                // A spinning tire still deposits rubber without travelling far enough
+                // for a ribbon segment. Stamp a small contact patch at a bounded rate.
+                if (roadSpeed < 1f && surfaceSpeed > markMinSpeedKmh && Time.fixedTime >= wheel.nextPatchTime)
+                {
+                    Vector3 forward = Vector3.ProjectOnPlane(wheel.collider.transform.forward, hit.normal).normalized;
+                    marks.AddSegment(hit.point - forward * .10f, hit.point + forward * .10f,
+                        hit.normal, hit.normal, wheel.markIntensity * .35f, wheel.markIntensity * .35f, wheel.markWidth, hit.collider);
+                    wheel.nextPatchTime = Time.fixedTime + .15f;
+                }
                 if (wheel.hasPrevious)
                 {
                     if (Vector3.Distance(wheel.previousPoint, hit.point) > marks.maxSegmentLength)
                         wheel.hasPrevious = false;
-                    else if (marks.AddSegment(wheel.previousPoint, hit.point, wheel.previousNormal, hit.normal, wheel.previousIntensity, wheel.markIntensity, wheel.markWidth))
+                    else if (marks.AddSegment(wheel.previousPoint, hit.point, wheel.previousNormal, hit.normal, wheel.previousIntensity, wheel.markIntensity, wheel.markWidth, hit.collider))
                         wheel.hasPrevious = false;
                 }
 
@@ -176,9 +200,14 @@ public class WheelEffects : MonoBehaviour
             if (wheel.smoke != null)
             {
                 wheel.smoke.transform.SetPositionAndRotation(hit.point + hit.normal * contactOffset, Quaternion.FromToRotation(Vector3.forward, hit.normal));
-                float amount = speed >= smokeMinSpeedKmh ? SlipIntensity(slip, smokeSlipStart, smokeSlipFull) : 0f;
-                float speedFactor = Mathf.InverseLerp(smokeMinSpeedKmh, Mathf.Max(smokeMinSpeedKmh + .1f, smokeFullSpeedKmh), speed);
-                SetSmoke(wheel, amount * Mathf.Lerp(.25f, 1f, speedFactor) * maxEmissionRate * wheel.smokeMultiplier);
+                float amount = SlipIntensity(slip, smokeSlipStart, smokeSlipFull) * load;
+                float speedFactor = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0f, Mathf.Max(.1f, smokeMinSpeedKmh), visualSpeed));
+                float energy = Mathf.InverseLerp(smokeMinSpeedKmh, Mathf.Max(smokeMinSpeedKmh + .1f, smokeFullSpeedKmh), visualSpeed);
+                SetSmoke(wheel, amount * speedFactor * Mathf.Lerp(.35f, 1f, energy) * maxEmissionRate * wheel.smokeMultiplier);
+                var main = wheel.smoke.main;
+                float strength = Mathf.Clamp01(wheel.emissionRate / Mathf.Max(1f, maxEmissionRate));
+                main.startColor = new Color(.82f, .84f, .86f, Mathf.Lerp(.12f, .65f, strength));
+                main.startSize = new ParticleSystem.MinMaxCurve(Mathf.Lerp(.10f, .25f, strength), Mathf.Lerp(.20f, .48f, strength));
             }
         }
     }
@@ -187,6 +216,12 @@ public class WheelEffects : MonoBehaviour
     {
         float t = Mathf.InverseLerp(start, Mathf.Max(start + .001f, full), Mathf.Abs(slip));
         return t * t * (3f - 2f * t);
+    }
+
+    public static float LoadFactor(float force, float restingForce)
+    {
+        if (!float.IsFinite(force) || force <= 0f) return 0f;
+        return Mathf.Sqrt(Mathf.Clamp01(force / Mathf.Max(100f, restingForce)));
     }
 
     private void SetSmoke(Wheel wheel, float targetRate)
@@ -238,6 +273,12 @@ public class WheelEffects : MonoBehaviour
         main.maxParticles = 180;
         main.gravityModifier = -.035f;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
+        var noise = smoke.noise;
+        noise.enabled = true;
+        noise.strength = .16f;
+        noise.frequency = .65f;
+        noise.scrollSpeed = .25f;
+        noise.quality = ParticleSystemNoiseQuality.Low;
         var emission = smoke.emission;
         emission.rateOverTime = 0;
         var shape = smoke.shape;

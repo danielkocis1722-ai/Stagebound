@@ -17,6 +17,7 @@ public class StageSelectPanel : MonoBehaviour
     private readonly List<Button> rows = new List<Button>();
     private Button start, back;
     private ScrollRect scroll;
+    private StagePreview preview;
     private InputSystemUIInputModule inputModule;
     private bool ownsFocus, previousDeselect;
 
@@ -25,7 +26,7 @@ public class StageSelectPanel : MonoBehaviour
 
     public static StageSelectPanel Create(Transform parent, StageCatalog maps, Action leave, Action<StageDefinition> play)
     {
-        var root = StageboundMenuUI.Panel(parent, "Stage Select", new Vector2(.5f, .5f), Vector2.zero, new Vector2(1360, 860), new Color32(10, 18, 29, 245));
+        var root = StageboundMenuUI.Panel(parent, "Stage Select", new Vector2(.5f, .5f), Vector2.zero, new Vector2(1560, 900), new Color32(10, 18, 29, 245));
         var panel = root.gameObject.AddComponent<StageSelectPanel>();
         panel.catalog = maps;
         panel.onBack = leave;
@@ -37,9 +38,9 @@ public class StageSelectPanel : MonoBehaviour
 
     private void Build()
     {
-        StageboundMenuUI.Text(transform, "STAGE SELECT", 38, new Vector2(40, -26), new Vector2(1200, 65), Color.white);
-        carLabel = StageboundMenuUI.Text(transform, "", 20, new Vector2(40, -108), new Vector2(1250, 40), StageboundMenuUI.Mint);
-        var viewport = StageboundMenuUI.Panel(transform, "Maps", new Vector2(0, 1), new Vector2(40, -190), new Vector2(530, 490), new Color32(9, 17, 26, 100));
+        StageboundMenuUI.Text(transform, "STAGEBOUND  /  STAGES", 20, new Vector2(40, -26), new Vector2(1200, 65), Color.white);
+        carLabel = StageboundMenuUI.Text(transform, "", 20, new Vector2(40, -78), new Vector2(1250, 40), StageboundMenuUI.Mint);
+        var viewport = StageboundMenuUI.Panel(transform, "Maps", new Vector2(0, 1), new Vector2(40, -208), new Vector2(400, 490), new Color32(9, 17, 26, 100));
         viewport.GetComponent<Image>().raycastTarget = true;
         viewport.gameObject.AddComponent<RectMask2D>();
         scroll = viewport.gameObject.AddComponent<ScrollRect>();
@@ -60,25 +61,29 @@ public class StageSelectPanel : MonoBehaviour
             {
                 int rowIndex = i;
                 var stage = catalog.stages[i];
-                var button = StageboundMenuUI.Button(content, stage != null ? stage.stageName : "UNAVAILABLE", new Vector2(4, -i * 104), new Vector2(510, 88), () =>
+                var button = StageboundMenuUI.Button(content, stage != null ? stage.stageName : "UNAVAILABLE", new Vector2(4, -i * 104), new Vector2(385, 88), () =>
                 {
                     Highlight(rowIndex);
                     StageboundMenuUI.Select(CanStart ? start : back);
                 });
+                button.GetComponentInChildren<TMP_Text>().fontSize = 22;
                 rows.Add(button);
                 var nav = button.gameObject.AddComponent<StageSelectNavigation>();
                 nav.panel = this;
                 nav.stageIndex = i;
-                StageboundMenuUI.Text(button.transform, stage != null && stage.IsPlayable ? "TIME ATTACK + STYLE" : stage?.unavailableLabel ?? "UNAVAILABLE", 14, new Vector2(22, -51), new Vector2(475, 27), StageboundMenuUI.Muted);
+                StageboundMenuUI.Text(button.transform, stage != null && stage.IsPlayable ? "TIME ATTACK + STYLE" : stage?.unavailableLabel ?? "UNAVAILABLE", 14, new Vector2(22, -51), new Vector2(360, 27), StageboundMenuUI.Muted);
             }
 
-        title = StageboundMenuUI.Text(transform, "", 34, new Vector2(650, -195), new Vector2(660, 60), Color.white);
-        description = StageboundMenuUI.Text(transform, "", 20, new Vector2(650, -270), new Vector2(660, 90), StageboundMenuUI.Muted);
+        StageboundMenuUI.Panel(transform, "Header rule", new Vector2(0, 1), new Vector2(40, -64), new Vector2(1480, 1), new Color32(91, 255, 191, 75));
+        var frame = StageboundMenuUI.Panel(transform, "Stage preview", new Vector2(0, 1), new Vector2(480, -208), new Vector2(1040, 360), new Color32(9, 17, 26, 255));
+        preview = frame.gameObject.AddComponent<StagePreview>();
+        title = StageboundMenuUI.Text(transform, "", 48, new Vector2(40, -113), new Vector2(1480, 70), Color.white);
+        description = StageboundMenuUI.Text(transform, "", 20, new Vector2(480, -585), new Vector2(1040, 60), StageboundMenuUI.Muted);
         description.textWrappingMode = TextWrappingModes.Normal;
-        records = StageboundMenuUI.Text(transform, "", 20, new Vector2(650, -380), new Vector2(660, 270), Color.white);
-        status = StageboundMenuUI.Text(transform, "", 17, new Vector2(650, -664), new Vector2(660, 50), StageboundMenuUI.Mint);
-        start = StageboundMenuUI.Button(transform, "START", new Vector2(40, -736), new Vector2(320, 60), Confirm);
-        back = StageboundMenuUI.Button(transform, "BACK", new Vector2(390, -736), new Vector2(240, 60), Back);
+        records = StageboundMenuUI.Text(transform, "", 18, new Vector2(480, -690), new Vector2(1040, 130), Color.white);
+        status = StageboundMenuUI.Text(transform, "", 17, new Vector2(480, -650), new Vector2(1040, 30), StageboundMenuUI.Mint);
+        start = StageboundMenuUI.Button(transform, "START", new Vector2(40, -754), new Vector2(220, 60), Confirm);
+        back = StageboundMenuUI.Button(transform, "BACK", new Vector2(275, -754), new Vector2(165, 60), Back);
         foreach (var button in new[]
         {
             start,
@@ -87,7 +92,7 @@ public class StageSelectPanel : MonoBehaviour
 
         )
             button.gameObject.AddComponent<StageSelectNavigation>().panel = this;
-        StageboundMenuUI.Text(transform, "D-PAD / ARROWS: NAVIGATE    CROSS / ENTER: CONFIRM    CIRCLE / ESC: BACK", 16, new Vector2(40, -813), new Vector2(1250, 28), StageboundMenuUI.Muted);
+        StageboundMenuUI.Text(transform, "D-PAD / ARROWS: NAVIGATE    CROSS / ENTER: CONFIRM    CIRCLE / ESC: BACK", 16, new Vector2(40, -850), new Vector2(1250, 28), StageboundMenuUI.Muted);
     }
 
     public void Show(VehicleDefinition selectedVehicle)
@@ -130,8 +135,9 @@ public class StageSelectPanel : MonoBehaviour
         description.text = stage.TypeLabel + "  /  " + stage.description;
         var overall = StageRecords.Overall(stage, stage.checkpointCount);
         var car = StageRecords.ForVehicle(stage, stage.checkpointCount, vehicle != null ? vehicle.vehicleId : null);
-        records.text = "SELECTED CAR\nBEST FINAL     " + Time(car.hasBest, car.bestAdjustedTime) + "\nBEST RAW       " + Time(car.hasBest, car.bestRawTime) + "\nBEST DRIFT       " + (car.hasBest ? Mathf.RoundToInt(car.bestDriftScore).ToString("N0") : "--") + "\n\nALL CARS\nBEST FINAL     " + Time(overall.hasBest, overall.bestAdjustedTime) + "\nBEST RAW       " + Time(overall.hasBest, overall.bestRawTime);
-        records.text += $"\nSTYLE CAP       -{stage.maxStyleCredit:0.0} s   /   {stage.pointsPerSecondCredit:0} pts/s";
+        records.text = "<color=#5BFFBF>SELECTED CAR</color>   BEST FINAL  " + Time(car.hasBest, car.bestAdjustedTime) + "     /     RAW  " + Time(car.hasBest, car.bestRawTime) + "     /     DRIFT  " + (car.hasBest ? Mathf.RoundToInt(car.bestDriftScore).ToString("N0") : "--") + "\n\n<color=#5BFFBF>ALL CARS</color>   BEST FINAL  " + Time(overall.hasBest, overall.bestAdjustedTime) + "     /     RAW  " + Time(overall.hasBest, overall.bestRawTime);
+        records.text += $"\nSTYLE CAP  -{stage.maxStyleCredit:0.0} s    /    {stage.pointsPerSecondCredit:0} pts/s";
+        preview.Show(stage);
         status.text = CanStart ? "READY  /  " + stage.checkpointCount + " CHECKPOINT" + (stage.checkpointCount == 1 ? "" : "S") + (string.IsNullOrEmpty(stage.difficultyLabel) ? "" : "  /  " + stage.difficultyLabel) : !stage.selectable ? stage.unavailableLabel : "MAP OR CAR UNAVAILABLE";
         UpdateNavigation();
         float height = scroll.viewport.rect.height;
@@ -181,6 +187,12 @@ public class StageSelectPanel : MonoBehaviour
     {
         gameObject.SetActive(false);
         onBack?.Invoke();
+    }
+
+    private void Update()
+    {
+        if (transform.parent is RectTransform parent)
+            transform.localScale = Vector3.one * Mathf.Clamp(Mathf.Min((parent.rect.width - 64) / 1560f, (parent.rect.height - 64) / 900f), .1f, 1f);
     }
 
     private void OnDisable()
